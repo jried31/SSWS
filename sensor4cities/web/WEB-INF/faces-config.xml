@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+
+<faces-config version="2.0"
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+   
+    <lifecycle>
+        <phase-listener>br.ufpa.gercom.sensor4cities.filter.AuthorizationListener</phase-listener>
+    </lifecycle>
+    
+    <navigation-rule>
+        <from-view-id>/admin/*</from-view-id>
+        <navigation-case>
+            <from-outcome>loginPage</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>manager</from-outcome>
+            <to-view-id>/admin/manager.xhtml</to-view-id>
+            <redirect></redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <managed-bean>
+        <managed-bean-name>sensor4citiesWebBean</managed-bean-name>
+        <managed-bean-class>br.ufpa.gercom.sensor4cities.managedbean.Sensor4CitiesWebBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>registerBean</managed-bean-name>
+        <managed-bean-class>br.ufpa.gercom.sensor4cities.managedbean.RegisterBean</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>managerBean</managed-bean-name>
+        <managed-bean-class>br.ufpa.gercom.sensor4cities.managedbean.ManagerBean</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>loginBean</managed-bean-name>
+        <managed-bean-class>br.ufpa.gercom.sensor4cities.managedbean.LoginBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>constantsBean</managed-bean-name>
+        <managed-bean-class>br.ufpa.gercom.sensor4cities.managedbean.ConstantsBean</managed-bean-class>
+    
+        <managed-bean-scope>application</managed-bean-scope></managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>appsBean</managed-bean-name>
+        <managed-bean-class>br.ufpa.gercom.sensor4cities.managedbean.AppsBean</managed-bean-class>
+    
+        <managed-bean-scope>application</managed-bean-scope></managed-bean>
+    
+    
+    
+    
+    
+</faces-config>

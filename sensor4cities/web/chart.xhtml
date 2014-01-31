@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : Sparkling   
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20100529
+
+-->
+<h:head>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Sensor4Cities</title>
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/> 
+</h:head>
+<h:body>
+<div>
+    <center>
+        <p>
+            <!--<h1>Sensoring Charts</h1>-->
+                <p:fieldset legend="Configurations">
+                <h:form>
+                    <h:selectOneMenu required="true" requiredMessage="Selecione o fenômeno" value="#{sensor4citiesWebBean.phenomenaSelectedId}">
+                        <f:selectItem itemLabel="Temperature" itemValue="#{constantsBean.temperature}"/>
+                        <f:selectItem itemLabel="Luminance" itemValue="#{constantsBean.luminance}"/>
+                        <f:selectItem itemLabel="Humidity" itemValue="#{constantsBean.humidity}"/>
+                        <f:selectItem itemLabel="CO2" itemValue="#{constantsBean.co2}"/>
+                        <f:selectItem itemLabel="Water Pollution" itemValue="#{constantsBean.watterPollution}"/>
+                        <f:selectItem itemLabel="Noise Pollution" itemValue="#{constantsBean.noisePollution}"/>
+                    </h:selectOneMenu>
+                    <p:commandButton ajax="false" action="#{sensor4citiesWebBean.showChart}" value="Plot Chart"/><br/>
+                </h:form>    
+                    <p:barChart id="basicChart" value="#{sensor4citiesWebBean.cartesianChartModel}" legendPosition="ne" />
+                </p:fieldset>
+        </p>
+        </center>
+</div>
+</h:body>
+</html>

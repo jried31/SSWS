@@ -1,0 +1,134 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pm="http://primefaces.org/mobile"
+        contentType="text/html">    
+    
+    <pm:page title="Sensor4Cities">
+        
+        <f:facet name="postinit">
+            <h:outputScript library="primefaces" name="gmap/gmap.js" />
+                        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+            <script type="text/javascript">
+                function findMe() {
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            var map = gmap.getMap(),
+                            latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+                            map.setCenter(latlng);
+
+                            var marker = new google.maps.Marker({
+                                position: latlng
+                            });
+
+                            marker.setMap(map);
+                        },
+                        function(error) {
+                            alert(error.message);
+                        },
+                        {
+                           enableHighAccuracy: true
+                        });
+                }
+
+            </script>
+                </f:facet>
+        
+        <!-- NavBar -->
+        <pm:view id="home">
+            <pm:header title="Sensor4Cities">
+                <f:facet name="left"/>
+                <pm:navBar>
+                    <p:button value="Home" icon="home" href="#home"/>
+                    <p:button value="Admin" icon="gear" href="#admin?transition=flow" />
+                    <p:button value="Contato" icon="info" href="#contact?transition=flow" />
+                </pm:navBar>
+            </pm:header>
+            
+            <pm:content>
+                <h:form id="formMap">
+                    <p:commandButton icon="check" rendered="#{sensor4citiesWebBean.renderedMap}" action="#{sensor4citiesWebBean.sendMobileQueryWeb}" value="Solicitar Dados" ajax="false"/>
+                    <p:commandButton icon="refresh" action="#{sensor4citiesWebBean.loadCommonData}" value="Carregar Dados" ajax="false"/>
+                    <center>
+                        <p:gmap rendered="#{sensor4citiesWebBean.renderedMap}" id="gmaps" model="#{sensor4citiesWebBean.mapModel}" center="#{sensor4citiesWebBean.defaultLongitude},#{sensor4citiesWebBean.defaultLatitude}" zoom="#{sensor4citiesWebBean.defaultZoom}" type="HYBRID" style="width:80%;height:27em" widgetVar="gmap">
+                            <p:ajax event="overlaySelect" listener="#{sensor4citiesWebBean.onMarkerSelect}" />
+                            <p:gmapInfoWindow>
+                                <h:outputText value="#{sensor4citiesWebBean.marker.title}" /><br/>
+                                <h:outputText value="#{sensor4citiesWebBean.marker.data}"/>
+                            </p:gmapInfoWindow>                            
+                        </p:gmap>
+                        <p:commandButton rendered="#{sensor4citiesWebBean.renderedMap}" value="Encontre-me" onclick="findMe()"/>
+                    </center>
+                </h:form>
+            </pm:content>
+            
+        </pm:view>
+        
+        <pm:view id="admin">
+            <pm:header title="Sensor4Cities">
+                <f:facet name="left"/>
+                <pm:navBar>
+                    <p:button value="Home" icon="home" href="#home?transition=flow"/>
+                    <p:button value="Admin" icon="gear" href="#admin"/>
+                    <p:button value="Contato" icon="info" href="#contact?transition=flow" />
+                </pm:navBar>
+            </pm:header>
+            <pm:content>
+                    <h:form id="formLogin">
+                        <center><h:outputText value="Serviço Em Construção!" style="color: firebrick"/></center>
+                            Login
+                            <p:inputText/>
+                            Senha
+                            <p:password feedback="false"/>
+                            <p:commandButton value="ok"/>
+                    </h:form>
+            </pm:content>
+        </pm:view>
+        
+        <pm:view id="contact">
+            <pm:header title="Sensor4Cities">
+                <f:facet name="left"/>
+                <pm:navBar>
+                    <p:button value="Home" icon="home" href="#home?transition=flow"/>
+                    <p:button value="Admin" icon="gear" href="#admin?transition=flow"/>
+                    <p:button value="Contato" icon="info" href="#contact"/>
+                </pm:navBar>
+            </pm:header>
+            <pm:content>
+                <h:form id="formRegister">
+                    <center><h:outputText value="Registre-se"/></center>
+                    Nome
+                    <p:inputText value="#{registerBean.register.name}" required="true" requiredMessage="Informe o Nome"/>
+                    Email
+                    <p:inputText value="#{registerBean.register.email}" required="true" requiredMessage="Informe o Email"/>
+                    <br/>
+                    Connheci Através de
+                    <h:selectOneMenu value="#{registerBean.register.fronWhere}">
+                        <f:selectItem itemValue="Internet" itemLabel="Internet"/>
+                        <f:selectItem itemValue="Papers" itemLabel="Papers"/>
+                        <f:selectItem itemValue="Eventos e Conferencias" itemLabel="Eventos e Conferencias"/>
+                        <f:selectItem itemValue="Amigos" itemLabel="Amigos"/>
+                        <f:selectItem itemValue="Outros" itemLabel="Outros"/>
+                    </h:selectOneMenu>
+                    <br/>
+                    Desejo Participar do
+                    <h:selectOneMenu value="#{registerBean.register.categorie}">
+                        <f:selectItem itemValue="Desenvolvimento" itemLabel="Desenvolvimento"/>
+                        <f:selectItem itemValue="Financiamento" itemLabel="Financiamento"/>
+                        <f:selectItem itemValue="Outros" itemLabel="Outros"/>
+                    </h:selectOneMenu>
+                    <br/>
+                    <p:commandButton value="Registrar" action="#{registerBean.execute}" ajax="false" icon="check"/>
+                </h:form>
+            </pm:content>
+        </pm:view>
+        
+        
+        
+        
+    </pm:page>
+
+</f:view>

@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : Sparkling   
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20100529
+
+-->
+<h:head>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Sensor4Cities</title>
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/> 
+</h:head>
+<h:body>
+<div id="wrapper">
+        <div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+				<h1><a href="#"><span>Sensor</span>4<span>Cities</span></a></h1>
+				<p>Desenvolvido pelo Grupo de Estudos em Redes de Computadores e Comunicação Multimídia da UFPA</p>
+                        </div>
+			<div id="menu">
+				<ul>
+					<li><a href="index.xhtml">Home</a></li>
+					<li><a href="web.xhtml">Consultas</a></li>
+					<li><a href="social.xhtml">Redes Sociais</a></li>
+					<li><a href="register.xhtml">Registro</a></li>
+                                        <li><a href="manual.xhtml">Manual</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="page">
+		<div >
+			<div>
+				<div>
+					<div>
+						<div style="clear: both;">&nbsp;</div>
+						<h2 class="title"><a href="#">Administração</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+                                                    Área de acesso restrito.
+                                                    <p:messages/>
+                                                    <p><h:form>
+                                                        <h:panelGrid columns="2">
+                                                            Login <p:inputText value="#{loginBean.login}"/>
+                                                            Senha <p:password id="nonFeedback" value="#{loginBean.password}"/>
+                                                            <p:commandButton value="Login" action="#{loginBean.logMeIn}" ajax="false"/>
+                                                        </h:panelGrid></h:form></p>
+                                                </div>
+					</div>
+
+					<div style="clear: both;">&nbsp;</div>
+				</div>
+				<div style="clear: both;">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+	<!-- end #page -->
+</div>
+<div id="footer">
+    <p>Copyright (c) 2011 <a href="http://www.gercom.ufpa.br">gercom labs</a>.  All rights reserved. Design by <a href="http://www.freecsstemplates.org/"> CSS Templates</a>.</p>
+</div>
+<div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/">free website templates</a>.</div>
+</h:body>
+</html>

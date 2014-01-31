@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : Sparkling   
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20100529
+
+-->
+<h:head>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Sensor4Cities</title>
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/> 
+</h:head>
+<h:body>
+<div id="wrapper">
+        <div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+				<h1><a href="#"><span>Sensor</span>4<span>Cities</span></a></h1>
+				<p>Desenvolvido pelo Grupo de Estudos em Redes de Computadores e Comunicação Multimídia da UFPA</p>
+			</div>
+			<div id="menu">
+				<ul>
+					<li><a href="index.xhtml">Home</a></li>
+					<li><a href="web.xhtml">Consultas</a></li>
+					<li><a href="social.xhtml">Redes Sociais</a></li>
+					<li><a href="register.xhtml">Registro</a></li>
+					<li class="current_page_item"><a href="manual.xhtml">Manual</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="page">
+		<div >
+			<div>
+				<div>
+					<div>
+						<div style="clear: both;">&nbsp;</div>
+						<h2 class="title"><a href="#">Manual do Usuário</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+                                                    <p>
+                                                        Bem vindo ao Sensor4Cities, a ferramenta que aproxima você do meio ambiente e da tecnologia de ponta em Computação Ubíqua.
+                                                        Neste manual serão apresentados os principais passos e comandos para tirar  máximo de proveito do Sensor4Cities
+                                                    </p>
+                                                    <p>
+                                                        Para realizarmos a principal tarefa da ferramenta, a consulta dos dados climáticos através da Rede de Sensores Sem Fio (RSSF),
+                                                        é necessário navergamos até a página <strong>Consultas</strong>.                                                        
+                                                    </p>
+                                                    <center><p><img src="images/consultas.png" border="1"/></p></center>
+                                                    <p>
+                                                        Nesta aba é possível de visualizar três painéis: <strong>(1)Tipos de Motes, (2)Dados Climáticos</strong> e <strong>(3) Painel de Controle</strong>.
+                                                        Os dois primeiros painéis representam as configurações das consultas aos sensores, onde o painel (1) permite a seleção dos tipos de motes desejados,
+                                                        atualmente o projeto conta com os três principais modelos de motes do mercado: SunSPOT, MEMSIC (Iris, Mica2 e TelosB) e XBee.
+                                                    </p>
+                                                    <center><p><img src="images/paineis.png" border="1"/></p></center>
+                                                    <p>
+                                                        O painel (2) apresenta quais dados de monitoramento podem ser obtidos. A customização dos dois primeiros painéis representam a consulta que será difundida
+                                                        através do sistema e da rede. Após a configuração inicial <strong>basta clicar em ENVIAR REQUISIÇÃO</strong> no painel (3) para o envio dos dados.
+                                                    </p>
+                                                    <p>
+                                                        <center style="font-size: larger"><strong><br/><br/>Todas as consultas estão sujeitas à disponibilidade dos motes e atrasos causados pela rede, portanto as respostam são obtidas em aproximadamente
+                                                        1 minuto<br/><br/></strong></center>
+                                                    </p>
+                                                    <p>
+                                                        O painel de controle, simplesmente painel (3), representa as ações desempenhadas pela ferramenta. O botão <strong>Scanear Sensores</strong> realiza a busca por dispositivos sensores
+                                                        disponíveis na rede, o botão <strong>Carregar Respostas</strong> carrega as respostas mais recentes obtidas pela RSSF. O botão <strong>Mapa</strong> permite a configuração
+                                                        da posição inicial dos mapa (definido previamente como a área de cobertura de sensoriamento da Universidade Federal do Pará) e o botão <strong>Gráfico</strong> permite a visualização gráfica
+                                                        dos dados de sensoriamento persistidos no banco (funcionalidade ainda em desenvolvimento).
+                                                    </p>
+                                                    <center><p><img src="images/gmap-node.png" border="1"/></p></center>                                                    
+                                                    <p>
+                                                        A visualização das informações de sensoriamento podem ser acessadas através do serviço Google Maps incorporado na página. Bastando clicar no mote desejado para
+                                                        visualizar os dados referentes a última consulta realizada.
+                                                    </p>
+                                                    <div style="clear: both;">&nbsp;</div>
+                                                    <h2 class="title"><a href="#">Manual de Instalação</a></h2>
+                                                    <div style="clear: both;">&nbsp;</div>
+                                                    <p>
+                                                        Nesta seção são apresentados os documentos de instalação da ferramenta bem como o código-fonte disponível para download.
+                                                        <br/><a target="_blank" href="downloads/ManualSensor4Cities.pdf">Manual de Instalação (PDF)</a>
+                                                        <!-- <br/><a target="_blank" href="downloads/Sensor4Cities-RC1.zip">Códigos-Fontes</a> -->
+                                                    </p>
+                                                </div>
+					</div>
+
+					<div style="clear: both;">&nbsp;</div>
+				</div>
+				<div style="clear: both;">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+	<!-- end #page -->
+</div>
+<div id="footer">
+    <p>Copyright (c) 2011 <a href="http://www.gercom.ufpa.br">gercom labs</a>.  All rights reserved. Design by <a href="http://www.freecsstemplates.org/"> CSS Templates</a>.</p>
+</div>
+<div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/">free website templates</a>.</div>
+</h:body>
+</html>

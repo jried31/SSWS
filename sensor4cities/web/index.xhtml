@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Sensor4Cities</title>
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/> 
+</h:head>
+<h:body>
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '367944629914777', // App ID
+      channelUrl : 'gercom.ufpa.br/sensor4cities', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+
+    // Additional initialization code here
+  };
+
+  // Load the SDK Asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+</script>
+<div id="wrapper">
+        <div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+                                <!--<h1><a href="#"><span>Sensor</span>4<span>Cities</span></a></h1>
+				<p align="justify">Developed by the Research Group on Computer Networks and Multimedia Communication</p>
+                                -->
+			</div>
+			<div id="menu">
+				<ul>
+					<li class="current_page_item"><a href="index.xhtml">Home</a></li>
+					<li><a href="web.xhtml">Queries</a></li>
+					<li><a href="overview.xhtml">Overview</a></li>
+                                        <li><a href="error.xhtml">Manual</a></li>
+					<li><a href="about.xhtml">About</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="page">
+		<div >
+			<div>
+				<div>
+					<div>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+                                                    <div class="fb-like" data-href="http://www.gercom.ufpa.br/sensor4cities" data-send="true" data-width="450" data-show-faces="true"></div>
+<!--                                                    <div class="fb-login-button" scope="email,user_checkins">Login with Facebook</div>-->
+                                                    <center>
+                                                        <p align="center"><br></br><br></br><font size="4" color="black">Sensor4Cities is a tool to disseminate scalar/multimedia data for single or groups of users, to smart cities applications.
+							The tool allows users to access and share data in a single, user-friendly and efficient manner through the use of social networks, 
+							web sites, including mobile version of it. Sensor4Cities was developed by the Federal University of Pará, Belém - Brazil with 
+							collaboration of Federal Univesity of Minas Gerais, Belo Horizonte - Brazil and University of Bern, Bern - Switzerland.</font><br/></p>
+							
+                                                        <!--<p>
+                                                            <a href="http://www.gercom.ufpa.br/sensor4cities" target="_blank"><img src="images/sensor4cities-logo.png" height="120"/></a>
+                                                        </p> -->
+                                                    </center>
+
+                                                    <p:separator/>
+                                                        <h2 class="title">Sponsors</h2>
+                                                        <center>
+                                                            <p>
+                                                                <a href="http://www.capes.gov.br/" target="_blank"><img src="images/capes-logo.png" height="120"/></a>
+                                                                <a href="http://www.rnp.br/" target="_blank"><img src="images/rnp-logo.png" height="120"/></a>
+                                                            </p>
+                                                            <p>
+                                                                <a href="http://www.cnpq.br/" target="_blank"><img src="images/cnpq-logo.png" height="120"/></a>
+                                                                <a href="http://www.nr2.ufpr.br/~cia2/" target="_blank"><img src="images/cia2-logo2.png" height="120"/></a>
+                                                            </p>
+                                                        </center>
+                                                    <p:separator/>
+                                                        <h2 class="title">Developed by</h2>
+                                                        <center>
+                                                            <p>
+                                                                <a href="http://www.gercom.ufpa.br/" target="_blank"><img src="images/gercom-logo.png" height="120"/></a>
+                                                                <a href="http://www.ufpa.br/" target="_blank"><img src="images/ufpa-logo.png" height="120"/></a>
+                                                            </p>
+                                                        </center>
+                                                    <p:separator/>
+                                                        <h2 class="title">Partners</h2>
+                                                        <center>
+                                                            <p>
+                                                                <a href="http://cds.unibe.ch/index.html" target="_blank"><img src="images/bern-logo.png" height="120"/></a>
+                                                                <a href="http://dcc.ufmg.br/" target="_blank"><img src="images/ufmg-logo.png" height="120"/></a>
+                                                            </p>
+                                                        </center>
+                                                    
+                                                    <p:separator/>
+                                                        <h:outputLink value="mobile.xhtml?javax.faces.RenderKitId=PRIMEFACES_MOBILE">
+                                                            <center><img src="images/mobile-en.png"/></center>
+                                                        </h:outputLink> 
+                                                        
+                                                </div>
+					</div>
+
+					<div style="clear: both;">&nbsp;</div>
+				</div>
+				<div style="clear: both;">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+	<!-- end #page -->
+</div>
+<div id="footer">
+    <p>Copyright (c) 2011 <a href="gerom.ufpa.br">gercom labs</a>.  All rights reserved. Design by <a href="http://www.freecsstemplates.org/"> CSS Templates</a>.</p>
+</div>
+<div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/">free website templates</a>.</div>
+</h:body>
+</html>

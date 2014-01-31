@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+<f:view>
+<h:head>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Sensor4Cities</title>
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/> 
+</h:head>
+<h:body>
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '367944629914777', // App ID
+      channelUrl : 'gercom.ufpa.br/sensor4cities', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+
+    // Additional initialization code here
+  };
+
+  // Load the SDK Asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+</script>
+<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+<p:dialog modal="true" widgetVar="statusDialog" header="Status" 
+        draggable="false" closable="false">
+	<p:graphicImage value="/images/ajaxloadingbar.gif" />
+</p:dialog>
+<div id="wrapper">
+        <div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+				<!--<h1><a href="#"><span>Sensor</span>4<span>Cities</span></a></h1>
+				<p align="justify">Developed by the Research Group on Computer Networks and Multimedia Communication</p>
+                                -->
+			</div>
+                    
+			<div id="menu">
+				<ul>
+					<li><a href="index.xhtml">Home</a></li>
+					<li class="current_page_item"><a href="web.xhtml">Queries</a></li>
+					<li><a href="overview.xhtml">Overview</a></li>
+                                        <li><a href="error.xhtml">Manual</a></li>
+					<li><a href="about.xhtml">About</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+    </div>
+	<div id="page">
+		<div >
+			<div>
+				<div>
+					<div>
+						<div class="entry">
+                                                    <p:accordionPanel>
+                                                        <p:tab title="Beginner User">
+                                                            <center>
+                                                            <h:form id="formAddQueryWebUser" >
+                                                            <p:growl id="growl" showDetail="true" sticky="true" life="3000"/>
+                                                            <p:fieldset legend="What do you want to monitor?">
+                                                                <h:panelGrid columns="3" border="1">
+                                                                    <h:panelGroup>
+                                                                        <h:panelGrid columns="4" >
+                                                                    <h:panelGroup>
+                                                                        <img src="images/temperature.png"/><br/><h:selectBooleanCheckbox />Temperature
+                                                                    </h:panelGroup>
+                                                                    <h:panelGroup>
+                                                                        <img src="images/lamp.png"/><br/><h:selectBooleanCheckbox />Luminance 
+                                                                    </h:panelGroup>
+                                                                    <h:panelGroup>
+                                                                        <img src="images/sunrain.png"/><br/><h:selectBooleanCheckbox />Humidity
+                                                                    </h:panelGroup>
+                                                                    <!--<h:panelGroup>
+                                                                        <img src="images/co2-2.png"/><br/><h:selectBooleanCheckbox disabled="true"/>CO2
+                                                                    </h:panelGroup>
+                                                                    <h:panelGroup>
+                                                                        <img src="images/water.png"/><br/><h:selectBooleanCheckbox disabled="true"/>Poluição  Aquática
+                                                                    </h:panelGroup>
+                                                                    <h:panelGroup>
+                                                                        <img src="images/sound.png"/><br/><h:selectBooleanCheckbox disabled="true"/>Poluição Sonora
+                                                                    </h:panelGroup>
+                                                                    <h:panelGroup>
+                                                                        <img src="images/redcar.png"/><br/><h:selectBooleanCheckbox disabled="true"/>Trânsito
+                                                                    </h:panelGroup><br/> -->
+                                                                    </h:panelGrid>
+                                                                    </h:panelGroup>
+                                                                    
+                                                                    <h:panelGroup>
+                                                                        <center>
+                                                                            <h:outputLabel value="Request data from Sensor4Cities"/><br/>
+                                                                            <h:commandButton image="images/send-user.png" value="Send" action="#{sensor4citiesWebBean.sendBlankQueryWeb}" type="post" style="height: 64px;width: 64px" />                                                                                                                                                    
+                                                                        </center>
+                                                                    </h:panelGroup>
+                                                                    <h:panelGroup>
+                                                                        <center>
+                                                                            <h:outputLabel value="See replies on map"/><br/>
+                                                                            <h:commandButton image="images/answer.png" value="Load" action="#{sensor4citiesWebBean.loadCommonData}" style="height: 64px;width: 64px" />
+                                                                        </center>
+                                                                    </h:panelGroup>
+                                                                </h:panelGrid>
+                                                            </p:fieldset>
+                                                    </h:form>
+                                                                </center>
+                                                        </p:tab>
+                                                        <p:tab title="Advanced User">
+                                                            <h:form id="formAddQueryWeb" >
+                                                                <p:growl id="growl" showDetail="true" sticky="true" life="3000"/> 
+                                                                <h:panelGrid columns="3">
+                                                                    <p:fieldset legend="Node Type">
+                                                                        <h:panelGrid columns="2">
+                                                                            <h:selectBooleanCheckbox value="#{sensor4citiesWebBean.queryWeb.sunspot}"/><img src="images/sunspot-icon.png"/>Sun SPOT
+                                                                            <h:selectBooleanCheckbox disabled="true" value="#{sensor4citiesWebBean.queryWeb.memsic}"/><img src="images/iris-icon.png"/>MEMSIC Iris/TelosB
+                                                                            <h:selectBooleanCheckbox disabled="true" value="#{sensor4citiesWebBean.queryWeb.xbee}"/><img src="images/cmucam-icon.png"/>CMUcam3
+                                                                        </h:panelGrid>
+                                                                       
+                                                                    </p:fieldset>
+                                                                        <p:fieldset legend="Data Types">
+                                                                            <h:selectBooleanCheckbox />Temperature<br/>
+                                                                            <h:selectBooleanCheckbox />Luminance<br/>
+                                                                            <h:selectBooleanCheckbox />Humidity<br/>
+                                                                            <h:selectBooleanCheckbox disabled="true"/>Image<br/>
+                                                                            <!--
+                                                                            <h:selectBooleanCheckbox disabled="true"/>CO2<br/>
+                                                                            <h:selectBooleanCheckbox disabled="true"/>Poluição  Aquática<br/>
+                                                                            <h:selectBooleanCheckbox disabled="true"/>Poluição Sonora<br/>
+                                                                            <h:selectBooleanCheckbox disabled="true"/>Imagem de Trânsito<br/>
+                                                                            -->
+                                                                        </p:fieldset>
+                                                                        <p:fieldset legend="Control Panel">
+                                                                            <h:panelGrid columns="5" border="1">
+                                                                                <h:panelGroup>
+                                                                                    <center>
+                                                                                        <h:outputLabel value="Send Query"/><br/>
+                                                                                        <h:commandButton image="images/antena.jpeg" value="Send query to the wireless sensor network" action="#{sensor4citiesWebBean.sendQueryWeb}" type="post" style="height: 64px;width: 64px" />                                                                                                                                                    
+                                                                                    </center>
+                                                                                </h:panelGroup>
+                                                                                <h:panelGroup>
+                                                                                    <center>
+                                                                                        <h:outputLabel value="Scan Sensors"/><br/>
+                                                                                        <h:commandButton image="images/network-icon.png" value="Check the status of each mote" action="#{sensor4citiesWebBean.loadSensors}" type="post" style="height: 64px;width: 64px"/>                                                                            
+                                                                                    </center>
+                                                                                </h:panelGroup>
+                                                                                <h:panelGroup>
+                                                                                    <center>
+                                                                                        <h:outputLabel value="Load Previous Answers"/><br/>
+                                                                                        <h:commandButton image="images/map-icon.png" value="Load the lastest monitored data" action="#{sensor4citiesWebBean.loadSensors}" style="height: 64px;width: 64px" />
+                                                                                    </center>
+                                                                                </h:panelGroup>
+                                                                                <h:panelGroup>
+                                                                                    <center>
+                                                                                        <p:lightBox iframe="true">
+                                                                                            <h:outputLink value="chart.xhtml" title="Sensor4Cities - Charts">
+                                                                                                <h:outputLabel value="Plot Chart"/><br/>
+                                                                                                <h:commandButton image="images/chart.png" value="Plot monitored information"  type="post" style="height: 64px;width: 64px" />
+                                                                                            </h:outputLink>
+                                                                                        </p:lightBox>
+                                                                                    </center>
+                                                                                </h:panelGroup>                                                                            
+                                                                                <h:panelGroup>
+                                                                                    <center>
+                                                                                        <p:lightBox iframe="true">
+                                                                                            <h:outputLink value="locationDefault.xhtml" title="Sensor4Cities - Standard Localization">
+                                                                                                <h:outputLabel value="Maps"/><br/>
+                                                                                                <h:commandButton image="images/maps-icon.png" value="Google maps configurations" type="post" style="height: 64px;width: 64px"/>
+                                                                                            </h:outputLink>
+                                                                                        </p:lightBox>
+                                                                                    </center>
+                                                                                </h:panelGroup>                                                                            
+                                                                            </h:panelGrid>
+                                                                            <br/>
+                                                                        </p:fieldset>
+                                                            </h:panelGrid>
+                                                                                                                                
+                                                        </h:form>
+                                                        </p:tab>
+                                                    </p:accordionPanel>
+                                                    
+                                                    <br/>
+                                                    <br/>
+                                                    
+                                                    
+                                                        <center>
+                                                            <h:form id="formMaps">  
+                                                                <p:fieldset legend="Nodes Deployment">
+                                                                    <p:gmap model="#{sensor4citiesWebBean.mapModel}" center="#{sensor4citiesWebBean.defaultLongitude},#{sensor4citiesWebBean.defaultLatitude}" zoom="#{sensor4citiesWebBean.defaultZoom}" type="HYBRID" style="width:95%;height:400px">
+                                                                        <p:ajax event="overlaySelect" listener="#{sensor4citiesWebBean.onMarkerSelect}"/>  
+                                                                        <p:gmapInfoWindow>
+                                                                            <strong><h:outputText value="#{sensor4citiesWebBean.marker.title}" /></strong><br/>
+                                                                            <h:outputText value="#{sensor4citiesWebBean.marker.data}"/>
+                                                                        </p:gmapInfoWindow>
+                                                                    </p:gmap>
+                                                                </p:fieldset>                                                                
+                                                                
+                                                            </h:form>
+                                                            <h:panelGrid columns="1">
+                                                                <div class="fb-comments" data-href="http://www.gercom.ufpa.br/sensor4cities" data-num-posts="5" data-width="470"></div>
+                                                            </h:panelGrid>
+                                                            
+                                                        </center><br/>                                                        
+					</div>
+				</div>				
+			</div>
+		</div>
+	</div>
+</div>
+<div id="footer">
+    <p>Copyright (c) 2011 <a href="http://www.gercom.ufpa.br">gercom labs</a>.  All rights reserved. Design by <a href="http://www.freecsstemplates.org/"> CSS Templates</a>.</p>
+</div>
+<div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/">free website templates</a>.</div>
+</h:body>
+</f:view>
+</html>

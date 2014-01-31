@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Sensor4Cities</title>
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/> 
+</h:head>
+<h:body>
+    <div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '367944629914777', // App ID
+      channelUrl : 'gercom.ufpa.br/sensor4cities', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+
+    // Additional initialization code here
+  };
+
+  // Load the SDK Asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+</script>
+<div id="wrapper">
+        <div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+				<h1><a href="#"><span>Sensor</span>4<span>Cities</span></a></h1>
+				<p align="justify">Developed by the Research Group on Computer Networks and Multimedia Communication</p>
+			</div>
+			<div id="menu">
+				<ul>
+				    <li><a href="index.xhtml">Home</a></li>
+                                    <li><a href="web.xhtml">Queries</a></li>
+                                    <li class="current_page_item"><a href="error.xhtml">Social Networks</a></li>
+                                    <li><a href="error.xhtml">Manual</a></li>
+				    <li><a href="about.xhtml">About</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="page">
+		<div id="page-bgtop">
+			<div id="page-bgbtm">
+				<div id="content">
+					<div class="post">
+						<h2 class="title"><a href="#">Redes Sociais</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+							<p>As redes sociais são responsáveis por grande parte da integração das pessoas na Internet hoje, o potencial de disseminação de informações através destas ferramentas é inacreditável. Dessa forma o projeto Sensor4Cities
+                                                        integra seus recursos as principais redes sociais atualmente: Facebook e Twitter. (Durante o uso do protótipo são utilizados os perfis do laboratório GERCOM nestas redes sociais)</p>
+                                                </div>
+                                                <h2 class="title"><a href="#" id="facebook">Facebook</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+							<p>A fanpage do projeto no Facebook é utilizada para exibit constantes atualizações das variáveis climáticas, curta a página do projeto e receba as atualizações periódicamente.</p>
+                                                        <center><p><a target="_blank" href="https://www.facebook.com/sensor4cities"><img src="images/facebook-icon.png"/></a></p></center>
+                                                        <center><p style="font-size: large">Curta nossa página no <a target="_blank" href="http://www.facebook.com/pages/GERCOM/162424393834999"><strong>facebook</strong></a> agora mesmo!</p>
+                                                        </center>
+                                                </div>
+                                                <h2 class="title"><a href="#" id="twitter">Twitter</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+                                                    <center><p><a target="_blank" href="http://www.twitter.com/sensor4cities"><img src="images/twitter-icon.png"/></a></p></center>
+                                                    <center><p style="font-size: large">Siga o nosso perfil no <a target="_blank" href="www.twitter.com/sensor4cities"><strong>twitter</strong></a> agora mesmo!</p></center>
+                                                    <p>No perfil do projeto no Twitter a interação é muito maior, você pode criar uma requisação à ser disparada para os nodos sensores. Para fazer isso basta ser um seguidor do perfil do projeto e enviar um tweet comum contendo a hashtag #sensor. 
+                                                    A resposta será enviada diretamenta através de um tweet para o seu o perfil na rede social. A figura abaixo exemplifica bem o uso dessa interação, aproveite você também!</p>
+                                                    <p>Devido as proteções do Twitter contra ataque de usuários maliciosos, é necessário aguardar entre 1 e 2 minutos para obter a resposta. Obrigado por esperar ;-)</p>
+                                                </div>
+					</div>
+
+					<div style="clear: both;">&nbsp;</div>
+				</div>
+				<!-- end #content -->
+				<!-- end #content -->
+				<!-- end #content -->
+				<!-- end #content -->
+
+				<!-- sidebar -->
+				<!-- sidebar -->
+				<!-- sidebar -->
+				<!-- sidebar -->
+				<div id="sidebar">
+					<ul>
+						<li>
+							<h2>Categories</h2>
+							<ul>
+								<li><a href="web.xhtml">Sensor4Cities na Web</a></li>
+								<li><a href="#facebook">Sensor4Cities on Facebook</a></li>
+                                                                <li><a href="#twitter">Sensor4Cities on Twitter</a></li>
+							</ul>
+						</li>
+					</ul>
+                                    <div class="fb-like-box" data-href="https://www.facebook.com/sensor4cities" data-width="292" data-show-faces="true" data-stream="true" data-header="false"></div>
+				</div>
+				<!-- end #sidebar -->
+				<!-- end #sidebar -->
+				<!-- end #sidebar -->
+				<!-- end #sidebar -->
+				<div style="clear: both;">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+	<!-- end #page -->
+</div>
+<!-- footer -->
+<!-- footer -->
+<!-- footer -->
+<div id="footer">
+	<p>Copyright (c) 2011 www.gercom.ufpa.br All rights reserved. Design by <a href="http://www.freecsstemplates.org/"> CSS Templates</a>.</p>
+</div>
+<!-- end #footer -->
+<div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/">free website templates</a>.</div></h:body>
+</html>

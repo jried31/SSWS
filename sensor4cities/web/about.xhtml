@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Sensor4Cities</title>
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/> 
+</h:head>
+<h:body>
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '367944629914777', // App ID
+      channelUrl : 'gercom.ufpa.br/sensor4cities', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+
+    // Additional initialization code here
+  };
+
+  // Load the SDK Asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+</script>
+<div id="wrapper">
+        <div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+				<!--<h1><a href="#"><span>Sensor</span>4<span>Cities</span></a></h1>
+				<p align="justify">Developed by the Research Group on Computer Networks and Multimedia Communication</p>
+                                -->
+			</div>
+			<div id="menu">
+				<ul>
+					<li><a href="index.xhtml">Home</a></li>
+					<li><a href="web.xhtml">Queries</a></li>
+					<li><a href="overview.xhtml">Overview</a></li>
+                                        <li><a href="error.xhtml">Manual</a></li>
+					<li class="current_page_item"><a href="about.xhtml">About</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="page">
+		<div id="page-bgtop">
+			<div id="page-bgbtm">
+				<div id="content">
+					<div class="post">
+                                            <h2 class="title"><a href="#" id="description">Description</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+							<p align="justify"><br/><font size="4" color="black">Sensor4Cities is a tool to disseminate scalar/multimedia data for single or groups of users, to smart cities applications.
+							The tool allows users to access and share data in a single, user-friendly and efficient manner through the use of social networks, 
+							web sites, including mobile version of it. Sensor4Cities was developed by the Federal University of Pará, Belém - Brazil with 
+							collaboration of Federal Univesity of Minas Gerais, Belo Horizonte - Brazil and University of Bern, Bern - Switzerland.</font><br/><br/></p>
+							
+                                                </div>
+                                                
+                                                <p:separator />
+                                                <br/><br/>
+                                                <h2 class="title"><a href="#" id="team">Team</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+                                                    <p>                                                        
+                                                        <font size="5">Coordinator</font>
+                                                        <br/><br/><a target="_blank" href="http://lattes.cnpq.br/1028151705135221"><font size="4" color="black">Eduardo Cerqueira</font></a><br/><br/><br/>
+                                                    </p>
+                                                    
+                                                    <p>
+                                                        <font size="5">Colaborators</font>
+                                                        <br/><br/><a target="_blank" href="http://www.iam.unibe.ch/~braun/"><font size="4" color="black">Torsten Braun</font></a><br/>
+                                                        <a target="_blank" href="http://lattes.cnpq.br/5376253015721742"><font size="4" color="black">Antônio Abelém</font></a><br/>
+                                                        <a target="_blank" href="http://lattes.cnpq.br/0957641516282703"><font size="4" color="black">Aldri Santos</font></a><br/>
+                                                        <a target="_blank" href="http://lattes.cnpq.br/8098209307634371"><font size="4" color="black">Jó Ueyama</font></a><br/><br/><br/>
+                                                        
+                                                    </p>
+                                                    
+                                                    <p>
+                                                        <font size="5">Participants</font>
+                                                        <br/><br/><a target="_blank" href="http://lattes.cnpq.br/8273198217435163"><font size="4" color="black">Denis do Rosário</font></a><br/>
+                                                        <a target="_blank" href="http://lattes.cnpq.br/7553750975435142"><font size="4" color="black">Kássio Machado</font></a><br/>
+                                                        <a target="_blank" href="http://lattes.cnpq.br/8371059080571482"><font size="4" color="black">Philipe Lima</font></a><br/>
+                                                        <a target="_blank" href="http://lattes.cnpq.br/5456247937455736"><font size="4" color="black">Tales Fonseca</font></a><br/>
+                                                        <a target="_blank" href="http://cds.unibe.ch/about/zhao.html"><font size="4" color="black">Zhongliang Zhao</font></a><br/><br/>
+                                                    </p>
+                                                </div>
+                                                
+                                                <p:separator />
+                                                <br/><br/>
+                                                <h2 class="title"><a href="#" id="publications">Publications</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+                                                    <font size="2" color="black">
+                                                    <p>Denis Rosário, Philipe Lima, Kássio Machado, Eduardo Cerqueira, Zhongliang Zhao and Torsten Braun. “Demo Abstract: Disseminating WMSN Data by Using Social Network and Web”. 10th European Conference on Wireless Sensor Networks (EWSN), Ghent, Feb. 13-15, 2013.</p>
+
+                                                    <p>Philipe Lima, Tales Fonseca, Denis Rosário, Kássio Machado and Eduardo Cerqueira. “Monitoramento Ambiental Através de Redes de Sensores Sem Fio e Redes Sociais”. Salão de Ferramentas do XXX Simpósio Brasileiro de Redes de Computadores e Sistemas Distribuídos 2012, Ouro Preto, 2012.</p>
+
+                                                    <p>Philipe Lima, Claudio Silva, Rodrigo Costa, Kássio Machado, Denis Rosário and Eduardo Cerqueira. “Sensor4Cities - Uma Ferramenta Baseada em redes de Sensores, Redes Sociais e Aplicação Web para Cidades Inteligentes”. Escola Regional de Informática Norte 2 (XII ERN), Belém, Brazil, Nov 21- 23, 2012.</p>
+                                                    </font>
+                                                </div>
+                                                
+                                                <p:separator />
+                                                <br/><br/>
+                                                <h2 class="title"><a href="#" id="register">Registration Area</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+                                                    <p>Coming soon.</p>
+                                                </div>
+					</div>
+
+					<div style="clear: both;">&nbsp;</div>
+				</div>
+				<!-- end #content -->
+				<!-- end #content -->
+				<!-- end #content -->
+				<!-- end #content -->
+
+				<!-- sidebar -->
+				<!-- sidebar -->
+				<!-- sidebar -->
+				<!-- sidebar -->
+				<div id="sidebar">
+					<ul>
+						<li>
+							<h2>Categories</h2>
+							<ul>
+								<li><a href="#description">Description</a></li>
+								<li><a href="#team">Team</a></li>
+                                                                <li><a href="#publications">Publications</a></li>
+								<li><a href="#register">Register</a></li>
+							</ul>
+						</li>
+					</ul>
+                                    <div class="fb-like-box" data-href="https://www.facebook.com/sensor4cities" data-width="292" data-show-faces="true" data-stream="true" data-header="false"></div>
+				</div>
+				<!-- end #sidebar -->
+				<!-- end #sidebar -->
+				<!-- end #sidebar -->
+				<!-- end #sidebar -->
+				<div style="clear: both;">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+	<!-- end #page -->
+</div>
+<!-- footer -->
+<!-- footer -->
+<!-- footer -->
+<div id="footer">
+	<p>Copyright (c) 2011 www.gercom.ufpa.br All rights reserved. Design by <a href="http://www.freecsstemplates.org/"> CSS Templates</a>.</p>
+</div>
+<!-- end #footer -->
+<div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/">free website templates</a>.</div></h:body>
+</html>

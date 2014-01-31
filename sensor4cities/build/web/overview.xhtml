@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Sensor4Cities</title>
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/> 
+</h:head>
+<h:body>
+    <div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '367944629914777', // App ID
+      channelUrl : 'gercom.ufpa.br/sensor4cities', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+
+    // Additional initialization code here
+  };
+
+  // Load the SDK Asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+</script>
+<div id="wrapper">
+        <div id="header-wrapper">
+		<div id="header">
+			<div id="logo">
+				<!--<h1><a href="#"><span>Sensor</span>4<span>Cities</span></a></h1>
+				<p align="justify">Developed by the Research Group on Computer Networks and Multimedia Communication</p>
+                                -->
+			</div>
+			<div id="menu">
+				<ul>
+				    <li><a href="index.xhtml">Home</a></li>
+                                    <li><a href="web.xhtml">Queries</a></li>
+                                    <li class="current_page_item"><a href="overview.xhtml">Overview</a></li>
+                                    <li><a href="error.xhtml">Manual</a></li>
+				    <li><a href="about.xhtml">About</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="page">
+		<div id="page-bgtop">
+			<div id="page-bgbtm">
+				<div id="content">
+					<div class="post">
+						<h2 class="title"><a href="#" id="overview">Sensor4Cities Overview</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+                                                    <font color="black"><p>Sensor4Cities is a tool to disseminate scalar/multimedia data for single or groups of users,
+                                                            in the context of smart cities applications. Sensor4Cities allows users to access and share
+                                                            data in a simple, user-friendly and efficient manner through the use of social networks,
+                                                            web sites, including a mobile version of the web sites.</p></font>
+                                                </div>
+                                                <h2 class="title"><a href="#" id="arquitecture">Sensor4Cities Arquitecture</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+							<font color="black"><p>The Sensor4Cities arquitecture consists of three components:</p>
+                                                        <ul><li><p>Front-End: provides access to the system. The user can access the system through Sensor4Cities website, mobile version and social newtworks.</p></li></ul>
+                                                        <ul><li><p>Back-End: consists of two sub-components, database and web application, which are running in a server.</p></li></ul>
+                                                        <ul><li><p>WMSNs: have three sub-components, job daemon, Base Station (BS) and nodes.</p></li></ul>
+                                                        </font>
+                                                        <center><p><a target="_blank"><img src="images/visaogeral.png"/></a></p></center>
+                                                </div>
+                                                <h2 class="title"><a href="#" id="howto">How to Request Data</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+                                                    <font color="black"><p>The user can request and receive monitored information by using social networks,
+                                                        e.g., Twitter and Facebook, due to ther popularity, user-friendly interfaces and easy dissemination.</p>
+                                                    <p>The user can request scalar data by using Twitter. In specific terms, the users have to pass through four steps, which are:</p>
+                                                    
+                                                    <ul><p>What happens:</p></ul>
+                                                    <ul><p>(1) send a tweet to Twitter of Sensor4Cities, i.e., @sensor4cities.
+                                                        <br/>The tweet must contain the hashtag #sensor for requesting the scalar data or #multimedia for multimedia data.
+                                                        Thus, the web application can identify the request by using these tags.</p></ul>
+                                                    <ul><p>(2) BS broadcasts the request to WMSN nodes.</p></ul>
+                                                    <ul><p>(3) the nodes collect the multimedia/scalar data and send a reply.</p></ul>
+                                                    <ul><p>(4) a tweet is created by the tool as a reply to the user request.</p></ul>
+                                                    
+                                                    <ul><p>What the user sees:</p></ul>
+                                                    <ul><p>(1) send a tweet to Twitter of Sensor4Cities, i.e., @sensor4cities.
+                                                        <br/>The tweet must contain the hashtag #sensor for requesting the scalar data or #multimedia for multimedia data.
+                                                        Thus, the web application can identify the request by using these tags.</p></ul>
+                                                    <ul><p>(4) a tweet is created by the tool as a reply to the user request.</p></ul>
+                                                    
+                                                    <p>How to request multimedia data:</p>
+                                                    <center><p><a target="_blank"><img src="images/twitter-multimedia.png"></img></a></p></center>
+                                                    
+                                                    
+                                                    <br/><p>How to request scalar data:</p>
+                                                    <center><p><a target="_blank"><img src="images/twitter-scalar.png"></img></a></p></center>
+                                                    <br/>
+                                                    
+                                                    <p>Requesting data through the Twitter:</p>
+                                                    <center><iframe width="560" height="315" src="http://www.youtube.com/embed/ddpf_s7DKPw" frameborder="0" allowfullscreen="true"></iframe></center>
+                                                    
+                                                    <br/><br/><p>Requesting data through the web page:</p>
+                                                    <center><iframe width="560" height="315" src="http://www.youtube.com/embed/Bs5l3XA5pT0" frameborder="0" allowfullscreen="true"></iframe></center>
+                                                    
+                                                    </font>
+                                                    
+                                                    
+                                                    
+                                                </div>
+					</div>
+
+					<div style="clear: both;">&nbsp;</div>
+                                        
+                                        <h2 class="title"><a href="#" id="equipaments">Equipaments</a></h2>
+						<div style="clear: both;">&nbsp;</div>
+						<div class="entry">
+                                                    
+                                                </div>
+				</div>
+				<!-- end #content -->
+				<!-- end #content -->
+				<!-- end #content -->
+				<!-- end #content -->
+
+				<!-- sidebar -->
+				<!-- sidebar -->
+				<!-- sidebar -->
+				<!-- sidebar -->
+				<div id="sidebar">
+					<ul>
+						<li>
+							<h2>Categories</h2>
+							<ul>
+								<li><a href="#overview">Overview</a></li>
+								<li><a href="#arquitecture">Arquitecture</a></li>
+                                                                <li><a href="#howto">How to Request Data</a></li>
+                                                                <li><a href="#equipaments">Equipaments</a></li>
+							</ul>
+						</li>
+					</ul>
+                                    <div class="fb-like-box" data-href="https://www.facebook.com/sensor4cities" data-width="292" data-show-faces="true" data-stream="true" data-header="false"></div>
+				</div>
+				<!-- end #sidebar -->
+				<!-- end #sidebar -->
+				<!-- end #sidebar -->
+				<!-- end #sidebar -->
+				<div style="clear: both;">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+	<!-- end #page -->
+</div>
+<!-- footer -->
+<!-- footer -->
+<!-- footer -->
+<div id="footer">
+	<p>Copyright (c) 2011 www.gercom.ufpa.br All rights reserved. Design by <a href="http://www.freecsstemplates.org/"> CSS Templates</a>.</p>
+</div>
+<!-- end #footer -->
+<div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/">free website templates</a>.</div></h:body>
+</html>
