@@ -27,6 +27,22 @@ import twitter4j.QueryResult;
  */
 public class SensiteTwitterPost {
 
+    private static void handleMessage(Twitter twitter) throws TwitterException{
+        Query query = new Query("@sensor4cities");
+        List<String> tweetList = null;
+        QueryResult result;
+        do {
+            result = twitter.search(query);
+            List<Status> tweets = result.getTweets();
+            for (Status tweet : tweets) { 
+                System.out.println(tweet.getUser().getScreenName() + " $sensite$ " + tweet.getCreatedAt() + " $sensite$ " + tweet.getText());
+                //users.add(tweet.getUser().getScreenName());
+                //tweetText.add(tweet.getText());
+                
+            }
+        } while ((query = result.nextQuery()) != null);
+    }
+    
     public static void main(String[] args) {
         
         String testStatus="Hello from twitter4j, post 3";
@@ -108,15 +124,7 @@ public class SensiteTwitterPost {
                                                     status.getText());
            }*/
                 
-            Query query = new Query("@sensor4cities");
-            QueryResult result;
-            do {
-                result = twitter.search(query);
-                List<Status> tweets = result.getTweets();
-                for (Status tweet : tweets) {
-                    System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
-                }
-            } while ((query = result.nextQuery()) != null);
+            handleMessage(twitter); // TO REPLACE WITH INITIALIZE BOT
             
             System.exit(0);
         } catch (TwitterException te) {
