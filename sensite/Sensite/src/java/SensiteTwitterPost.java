@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.util.List;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -18,6 +19,8 @@ import twitter4j.media.MediaProvider;*/
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import twitter4j.Query;
+import twitter4j.QueryResult;
 /**
  *
  * @author Victor
@@ -26,7 +29,7 @@ public class SensiteTwitterPost {
 
     public static void main(String[] args) {
         
-        String testStatus="Hello from twitter4j";
+        String testStatus="Hello from twitter4j, post 3";
  
         ConfigurationBuilder cb = new ConfigurationBuilder();
          
@@ -90,12 +93,31 @@ public class SensiteTwitterPost {
                 }
             }
              
-           Status status = twitter.updateStatus(testStatus);
+           /*Status status = twitter.updateStatus(testStatus);
  
            System.out.println("Successfully updated the status to [" + status.getText() + "].");
  
-           System.out.println("ready exit");
-             
+           System.out.println("ready exit");*/
+           //Twitter twitter = TwitterFactory.getSingleton();
+           
+            //TIMELINE STUFF
+            /*List<Status> statuses = twitter.getHomeTimeline();
+           System.out.println("Showing home timeline.");
+           for (Status status : statuses) {
+                System.out.println(status.getUser().getName() + ":" +
+                                                    status.getText());
+           }*/
+                
+            Query query = new Query("@sensor4cities");
+            QueryResult result;
+            do {
+                result = twitter.search(query);
+                List<Status> tweets = result.getTweets();
+                for (Status tweet : tweets) {
+                    System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                }
+            } while ((query = result.nextQuery()) != null);
+            
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();
