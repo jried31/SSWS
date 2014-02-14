@@ -19,6 +19,9 @@ import twitter4j.media.MediaProvider;*/
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Map;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 /**
@@ -26,8 +29,12 @@ import twitter4j.QueryResult;
  * @author Victor
  */
 public class SensiteTwitterPost {
+    private static final int HASH_SIZE = 5000;
 
     private static void handleMessage(Twitter twitter) throws TwitterException{
+        boolean [] dupCheck = new boolean[HASH_SIZE];
+        Arrays.fill(dupCheck,false);
+        
         Query query = new Query("@sensor4cities");
         List<String> tweetList = null;
         QueryResult result;
@@ -35,12 +42,85 @@ public class SensiteTwitterPost {
             result = twitter.search(query);
             List<Status> tweets = result.getTweets();
             for (Status tweet : tweets) { 
-                System.out.println(tweet.getUser().getScreenName() + " $sensite$ " + tweet.getCreatedAt() + " $sensite$ " + tweet.getText());
-                //users.add(tweet.getUser().getScreenName());
-                //tweetText.add(tweet.getText());
+                //System.out.println(tweet.getUser().getScreenName() + " $sensite$ " + tweet.getCreatedAt() + " $sensite$ " + tweet.getText());
                 
+                //check tweet is valid
+                tweetStruct tweetComponents = checkTweet(tweet);
+                if(tweetComponents != null){
+                    int hash = hashFunc(tweet.getUser().getScreenName(), tweet.getCreatedAt(), tweet.getText());
+                    if(dupCheck[hash] == false){
+                        dupCheck[hash] = true;
+                        //query database
+                        respondToTweet(twitter);
+                    }
+                }
             }
         } while ((query = result.nextQuery()) != null);
+    }
+    
+    private static void respondToTweet(Twitter twitter) throws TwitterException{
+        Status status = twitter.updateStatus("Here is your link to data...");
+    }
+    
+    private static tweetStruct checkTweet(Status tweet){
+        tweetStruct retVal = null;
+        String text = tweet.getText();
+        //---------------------------------------------------------
+        System.out.println(text);
+        System.out.println("DONE GRABBING RAW TWEET DATA...");
+        //---------------------------------------------------------
+        text.toLowerCase();
+        if(text.contains("#sensor")){
+            System.out.println("DONE GRABBING #SENSOR");
+            //System.out.println(text);
+            String regexmatcher = "(.*)[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+(.*)";
+            //System.out.println(regexmatcher);
+            if(text.matches(regexmatcher)){ // may need to add 1 level of \
+                //messy code because java sucks at regex...
+                //----------------------------------------------------
+                System.out.println("text did match regex");
+                //----------------------------------------------------
+                String [] tmptxt = new String[10];
+                tmptxt = text.split("(.*)[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+(.*)"); //regex doesn't match correctly for date
+//BROKENASFK------------------------------------------------------------------------------------------------------------------------
+                System.out.println("text did match regex x2");
+                System.out.println(tmptxt[0]);
+                System.out.println(tmptxt[1]);
+                System.out.println(tmptxt[2]);
+                //if(tmptxt[3] == null){ // if 3rd string, then doesn't match query requirements... can add multiple query logic later
+                    String importantInfo;
+                    importantInfo = text.substring(tmptxt[0].length(), text.length()-tmptxt[1].length()); // should give substring of regex match
+                    String [] tmparray = new String[10];
+                    tmparray = importantInfo.split("$");
+                    retVal.phenomenon = tmparray[0];
+                    String[] latlong = new String[10];
+                    latlong = tmparray[1].split(",");
+                    retVal.latitude = latlong[0];
+                    retVal.longitude = latlong[1];
+                    retVal.time = tmparray[2];
+                    return retVal;
+                //}
+            }
+        }
+        return null;
+    }
+    
+    private class tweetStruct{
+        public String phenomenon;
+        public String latitude;
+        public String longitude;
+        public String time;
+    }
+    
+    
+    private static int hashFunc(String name, Date date, String text){
+        int hash = 1;
+        hash = 29 + name.hashCode();
+        hash = 59 * hash + 17 * date.toString().hashCode();
+        hash = 71 * hash + 43 * text.hashCode();
+        if (hash<0)
+            hash = -hash;
+        return hash % HASH_SIZE;
     }
     
     public static void main(String[] args) {
