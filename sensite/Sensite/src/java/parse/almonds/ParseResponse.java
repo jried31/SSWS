@@ -1,8 +1,7 @@
-package almonds;
+package parse.almonds;
 
 import java.io.IOException;
 
-import javax.net.ssl.SSLEngineResult.Status;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;

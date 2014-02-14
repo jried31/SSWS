@@ -1,3 +1,5 @@
+package parse.test;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,8 +10,12 @@
  *
  * @author ashish
  */
-import almonds.*;
 import java.util.List;
+import parse.almonds.FindCallback;
+import parse.almonds.Parse;
+import parse.almonds.ParseException;
+import parse.almonds.ParseObject;
+import parse.almonds.ParseQuery;
 //import almonds.ParseObject;
 //import almonds.ParseQuery;
 public class ParseTest {

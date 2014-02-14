@@ -6,8 +6,9 @@
 
 package database.parse.tables;
 
-import almonds.ParseObject;
-import database.parse.util.DBGlobals;
+import static org.eclipse.jdt.internal.antadapter.AntAdapterMessages.getString;
+import parse.almonds.ParseObject;
+import parse.util.DBGlobals;
 
 /**
  *

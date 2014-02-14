@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 (x64) (http://www.altova.com) by Gautham Badhrinathan (UCLA) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Information">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="BaseQoI"/>
+				<xs:element ref="BaseVoI"/>
+				<xs:element ref="BaseData"/>
+			</xs:sequence>
+			<xs:attribute name="id"/>
+			<xs:attribute name="type"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Context">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="AppDomainCntx">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="description" type="xs:string"/>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="standardName" type="xs:string"/>
+							<xs:element name="standardDescription" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:choice>
+					<xs:element name="QoISpatialCntxAttr">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="lowerBound" type="QoIMetric"/>
+								<xs:element name="upperBound" type="QoIMetric"/>
+							</xs:sequence>
+							<xs:attribute name="name"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="QoITemperalCntxAttr">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="lowerBound" type="QoIMetric"/>
+								<xs:element name="upperBound" type="QoIMetric"/>
+								<xs:element name="eventType" type="QoIMetric"/>
+							</xs:sequence>
+							<xs:attribute name="name"/>
+							<xs:attribute name="startTime"/>
+							<xs:attribute name="endTime"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Contact">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element name="organization" type="xs:string"/>
+				<xs:element name="position"/>
+				<xs:element name="phone" type="xs:string"/>
+				<xs:element name="email" type="xs:string"/>
+				<xs:element name="eid"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DataSource">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element name="Sensor">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="Contact"/>
+								<xs:element name="identification">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="shortName"/>
+											<xs:element name="longName"/>
+											<xs:element name="manufacturer"/>
+											<xs:element name="modelNumber"/>
+											<xs:element name="deviceId"/>
+										</xs:sequence>
+										<xs:attribute name="uid"/>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="classification">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="sensorType"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="validTime">
+									<xs:complexType>
+										<xs:attribute name="start" type="xs:date"/>
+										<xs:attribute name="end" type="xs:date"/>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="characteristics">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="weight">
+												<xs:complexType>
+													<xs:attribute name="uofm"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="height">
+												<xs:complexType>
+													<xs:attribute name="uofm"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="width">
+												<xs:complexType>
+													<xs:attribute name="uofm"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="material">
+												<xs:complexType>
+													<xs:attribute name="uofm"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="length">
+												<xs:complexType>
+													<xs:attribute name="uofm"/>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="capabilities">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="sampleRate">
+												<xs:complexType>
+													<xs:attribute name="uofm"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="batteryLife">
+												<xs:complexType>
+													<xs:attribute name="uofm"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="powerCurrent">
+												<xs:complexType>
+													<xs:attribute name="uofm"/>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="Components">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="component" maxOccurs="unbounded">
+												<xs:complexType/>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Human">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="Contact"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+				<xs:element name="DataSourceQoI">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="QoIBaseAttr" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id"/>
+			<xs:attribute name="publishDate"/>
+			<xs:attribute name="role"/>
+			<xs:attribute name="isOwnedBy"/>
+			<xs:attribute name="publisher"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="QoIMetric">
+		<xs:choice>
+			<xs:element name="QoIEnumeratedMetric">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="permissibleValues" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="selectedValue"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="QoIQuantitativeMetric">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="errorRange"/>
+						<xs:element name="biasError"/>
+					</xs:sequence>
+					<xs:attribute name="uofm"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="name"/>
+	</xs:complexType>
+	<xs:complexType name="Coordinate">
+		<xs:sequence>
+			<xs:element name="latitude"/>
+			<xs:element name="longitude"/>
+			<xs:element name="depth"/>
+			<xs:element name="orientation"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="QoIBaseAttr">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="QoIIntegrityAttr">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="sourceIntegrity" type="QoIMetric"/>
+							<xs:element name="channelIntegrity" type="QoIMetric"/>
+							<xs:element name="auditability" type="QoIMetric"/>
+							<xs:element name="attestability" type="QoIMetric"/>
+							<xs:element name="confidentiality" type="QoIMetric"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="QoIAccuracyAttr">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="volatility" type="QoIMetric"/>
+							<xs:element name="detailLevel" type="QoIMetric"/>
+							<xs:element name="volume" type="QoIMetric"/>
+							<xs:element name="consistency" type="QoIMetric"/>
+							<xs:element name="resolution" type="QoIMetric"/>
+							<xs:element name="bias" type="QoIMetric"/>
+							<xs:element name="errorLevel" type="QoIMetric"/>
+							<xs:element name="errorRate" type="QoIMetric"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="QoITimelinessAttr">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="latencySource" type="xs:double"/>
+							<xs:element name="detailLevel" type="xs:double"/>
+							<xs:element name="validityExpiration" type="xs:double"/>
+							<xs:element name="timelinessLevel" type="QoIMetric"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="QoIFormatAttr">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="encoding" type="xs:double"/>
+							<xs:element name="conciseness" type="QoIMetric"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="name"/>
+			<xs:attribute name="id"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="VoIBaseAttr">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="VoIUsefulnessAttr">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="novelty" type="QoIMetric"/>
+							<xs:element name="revelance" type="QoIMetric"/>
+							<xs:element name="timeliness" type="QoIMetric"/>
+							<xs:element name="completeness" type="QoIMetric"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="VoITrustAttr">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="sourceReputation" type="QoIMetric"/>
+							<xs:element name="channelReputation" type="QoIMetric"/>
+							<xs:element name="sourceObjectivity" type="QoIMetric"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="VoIConvenienceAttr">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="easeOfUse" type="QoIMetric"/>
+							<xs:element name="formatCompatibility" type="QoIMetric"/>
+							<xs:element name="composability" type="QoIMetric"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="name"/>
+			<xs:attribute name="id"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BaseVoI">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="VoIBaseAttr" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Context">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AppDomainCntx">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="description" type="xs:string"/>
+										<xs:element name="name" type="xs:string"/>
+										<xs:element name="standardName" type="xs:string"/>
+										<xs:element name="standardDescription" type="xs:string"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BaseQoI">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="DataSource"/>
+				<xs:element ref="Context"/>
+				<xs:element name="InformationQoI" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="QoIBaseAttr" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="id"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BaseData">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="metric" type="BaseMetric"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="BaseMetric">
+		<xs:choice>
+			<xs:element name="EnumeratedMetric">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="permissibleValues" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="selectedValue" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="QuantitativeMetric" type="xs:double"/>
+		</xs:choice>
+	</xs:complexType>
+</xs:schema>

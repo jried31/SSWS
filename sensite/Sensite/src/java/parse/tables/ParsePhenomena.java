@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-package database.parse.tables;
+package parse.tables;
 
-import almonds.ParseObject;
-import database.parse.util.DBGlobals;
+import parse.almonds.ParseObject;
+import parse.util.DBGlobals;
 
 /**
  *

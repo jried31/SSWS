@@ -4,12 +4,9 @@
  * and open the template in the editor.
  */
 
-package database.parse.util;
+package parse.util;
 
-import almonds.Parse;
-import almonds.ParseObject;
-import database.parse.tables.ParsePhenomena;
-import database.parse.tables.ParseSensor;
+import parse.almonds.Parse;
 
 /**
  *

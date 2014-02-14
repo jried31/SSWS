@@ -1,4 +1,6 @@
-package almonds;
+package parse.almonds;
+
+import parse.almonds.ParseException;
 
 public abstract class DeleteCallback
 {

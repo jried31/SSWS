@@ -1,7 +1,4 @@
-package almonds;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+package parse.almonds;
 
 public class ParseException extends Exception
 {
