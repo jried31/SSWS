@@ -30,10 +30,12 @@ import twitter4j.QueryResult;
  */
 public class SensiteTwitterPost {
     private static final int HASH_SIZE = 5000;
+    private static boolean [] dupCheck =  new boolean[HASH_SIZE];
+        
 
     private static void handleMessage(Twitter twitter) throws TwitterException{
-        boolean [] dupCheck = new boolean[HASH_SIZE];
-        Arrays.fill(dupCheck,false);
+        //boolean [] dupCheck = new boolean[HASH_SIZE];
+        //Arrays.fill(dupCheck,false);
         
         Query query = new Query("@sensor4cities");
         List<String> tweetList = null;
@@ -45,59 +47,61 @@ public class SensiteTwitterPost {
                 //System.out.println(tweet.getUser().getScreenName() + " $sensite$ " + tweet.getCreatedAt() + " $sensite$ " + tweet.getText());
                 
                 //check tweet is valid
-                tweetStruct tweetComponents = checkTweet(tweet);
+                String[] tweetComponents = checkTweet(tweet);
                 if(tweetComponents != null){
                     int hash = hashFunc(tweet.getUser().getScreenName(), tweet.getCreatedAt(), tweet.getText());
                     if(dupCheck[hash] == false){
                         dupCheck[hash] = true;
                         //query database
-                        respondToTweet(twitter);
+                        respondToTweet(twitter, tweetComponents);
                     }
                 }
             }
         } while ((query = result.nextQuery()) != null);
     }
     
-    private static void respondToTweet(Twitter twitter) throws TwitterException{
-        Status status = twitter.updateStatus("Here is your link to data...");
+    private static void respondToTweet(Twitter twitter, String [] tweetComponents) throws TwitterException{
+        Status status = twitter.updateStatus("Here is your link to data...tmp not working..."+tweetComponents[0]+","
+                                                +tweetComponents[1]+","+tweetComponents[2]+","+tweetComponents[3]);
     }
     
-    private static tweetStruct checkTweet(Status tweet){
-        tweetStruct retVal = null;
+    private static String[] checkTweet(Status tweet){
+        //tweetStruct retVal = null;
+        String [] retVal = new String[4];
         String text = tweet.getText();
-        //---------------------------------------------------------
-        System.out.println(text);
-        System.out.println("DONE GRABBING RAW TWEET DATA...");
-        //---------------------------------------------------------
         text.toLowerCase();
-        if(text.contains("#sensor")){
-            System.out.println("DONE GRABBING #SENSOR");
-            //System.out.println(text);
+        if(text.contains("#sensor")){;
             String regexmatcher = "(.*)[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+(.*)";
-            //System.out.println(regexmatcher);
             if(text.matches(regexmatcher)){ // may need to add 1 level of \
                 //messy code because java sucks at regex...
-                //----------------------------------------------------
-                System.out.println("text did match regex");
-                //----------------------------------------------------
-                String [] tmptxt = new String[10];
-                tmptxt = text.split("(.*)[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+(.*)"); //regex doesn't match correctly for date
-//BROKENASFK------------------------------------------------------------------------------------------------------------------------
-                System.out.println("text did match regex x2");
-                System.out.println(tmptxt[0]);
-                System.out.println(tmptxt[1]);
-                System.out.println(tmptxt[2]);
+                String [] tmptxt = text.split("[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+"); // regex doesn't match correctly for date
+                
                 //if(tmptxt[3] == null){ // if 3rd string, then doesn't match query requirements... can add multiple query logic later
                     String importantInfo;
                     importantInfo = text.substring(tmptxt[0].length(), text.length()-tmptxt[1].length()); // should give substring of regex match
-                    String [] tmparray = new String[10];
-                    tmparray = importantInfo.split("$");
-                    retVal.phenomenon = tmparray[0];
-                    String[] latlong = new String[10];
-                    latlong = tmparray[1].split(",");
-                    retVal.latitude = latlong[0];
-                    retVal.longitude = latlong[1];
-                    retVal.time = tmparray[2];
+                    //System.out.println(importantInfo);
+                    String [] tmparray = importantInfo.split("\\$");
+                    //System.out.println(tmparray[0]);
+                    //System.out.println(tmparray[1]);
+                    //System.out.println(tmparray[2]);
+                    //System.out.println("before setphenomenon " + tmparray[0]);
+                    //retVal.setPhenomenon(tmparray[0]);
+                    //System.out.println("before latlongsplit");
+                    
+                    String [] latlong = tmparray[1].split("\\,");
+                    //System.out.println(latlong[0]);
+                    //System.out.println(latlong[1]);
+                    
+                    retVal[0] = tmparray[0];
+                    retVal[1] = latlong[0];
+                    retVal[2] = latlong[1];
+                    retVal[3] = tmparray[2];
+                    System.out.println("things: ");
+                    System.out.println(retVal[0]);
+                    System.out.println(retVal[1]);
+                    System.out.println(retVal[2]);
+                    System.out.println(retVal[3]);
+
                     return retVal;
                 //}
             }
@@ -105,12 +109,6 @@ public class SensiteTwitterPost {
         return null;
     }
     
-    private class tweetStruct{
-        public String phenomenon;
-        public String latitude;
-        public String longitude;
-        public String time;
-    }
     
     
     private static int hashFunc(String name, Date date, String text){
@@ -204,6 +202,7 @@ public class SensiteTwitterPost {
                                                     status.getText());
            }*/
                 
+            Arrays.fill(dupCheck,false);
             handleMessage(twitter); // TO REPLACE WITH INITIALIZE BOT
             
             System.exit(0);
