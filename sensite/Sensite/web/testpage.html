@@ -54,28 +54,59 @@
   <script type="text/javascript">
     Parse.initialize("jEciFYpTp2b1XxHuIkmAs3yaP70INpkBDg9WdTl9", "29RplVDT4O3USNpt530ZSVsR3P75Shf45a1fiCjr");
     /*
-    var TestObject = Parse.Object.extend("a");
+    var TestObject = Parse.Object.extend("blah3");
     var query1 = new Parse.Query(TestObject);
-    query1.equalTo("foo","bar");
+    query1.equalTo("cheatMode",true);
     query1.find({
         success:function(results){
             alert("successful " + results.length);
             for(var i = 0; i < results.length; i++){
                 var objects = results[i];
-                alert(object.id + ' - ' + object.get('foo'));
+                alert(results[1]);
+             
             }
         },
         error: function(error){
             alert("error:  " + error.code + " " + error.message);
         }
     });
-            */
+            
    
+    */
     
-    
-    function sendToParse(phenomenon){
+    function sendToParse(phenomenon, latitude, longitude, date, time){
         ;
-        alert("phenomenon = " + phenomenon);
+       
+        var TestObject = Parse.Object.extend("Phenomena");
+        var query1 = new Parse.Query(TestObject);
+            var phenomenonArray1 = [];
+    query1.equalTo("phenomenaName", phenomenon);
+        query1.find({
+            success: function(results) {
+            // Do something with the returned Parse.Object values
+            for (var i = 0; i < results.length; i++) { 
+                var object = results[i];
+                var name = object.get('sensor');
+          
+                phenomenonArray1[phenomenonArray1.length] = name ;
+              }
+              $(".success").show()
+            },
+            error: function(error) {
+        }
+    });
+    setTimeout(function(){
+        
+            var dropdown = document.getElementById("DISPLAY").innerHTML = phenomenonArray1;
+    
+// Loop through the array 
+/*
+for (var i = 0; i < phenomenonArray.length; ++i) {
+    // Append the element to the end of Array list
+    dropdown[dropdown.length] = new Option(phenomenonArray1[i], phenomenonArray1[i]);
+    }*/
+    
+    },400)
     }
    
     
@@ -229,8 +260,11 @@
 			<!-- END PAGE TITLE -->
 			<!-- BEGIN PlACE PAGE CONTENT HERE -->
 <form id="ab">
+    <label for="phenomenon" >
+        Choose a Phenomenon:
+    </label>
   <select id ="phenomenon">
-    <option>Choose a Phenomenon</option>
+      <option></option>
   </select>
 </form>                        
 <br>
@@ -262,46 +296,60 @@
               </label>
               <input name="" id="time" value="" type="time">
           </div>
-          <input type = "button" value="submit" onclick="sendToParse(phenomenon.option)" />
+          <input type = "button" value="submit" onclick="sendToParse(phenomenon.value, lat.value, long.value, date.value, time.value)" />
           <div id="map" class="demo-map overlay-fixed"></div>
 
 			<!-- END PLACE PAGE CONTENT HERE -->
 		</div>
-            
-            
-            <div id="main">
-    <h1>You're ready to use Parse!</h1>
+        
+  
+     <div id="main">
+    <div style="display:none" class="error">
+      Looks like there was a problem saving the test object. Make sure you've set your application ID and javascript key correctly in the call to <code>Parse.initialize</code> in this file.
+    </div>
 
-    <h4 id="objectParseFetched">PlaceHolder</h4>
-   
-    
-    <p>Read the documentation and start building your JavaScript app:</p>
-
-    <ul>
-      <li><a href="https://www.parse.com/docs/js_guide">Parse JavaScript Guide</a></li>
-      <li><a href="https://www.parse.com/docs/js">Parse JavaScript API Documentation</a></li>
-    </ul>
-
-
-    
-
-  </div>
-
- 
+    <div style="display:none" class="success" >
+        <h4 id = "DISPLAY"></h4>
+    </div>
+  </div>  
             
+               
             
-            
-            
+                  
 	</div>
 	<!-- END PAGE CONTAINER -->
         <script type="text/javascript">
-         var myArray = new Array("1", "2", "3", "4", "5");
+            
+            
+            
+    var TestObject = Parse.Object.extend("Phenomena");
+    var query1 = new Parse.Query(TestObject);
+            var phenomenonArray = [];
+    //query1.equalTo("phenomenaName");
+    query1.find({
+        success: function(results) {
+          // Do something with the returned Parse.Object values
+          for (var i = 0; i < results.length; i++) { 
+            var object = results[i];
+            var name = object.get('phenomenaName');
+          //  alert("Name is " + name);
+            phenomenonArray[phenomenonArray.length] = name ;
+          }
+        },
+        error: function(error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+    });
+    phenomenonArray.sort();
     var dropdown = document.getElementById("phenomenon");
+    setTimeout(function(){
 // Loop through the array
-for (var i = 0; i < myArray.length; ++i) {
+for (var i = 0; i < phenomenonArray.length; ++i) {
     // Append the element to the end of Array list
-    dropdown[dropdown.length] = new Option(myArray[i], myArray[i]);
+    dropdown[dropdown.length] = new Option(phenomenonArray[i], phenomenonArray[i]);
     }
+    dropdown.sort();
+    },400)
   </script>
 </div>
 
