@@ -71,7 +71,7 @@ public class SensiteTwitterPost {
         String [] retVal = new String[4];
         String text = tweet.getText();
         
-        System.out.println("tweet text: "+text);
+        //System.out.println("tweet text: "+text);
         
         text.toLowerCase();
         if(text.contains("#sensor")){;
@@ -81,7 +81,7 @@ public class SensiteTwitterPost {
                 String [] tmptxt = text.split("[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+"); // regex doesn't match correctly for date
                 int tmplength = 0;
                 
-                System.out.println("tweet 0: "+tmptxt[0] + "length: " + tmptxt[0].length());
+                //System.out.println("tweet 0: "+tmptxt[0] + "length: " + tmptxt[0].length());
                 if(tmptxt.length == 1){
                     tmplength = 0;
                 } else{
@@ -109,11 +109,11 @@ public class SensiteTwitterPost {
                     retVal[1] = latlong[0];
                     retVal[2] = latlong[1];
                     retVal[3] = tmparray[2];
-                    System.out.println("things: ");
-                    System.out.println(retVal[0]);
-                    System.out.println(retVal[1]);
-                    System.out.println(retVal[2]);
-                    System.out.println(retVal[3]);
+                    //System.out.println("things: ");
+                    //System.out.println(retVal[0]);
+                    //System.out.println(retVal[1]);
+                    //System.out.println(retVal[2]);
+                    //System.out.println(retVal[3]);
 
                     return retVal;
                 //}
@@ -219,7 +219,7 @@ public class SensiteTwitterPost {
             try{
                 while(true){
                     handleMessage(twitter);
-                    Thread.sleep(1000);
+                    Thread.sleep(30*1000);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
