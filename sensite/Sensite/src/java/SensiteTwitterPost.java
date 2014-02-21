@@ -53,15 +53,16 @@ public class SensiteTwitterPost {
                     if(dupCheck[hash] == false){
                         dupCheck[hash] = true;
                         //query database
-                        respondToTweet(twitter, tweetComponents);
+                        respondToTweet(twitter, tweetComponents, tweet.getUser().getScreenName());
                     }
                 }
             }
         } while ((query = result.nextQuery()) != null);
     }
     
-    private static void respondToTweet(Twitter twitter, String [] tweetComponents) throws TwitterException{
-        Status status = twitter.updateStatus("Here is your link to data...tmp not working..."+tweetComponents[0]+","
+    private static void respondToTweet(Twitter twitter, String [] tweetComponents
+                                        ,String respondtoUser) throws TwitterException{
+        Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data...tmp not working..."+tweetComponents[0]+","
                                                 +tweetComponents[1]+","+tweetComponents[2]+","+tweetComponents[3]);
     }
     
@@ -69,16 +70,28 @@ public class SensiteTwitterPost {
         //tweetStruct retVal = null;
         String [] retVal = new String[4];
         String text = tweet.getText();
+        
+        System.out.println("tweet text: "+text);
+        
         text.toLowerCase();
         if(text.contains("#sensor")){;
             String regexmatcher = "(.*)[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+(.*)";
             if(text.matches(regexmatcher)){ // may need to add 1 level of \
                 //messy code because java sucks at regex...
                 String [] tmptxt = text.split("[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+"); // regex doesn't match correctly for date
+                int tmplength = 0;
+                
+                System.out.println("tweet 0: "+tmptxt[0] + "length: " + tmptxt[0].length());
+                if(tmptxt.length == 1){
+                    tmplength = 0;
+                } else{
+                    tmplength = tmptxt[1].length();
+                }
+                //System.out.println("tweet 1: "+tmptxt[1] + "length: " + tmptxt[1].length());
                 
                 //if(tmptxt[3] == null){ // if 3rd string, then doesn't match query requirements... can add multiple query logic later
                     String importantInfo;
-                    importantInfo = text.substring(tmptxt[0].length(), text.length()-tmptxt[1].length()); // should give substring of regex match
+                    importantInfo = text.substring(tmptxt[0].length(), text.length()-tmplength); // should give substring of regex match
                     //System.out.println(importantInfo);
                     String [] tmparray = importantInfo.split("\\$");
                     //System.out.println(tmparray[0]);
@@ -203,7 +216,15 @@ public class SensiteTwitterPost {
            }*/
                 
             Arrays.fill(dupCheck,false);
-            handleMessage(twitter); // TO REPLACE WITH INITIALIZE BOT
+            try{
+                while(true){
+                    handleMessage(twitter);
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //handleMessage(twitter); // TO REPLACE WITH INITIALIZE BOT
             
             System.exit(0);
         } catch (TwitterException te) {
