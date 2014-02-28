@@ -36,14 +36,35 @@ import twitter4j.QueryResult;
 /**
  *
  * @author Victor
+ * Function List and Description:
+ * private static void populateDupCheck(BufferedReader file)
+        runs once, populates dupCheck with data in the file SensiteTwitterQueries.txt
+ * private static void writeDupCheck(PrintWriter file)
+        runs every time the Bot creates a tweet. rewrites SensiteTwitterQueries.txt 
+        based on the hash map
+ * private static void handleMessage(Twitter twitter)
+        searches twitter for the query, in this case "@sensor4cities", 
+        calls checkTweet to get the important components, and calls 
+        respondToTweet for every tweet found. Also updates the hash 
+        map with relevant values
+ * private static void respondToTweet(Twitter twitter, String [] tweetComponents,String respondtoUser)
+        makes a new twitter status for each unresponded to tweet. 
+        After creating a status, writes to SensiteTwitterQueries.txt
+ * private static String[] checkTweet(String tweet)
+        regex based function that checks a string and returns all of the components of the 
+        tweet: phenomenon, latitude, longitude, and time
+ * private static int hashFunc(String name, Date date, String text)
+        hash function for the hash map
+ * public static void main(String[] args)
  */
 public class SensiteTwitterPost {
     private static final int HASH_SIZE = 5000;
     private static String [][] dupCheck =  new String[HASH_SIZE][4];
-    private static BufferedReader br;
-    private static PrintWriter pw;
+        //hash map, indexed by hashFunc, that contains the following in the following order: if the tweet was answered (true or false), tweeter, tweet time (of query), tweet text
+    private static BufferedReader br; //reader to read SensiteTwitterQueries.txt
+    private static PrintWriter pw; //writer that writes to SensiteTwitterQueries.txt
         
-    private static void populateDupCheck(BufferedReader file){
+    private static void populateDupCheck(BufferedReader file){ 
         int i;
         for(i=0; i<HASH_SIZE; i++){
             String curLine = null;
@@ -61,7 +82,6 @@ public class SensiteTwitterPost {
             curLine = curLine.substring(curLine.indexOf(',')+1, curLine.length());
             dupCheck[i][3] = curLine; //twitter message
 
-            //System.out.println("index " + i + " , " + dupCheck[i][0] + " , " + dupCheck[i][1] + " , " + dupCheck[i][2] + " , " + dupCheck[i][3]);
         }
         System.out.println("Successfully populated hash map.");
         try {
@@ -71,7 +91,7 @@ public class SensiteTwitterPost {
         }
     }
     
-    private static void writeDupCheck(PrintWriter file){
+    private static void writeDupCheck(PrintWriter file){ 
         try {
             file = new PrintWriter("SensiteTwitterQueries.txt", "UTF-8");
         } catch (FileNotFoundException ex) {
@@ -87,33 +107,28 @@ public class SensiteTwitterPost {
         file.close();
     }
 
-    private static void handleMessage(Twitter twitter) throws TwitterException{
-        //boolean [] dupCheck = new boolean[HASH_SIZE];
-        //Arrays.fill(dupCheck,false);
-        
+    private static void handleMessage(Twitter twitter) throws TwitterException{ //searches twitter for the query, in this case "@sensor4cities", 
+                                                                                  //calls checkTweet to get the important components, and calls 
+                                                                                  //respondToTweet for every tweet found. Also updates the hash 
+                                                                                  //map with relevant values
         Query query = new Query("@sensor4cities");
         List<String> tweetList = null;
         QueryResult result;
         do {
             result = twitter.search(query);
             List<Status> tweets = result.getTweets();
-            for (Status tweet : tweets) { 
-                //System.out.println(tweet.getUser().getScreenName() + " $sensite$ " + tweet.getCreatedAt() + " $sensite$ " + tweet.getText());
-                
-                String tweetText = tweet.getText();
-                
-                //check tweet is valid
+            for (Status tweet : tweets) {                 
+                String tweetText = tweet.getText();     
+                //check tweet is valid and get the components
                 String[] tweetComponents = checkTweet(tweetText);
                 if(tweetComponents != null){
                     int hash = hashFunc(tweet.getUser().getScreenName(), tweet.getCreatedAt(), tweet.getText());
-                    //System.out.println("doing dup check..." + dupCheck[hash][0]);
                     if(dupCheck[hash][0].contains("false")){
                         dupCheck[hash][0] = "true";
                         dupCheck[hash][1] = tweet.getUser().getScreenName();
                         dupCheck[hash][2] = tweet.getCreatedAt().toString();
                         dupCheck[hash][3] = tweet.getText();
                         //query database
-                        //System.out.println("dup check false");
                         respondToTweet(twitter, tweetComponents, tweet.getUser().getScreenName());
                     }
                 }
@@ -121,8 +136,8 @@ public class SensiteTwitterPost {
         } while ((query = result.nextQuery()) != null);
     }
     
-    private static void respondToTweet(Twitter twitter, String [] tweetComponents
-                                        ,String respondtoUser) throws TwitterException{
+    private static void respondToTweet(Twitter twitter, String [] tweetComponents     
+                                        ,String respondtoUser) throws TwitterException{ 
         Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data...tmp not working... phenom: "+tweetComponents[0]+", long:"
                                                 +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
         System.out.println("@"+respondtoUser+" Here is your link to data...tmp not working... phenom: "+tweetComponents[0]+", long:"
@@ -131,64 +146,41 @@ public class SensiteTwitterPost {
     }
     
     private static String[] checkTweet(String tweet){
-        //tweetStruct retVal = null;
         String [] retVal = new String[4];
         String text = tweet;
         
-        //System.out.println("tweet text: "+text);
         
         text.toLowerCase();
-        //if(text.contains("#sensor")){;
             String regexmatcher = "(.*)[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+(.*)";
             if(text.matches(regexmatcher)){ // may need to add 1 level of \
                 //messy code because java sucks at regex...
                 String [] tmptxt = text.split("[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+"); // regex doesn't match correctly for date
                 int tmplength = 0;
                 
-                //System.out.println("tweet 0: "+tmptxt[0] + "length: " + tmptxt[0].length());
                 if(tmptxt.length == 1){
                     tmplength = 0;
                 } else{
                     tmplength = tmptxt[1].length();
                 }
-                //System.out.println("tweet 1: "+tmptxt[1] + "length: " + tmptxt[1].length());
                 
-                //if(tmptxt[3] == null){ // if 3rd string, then doesn't match query requirements... can add multiple query logic later
                     String importantInfo;
                     importantInfo = text.substring(tmptxt[0].length(), text.length()-tmplength); // should give substring of regex match
-                    //System.out.println(importantInfo);
-                    String [] tmparray = importantInfo.split("\\$");
-                    //System.out.println(tmparray[0]);
-                    //System.out.println(tmparray[1]);
-                    //System.out.println(tmparray[2]);
-                    //System.out.println("before setphenomenon " + tmparray[0]);
-                    //retVal.setPhenomenon(tmparray[0]);
-                    //System.out.println("before latlongsplit");
-                    
+                    String [] tmparray = importantInfo.split("\\$");              
                     String [] latlong = tmparray[1].split("\\,");
-                    //System.out.println(latlong[0]);
-                    //System.out.println(latlong[1]);
                     
-                    retVal[0] = tmparray[0];
-                    retVal[1] = latlong[0];
-                    retVal[2] = latlong[1];
-                    retVal[3] = tmparray[2];
-                    //System.out.println("things: ");
-                    //System.out.println(retVal[0]);
-                    //System.out.println(retVal[1]);
-                    //System.out.println(retVal[2]);
-                    //System.out.println(retVal[3]);
+                    retVal[0] = tmparray[0]; //phenomenon
+                    retVal[1] = latlong[0]; //latitude
+                    retVal[2] = latlong[1]; //longitude
+                    retVal[3] = tmparray[2]; //time
 
                     return retVal;
-                //}
             }
-        //}
         return null;
     }
     
     
     
-    private static int hashFunc(String name, Date date, String text){
+    private static int hashFunc(String name, Date date, String text){ 
         int hash = 1;
         hash = 29 + name.hashCode();
         hash = 59 * hash + 17 * date.toString().hashCode();
@@ -198,7 +190,7 @@ public class SensiteTwitterPost {
         return hash % HASH_SIZE;
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) { //mostly copied from twitter4j examples
         
         String testStatus="Hello from twitter4j, post 3";
         try {
@@ -297,7 +289,6 @@ public class SensiteTwitterPost {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //handleMessage(twitter); // TO REPLACE WITH INITIALIZE BOT
             
             System.exit(0);
         } catch (TwitterException te) {
