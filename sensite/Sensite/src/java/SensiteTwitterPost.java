@@ -100,8 +100,10 @@ public class SensiteTwitterPost {
             for (Status tweet : tweets) { 
                 //System.out.println(tweet.getUser().getScreenName() + " $sensite$ " + tweet.getCreatedAt() + " $sensite$ " + tweet.getText());
                 
+                String tweetText = tweet.getText();
+                
                 //check tweet is valid
-                String[] tweetComponents = checkTweet(tweet);
+                String[] tweetComponents = checkTweet(tweetText);
                 if(tweetComponents != null){
                     int hash = hashFunc(tweet.getUser().getScreenName(), tweet.getCreatedAt(), tweet.getText());
                     //System.out.println("doing dup check..." + dupCheck[hash][0]);
@@ -121,22 +123,22 @@ public class SensiteTwitterPost {
     
     private static void respondToTweet(Twitter twitter, String [] tweetComponents
                                         ,String respondtoUser) throws TwitterException{
-        //Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data...tmp not working... phenom: "+tweetComponents[0]+", long:"
-        //                                        +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
+        Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data...tmp not working... phenom: "+tweetComponents[0]+", long:"
+                                                +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
         System.out.println("@"+respondtoUser+" Here is your link to data...tmp not working... phenom: "+tweetComponents[0]+", long:"
                                                 +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
         writeDupCheck(pw);
     }
     
-    private static String[] checkTweet(Status tweet){
+    private static String[] checkTweet(String tweet){
         //tweetStruct retVal = null;
         String [] retVal = new String[4];
-        String text = tweet.getText();
+        String text = tweet;
         
         //System.out.println("tweet text: "+text);
         
         text.toLowerCase();
-        if(text.contains("#sensor")){;
+        //if(text.contains("#sensor")){;
             String regexmatcher = "(.*)[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+(.*)";
             if(text.matches(regexmatcher)){ // may need to add 1 level of \
                 //messy code because java sucks at regex...
@@ -180,7 +182,7 @@ public class SensiteTwitterPost {
                     return retVal;
                 //}
             }
-        }
+        //}
         return null;
     }
     
