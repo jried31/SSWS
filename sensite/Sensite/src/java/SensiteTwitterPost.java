@@ -17,11 +17,20 @@ import twitter4j.media.ImageUploadFactory;
 import twitter4j.media.MediaProvider;*/
  
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 /**
@@ -30,8 +39,53 @@ import twitter4j.QueryResult;
  */
 public class SensiteTwitterPost {
     private static final int HASH_SIZE = 5000;
-    private static boolean [] dupCheck =  new boolean[HASH_SIZE];
+    private static String [][] dupCheck =  new String[HASH_SIZE][4];
+    private static BufferedReader br;
+    private static PrintWriter pw;
         
+    private static void populateDupCheck(BufferedReader file){
+        int i;
+        for(i=0; i<HASH_SIZE; i++){
+            String curLine = null;
+            try {
+                curLine = file.readLine();
+            } catch (IOException ex) {
+                Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            dupCheck[i][0] = curLine.substring(0,curLine.indexOf(',')); //true false check
+            curLine = curLine.substring(curLine.indexOf(',')+1, curLine.length());
+            dupCheck[i][1] = curLine.substring(0,curLine.indexOf(',')); //twitter name
+            curLine = curLine.substring(curLine.indexOf(',')+1, curLine.length());
+            dupCheck[i][2] = curLine.substring(0,curLine.indexOf(',')); //twitter date
+            curLine = curLine.substring(curLine.indexOf(',')+1, curLine.length());
+            dupCheck[i][3] = curLine; //twitter message
+
+            //System.out.println("index " + i + " , " + dupCheck[i][0] + " , " + dupCheck[i][1] + " , " + dupCheck[i][2] + " , " + dupCheck[i][3]);
+        }
+        System.out.println("Successfully populated hash map.");
+        try {
+            file.close();
+        } catch (IOException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private static void writeDupCheck(PrintWriter file){
+        try {
+            file = new PrintWriter("SensiteTwitterQueries.txt", "UTF-8");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for(int i=0; i<HASH_SIZE; i++){
+            file.println(dupCheck[i][0] + ',' + dupCheck[i][1] + ',' + dupCheck[i][2] + ',' + dupCheck[i][3]);
+        }
+        System.out.println("Successfully wrote hash map.");
+        file.close();
+    }
 
     private static void handleMessage(Twitter twitter) throws TwitterException{
         //boolean [] dupCheck = new boolean[HASH_SIZE];
@@ -50,9 +104,14 @@ public class SensiteTwitterPost {
                 String[] tweetComponents = checkTweet(tweet);
                 if(tweetComponents != null){
                     int hash = hashFunc(tweet.getUser().getScreenName(), tweet.getCreatedAt(), tweet.getText());
-                    if(dupCheck[hash] == false){
-                        dupCheck[hash] = true;
+                    //System.out.println("doing dup check..." + dupCheck[hash][0]);
+                    if(dupCheck[hash][0].contains("false")){
+                        dupCheck[hash][0] = "true";
+                        dupCheck[hash][1] = tweet.getUser().getScreenName();
+                        dupCheck[hash][2] = tweet.getCreatedAt().toString();
+                        dupCheck[hash][3] = tweet.getText();
                         //query database
+                        //System.out.println("dup check false");
                         respondToTweet(twitter, tweetComponents, tweet.getUser().getScreenName());
                     }
                 }
@@ -62,8 +121,11 @@ public class SensiteTwitterPost {
     
     private static void respondToTweet(Twitter twitter, String [] tweetComponents
                                         ,String respondtoUser) throws TwitterException{
-        Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data...tmp not working..."+tweetComponents[0]+","
-                                                +tweetComponents[1]+","+tweetComponents[2]+","+tweetComponents[3]);
+        //Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data...tmp not working... phenom: "+tweetComponents[0]+", long:"
+        //                                        +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
+        System.out.println("@"+respondtoUser+" Here is your link to data...tmp not working... phenom: "+tweetComponents[0]+", long:"
+                                                +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
+        writeDupCheck(pw);
     }
     
     private static String[] checkTweet(Status tweet){
@@ -137,6 +199,12 @@ public class SensiteTwitterPost {
     public static void main(String[] args) {
         
         String testStatus="Hello from twitter4j, post 3";
+        try {
+            br = new BufferedReader(new FileReader("SensiteTwitterQueries.txt"));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
  
         ConfigurationBuilder cb = new ConfigurationBuilder();
          
@@ -215,7 +283,10 @@ public class SensiteTwitterPost {
                                                     status.getText());
            }*/
                 
-            Arrays.fill(dupCheck,false);
+            //Arrays.fill(dupCheck,false);
+            
+            populateDupCheck(br);
+            
             try{
                 while(true){
                     handleMessage(twitter);
