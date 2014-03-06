@@ -75,8 +75,8 @@
     */
     
     function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
-     var time2 = date1+"_"+time1;
-     $.ajax( {type: "GET", url: 'http://localhost:8082/sensite/getObservations', data: {phenomena: 'rain', longitude: '10', latitude: '10', time: '2013-10-10_10:10:10'}, dataType: 'json'})
+     var time = date1+"_"+time1+":00";
+     $.ajax( {type: "GET", url: 'http://localhost:8082/sensite/getObservations', data: {phenomena: 'rain', longitude: longitude1, latitude: latitude1, time: time}, dataType: 'json'})
         .done(function( data ) {
        alert( "Data Loaded: " + data );
        //console.log(data);
