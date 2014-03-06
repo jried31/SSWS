@@ -77,7 +77,7 @@ public class QueryController {
         JSONObject result_json = null;
         String url_string;
         url_string = "http://localhost:8080/sensite/getObservations?" + "phenomena=" + query[0] +
-                "&longitude=" + query[2] + "&latitude" + query[1] + "&time" + query[3];
+                "&longitude=" + query[2] + "&latitude=" + query[1] + "&time=" + query[3];
         URL url = new URL(url_string);
         InputStream is = url.openStream();
         try{        
