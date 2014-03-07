@@ -2402,7 +2402,6 @@ false,0,0,0
 false,0,0,0
 false,0,0,0
 false,0,0,0
-true,megazero93,Thu Feb 20 19:11:38 PST 2014,@sensor4cities #sensor asdfljkwer$3213,4365$timewaklflasdl
 false,0,0,0
 false,0,0,0
 false,0,0,0
@@ -4764,7 +4763,8 @@ false,0,0,0
 false,0,0,0
 false,0,0,0
 false,0,0,0
-true,vzsovt,Thu Feb 20 18:59:43 PST 2014,@sensor4cities #sensor phenomenon2$12354,42589034$date2
+false,0,0,0
+false,0,0,0
 false,0,0,0
 false,0,0,0
 false,0,0,0
