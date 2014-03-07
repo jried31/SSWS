@@ -230,10 +230,10 @@
 <div id="container" style="width:100%; height:100px;">
 <div id="content" style="background-color:#e5e9ec;height:100px;float:left;padding-right:25px">
 <div data-role="fieldcontain" data-controltype="selectmenu">
-              <label for="selectmenu1">
+              <label for="phenomenon">
                   Select Phenomenon
               </label>
-              <select id="selectmenu1" name="">
+              <select id="phenomenon" name="">
                   <option value="p1">
                       Phenomenon1
                   </option>
@@ -309,7 +309,7 @@
 
 <div id="content" style="background-color:#e5e9ec;height:100px;width=300px;float:left;">
 	<br>
-		<button onclick="updateJSONTable()" class="btn btn-primary btn-cons" type="button">Submit</button>
+		<button onclick="updateJSONTable(); sendToParse(phenomenon.value, lat.value, long.value, date.value, time.value)" class="btn btn-primary btn-cons" type="button">Submit</button>
 </div>
 </div>
 
