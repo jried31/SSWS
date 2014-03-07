@@ -1,0 +1,106 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <title>My Parse App</title>
+  <meta name="description" content="My Parse App">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
+</head>
+
+<body>
+  
+  <div id="main">
+    <h1>You're ready to use Parse!</h1>
+
+    <p>Read the documentation and start building your JavaScript app:</p>
+
+  </div>
+
+<!--  <script type="text/javascript">
+    Parse.initialize("jEciFYpTp2b1XxHuIkmAs3yaP70INpkBDg9WdTl9", "29RplVDT4O3USNpt530ZSVsR3P75Shf45a1fiCjr");
+    
+    var TestObject = Parse.Object.extend("blah3");
+    var testObject = new TestObject();
+    testObject.set("score", 600);
+    testObject.set("name", "David");
+    testObject.set("cheatMode", true);
+    testObject.save(null);
+    
+    
+    var query = new Parse.Query(TestObject);
+    query.equalTo("cheatMode", true);
+    query.find({
+        success: function(results) {
+          alert("Successfully retrieved " + results.length + " records.");
+          // Do something with the returned Parse.Object values
+          for (var i = 0; i < results.length; i++) { 
+            var object = results[i];
+            alert(object.get('name'));
+          }
+        },
+        error: function(error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+    });
+    
+    // testObject.save({foo: "zoe"}, {
+     // success: function(object) {
+     //   $(".success").show();
+     // },
+     // error: function(model, error) {
+     //   $(".error").show();
+     // }
+   // });
+     //   testObject.save({score: "9"});
+  </script>
+-->
+<script type = "text/javascript">
+$( document ).ready(function() {
+    var select = document.getElementById("selectNumber");
+    var options = ["1", "2", "3", "4", "5"];
+    for(var i = 0; i < options.length; i++) {
+        var opt = options[i];
+        var el = document.createElement("option");
+        el.textContent = opt;
+        el.value = opt;
+        select.appendChild(el);
+    }
+}
+</script>
+
+<script type ="text/javascript">
+$( document ).ready(function() {
+    var numbers = [1, 2, 3, 4, 5];
+    var option = '';
+    for (i=0;i<numbers.length;i++){
+     option += '<option value="'+ numbers[i] + '">' + numbers[i] + '</option>';
+    }
+    $('#selectmenu1').append(option);
+}
+</script>
+
+<script type ="text/javascript">
+    var numbers = [1, 2, 3, 4, 5];
+
+for (i=0;i<numbers.length;i++){
+   $('<option/>').val(numbers[i]).html(numbers[i]).appendTo('#selectNumber');
+}
+</script>
+<div data-role="fieldcontain" data-controltype="selectmenu">
+              <label for="selectmenu1">
+                  Select Phenomenon
+              </label>
+              <select id="selectmenu1" name="">
+              </select>
+</div>
+
+    <select id="selectNumber">
+      <option>Choose a number</option>
+    </select>
+</body>
+
+</html>

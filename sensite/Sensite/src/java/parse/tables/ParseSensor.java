@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package database.parse.tables;
+package parse.tables;
 
 import static org.eclipse.jdt.internal.antadapter.AntAdapterMessages.getString;
 import parse.almonds.ParseObject;
