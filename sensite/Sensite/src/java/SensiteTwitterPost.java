@@ -3,6 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+
 import java.util.List;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -32,6 +34,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONException;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 
@@ -85,7 +88,7 @@ public class SensiteTwitterPost {
         }
     }
     
-    private static String createTmpPage(int hash) {
+    private static String createTmpPage(int hash, String JSONcontents) {
         PrintWriter tempPage = null;
         String path = "web/tmp/";
         String fileName = path+hash+".html";
@@ -105,8 +108,9 @@ public class SensiteTwitterPost {
             Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        tempPage.write("hello temp string here\n"); //PLACEHOLDER, PUT GOTTEN INFO HERE
-        tempPage.write(dupCheck[hash][1] + '\n' + dupCheck[hash][2] + '\n' + dupCheck[hash][3] + '\n');
+        //tempPage.write("hello temp string here\n"); //PLACEHOLDER, PUT GOTTEN INFO HERE
+        tempPage.write("Twitter user: " + dupCheck[hash][1] + "\n<br>Tweet Date: " + dupCheck[hash][2] + "\n<br>Tweet Contents: " + 
+                        dupCheck[hash][3] + "\n\n<br><br>Response:\n<br>" + JSONcontents);
         tempPage.close();
         return fileName;
     }
@@ -167,7 +171,7 @@ public class SensiteTwitterPost {
             for (Status tweet : tweets) {                 
                 String tweetText = tweet.getText();     
                 //check tweet is valid and get the components
-                String[] tweetComponents = checkTweet(tweetText);
+                String[] tweetComponents = QueryController.DoParsing(tweetText);//checkTweet(tweetText);
                 if(tweetComponents != null){
                     int hash = hashFunc(tweet.getUser().getScreenName(), tweet.getCreatedAt().toString(), tweet.getText());
                     if(dupCheck[hash][0].contains("false")){
@@ -175,9 +179,9 @@ public class SensiteTwitterPost {
                         dupCheck[hash][1] = tweet.getUser().getScreenName();
                         dupCheck[hash][2] = tweet.getCreatedAt().toString();
                         dupCheck[hash][3] = tweet.getText();
-                        //query database
-                        //System.out.println("before respondtotweet");
-                        respondToTweet(twitter, tweetComponents, tweet.getUser().getScreenName(), createTmpPage(hash));//createTmpPage(hash)
+                        //QueryController.ParseJson(QueryController.SendQuery(tweetComponents))
+                        respondToTweet(twitter, tweetComponents, tweet.getUser().getScreenName(),
+                                "", hash);
                     }
                 }
             }
@@ -185,49 +189,15 @@ public class SensiteTwitterPost {
     }
     
     private static void respondToTweet(Twitter twitter, String [] tweetComponents     
-                                        ,String respondtoUser, String internalURL) throws TwitterException{ 
+                                        ,String respondtoUser, String JSONcontents, int hash) throws TwitterException{ 
+        String internalURL = createTmpPage(hash, JSONcontents);
         //Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data...tmp not working... phenom: "+tweetComponents[0]+", long:"
         //                                        +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
         System.out.println("@"+respondtoUser+" Here is your link to data: " + internalURL + "... phenom: "+tweetComponents[0]+", long:"
                                                 +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
         writeDupCheck(pw);
     }
-    
-    private static String[] checkTweet(String tweet){
-        String [] retVal = new String[4];
-        String text = tweet;
-        
-        
-        text.toLowerCase();
-            String regexmatcher = "(.*)[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+(.*)";
-            if(text.matches(regexmatcher)){ // may need to add 1 level of \
-                //messy code because java sucks at regex...
-                String [] tmptxt = text.split("[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+"); // regex doesn't match correctly for date
-                int tmplength = 0;
-                
-                if(tmptxt.length == 1){
-                    tmplength = 0;
-                } else{
-                    tmplength = tmptxt[1].length();
-                }
-                
-                    String importantInfo;
-                    importantInfo = text.substring(tmptxt[0].length(), text.length()-tmplength); // should give substring of regex match
-                    String [] tmparray = importantInfo.split("\\$");              
-                    String [] latlong = tmparray[1].split("\\,");
-                    
-                    retVal[0] = tmparray[0]; //phenomenon
-                    retVal[1] = latlong[0]; //latitude
-                    retVal[2] = latlong[1]; //longitude
-                    retVal[3] = tmparray[2]; //time
 
-                    return retVal;
-            }
-        return null;
-    }
-    
-    
-    
     private static int hashFunc(String name, String date, String text){ 
         int hash = 1;
         hash = 29 + name.hashCode();
