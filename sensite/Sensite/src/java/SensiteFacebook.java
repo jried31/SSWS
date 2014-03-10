@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author Sixiang
@@ -16,12 +10,19 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import com.restfb.exception.FacebookException;
 import com.restfb.Connection;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient.AccessToken;
 import com.restfb.FacebookClient;
+import com.restfb.Parameter;
 import com.restfb.types.*;
 import org.json.JSONObject;
 import org.json.JSONException;
@@ -42,87 +43,125 @@ public class SensiteFacebook {
             return accessToken;
         }
         
-        private static void WritePostsID(String FBPostID){
+        /*
+        WriteLastTimeStamp will write time stamp of the
+        lastest post to a cache file "FacebookTimeStamp.txt"
+        */
+        private static void WriteTimeStamp(String time_stamp){
             try{
-              File file = new File("SensiteFacebookPostId.txt");
+              File file = new File("FacebookTimeStamp.txt");
               if(!file.exists()){
                   file.createNewFile();
               }
-              BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
-              bw.write(FBPostID);
-              bw.newLine();
-              bw.close();
+              FileOutputStream f = new FileOutputStream(file);
+              ObjectOutputStream s = new ObjectOutputStream(f);
+              s.writeObject(time_stamp);
+              s.close();
             }catch(IOException e){
                 e.printStackTrace();
-            }           
-        }
-        
-        private static List<String> ReadPostsID(){
-            List<String> FBPostsID = new ArrayList<String>();
-            BufferedReader br = null;
-            try{
-                String cur_line;
-                br = new BufferedReader(new FileReader("SensiteFacebookPostId.txt"));
-                while((cur_line = br.readLine()) != null){
-                    FBPostsID.add(cur_line);
-                }
-            }catch(IOException ex){
-                ex.printStackTrace();
-            }finally{
-                try{
-                    if(br != null) br.close();
-                }catch(IOException e){
-                    e.printStackTrace();
-                }
-                
-            }
-            return FBPostsID;
+            }        
         }
         
         /*
-        CommentPost will take two arguments:the post id and content to comment
-        It will use postid to locate specific facebook post and comment that post
-        with String content
+        ReadLastestTimeStamp will return the cached time stamp string
         */
-        private static void CommentPost(String PostID, String Content){
-            //TODO: Add implementation
+        private static String ReadLastestTimeStamp(){
+            String time_stamp = null;
+            ObjectInputStream s = null;
+            try{
+                File file = new File("SensiteFacebookPostId.txt");
+                FileInputStream f = new FileInputStream(file);
+                s = new ObjectInputStream(f);
+                time_stamp = (String)s.readObject();
+            }catch(IOException ex){
+                ex.printStackTrace();
+            }catch(ClassNotFoundException class_ex){
+                class_ex.printStackTrace();
+            }finally{
+               try{
+                   s.close();
+               }catch(IOException ioe){
+                   ioe.printStackTrace();
+               }             
+            }
+            return time_stamp;
         }
         
+        /*
+        Return all the facebook posts which are posted after given time stamp
+        */
+        private static Map<String, String> GetNewPosts(String prev_time_stamp, FacebookClient fb_client) throws ParseException{
+            Map<String, String> posts_map = new HashMap<String, String>();
+            String format = "yyyy-MM-dd'T'HH:mm:ss+SSSS";
+            long timeMills = new SimpleDateFormat(format)
+                                 .parse(prev_time_stamp)
+                                 .getTime();
+            long unixtime = timeMills/1000L;
+            Connection<Post> new_feeds = fb_client.fetchConnection("496505640454178/feed",
+                                                                   Post.class, Parameter.with("since", String.valueOf(unixtime)));
+            for(Post feed : new_feeds.getData()){
+                if(feed.getMessage() != null){
+                    posts_map.put(feed.getId(), feed.getMessage());
+                }         
+            }
+            return posts_map;
+        }
         
-        public static void main(String[] args) {
-                //Load cache file
-                List<String> CachePosts = new ArrayList<String>();
-                CachePosts = ReadPostsID();
-                
-                Map<String, String> PostsMap = new HashMap<String,String>();
-                //Generate Access Token
-                AccessToken accessToken = GenerateAccessToken();
-                FacebookClient facebookClient = new DefaultFacebookClient(accessToken.getAccessToken());
-                
-                //Create a connection and fetch feeds
-                Connection<Post> sensite_feeds = facebookClient.fetchConnection("496505640454178/feed", Post.class);
-                for(Post feed : sensite_feeds.getData()){
-                    String cur_message = feed.getMessage();
-                    if(cur_message != null){
-                        String[] parse_result = QueryController.DoParsing(cur_message);
-                        //Check if current message is already in the cache
-                        if((parse_result != null) && !CachePosts.contains(feed.getId())){
-                            PostsMap.put(feed.getId(), cur_message);
-                            JSONObject json_obj = null;
-                            String result = null;
-                            try{
-                                json_obj = QueryController.SendQuery(parse_result);
-                                result = QueryController.ParseJson(json_obj);
-                                CommentPost(feed.getId(), result);
-                            }catch(IOException ioex){
-                                ioex.printStackTrace();
-                            }catch(JSONException jsonex){
-                                jsonex.printStackTrace();
-                            }                           
+        /*
+        
+        */
+        private static Date GetMostRecentUpdateTime(FacebookClient fb_client){
+            Date mrts = null;
+            Connection<Post> posts = fb_client.fetchConnection("496505640454178/feed", Post.class);
+            for(Post feed : posts.getData()){
+                if(feed.getMessage()!= null)
+                    mrts = feed.getUpdatedTime();
+            }
+            return mrts;
+        }
+   
+        public static void main(String[] args) throws ParseException{
+             //Load previous time stamp
+             String prev_time_stamp = ReadLastestTimeStamp();
+             //Generate Access Token
+             AccessToken accessToken = GenerateAccessToken();
+             FacebookClient facebookClient = new DefaultFacebookClient(accessToken.getAccessToken());
+             //Load new posts from Facebook Wall
+             Map<String, String> posts_map = GetNewPosts(prev_time_stamp, facebookClient);
+             for(Map.Entry<String, String> entry : posts_map.entrySet()){
+                String cur_message = entry.getValue();
+                String cur_post_id = entry.getValue();
+                String send_back = null;
+                if(cur_message != null){
+                    String[] parse_result = QueryController.DoParsing(cur_message);                    
+                    //We catch a new query
+                    if(parse_result != null){
+                        try{
+                            JSONObject json_obj = QueryController.SendQuery(parse_result);
+                            send_back = QueryController.ParseJson(json_obj);
+                        }catch(IOException ioex){
+                            ioex.printStackTrace();
+                        }catch(JSONException jsonex){
+                            jsonex.printStackTrace();
                         }
-                    }
-                }
-                
+                    }                       
+                    //otherwise, use cached query 
+                    else{
+                        send_back = "Please use the correct query format";
+                    }            
+                    FacebookType post_comment = facebookClient.publish(cur_post_id + "/comments", FacebookType.class, 
+                                                                            Parameter.with("message", send_back));
+                 }
+              }
+              Date mrut = GetMostRecentUpdateTime(facebookClient);
+              if(mrut != null){
+                 WriteTimeStamp(mrut.toString());   
+              }
+              try{
+                Thread.sleep(5000); 
+              }catch(InterruptedException iex){
+                iex.printStackTrace();
+              }
         }
 }
 
