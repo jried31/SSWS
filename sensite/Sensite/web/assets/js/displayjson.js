@@ -2,10 +2,10 @@
 var allow;
 var json;
 $(window).load(function(){
-    alert("loaded");
+    
   $('.hideme').find('div').hide();
 $('.clickme').click(function() {
-  alert("click");
+ 
 
     $(this).parent().next('.hideme').find('div').slideToggle(400);     
     });
@@ -59,18 +59,18 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
   }
 
  $("#mapcontainer").html("<div id='map-canvas' style='height:500px; width:1100px' align='center'></div>");
-// initialize();
+ initialize();
  $("#tabledisplay").append("<br><style type='text/css'>.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}.tftable th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;}.tftable tr {background-color:#d4e3e5;}.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}.tftable tr:hover {background-color:#ffffff;}</style><table id ='heytable' class='tftable' border='1'><tr><th>Sensor Type</th><th>Data Reading</th><th>Latitude</th><th>Longitude</th><th>Datetime</th></tr></table>");
   for (var key = 0; key < json1.Informations.length; key++) 
   {   
-      //alert(json.Informations[0].BaseQoI.DataSource.Sensor.classification.sensorType);
-       $("#heytable").append("<tr><td class = 'clickme'>" +json1.Informations[key].BaseQoI.DataSource.Sensor.classification.sensorType+" </td><td>"+json1.Informations[key].BaseData.metric.QuantitativeMetric+"</td><td>"+json1.Informations[key].BaseData.location.lat+"</td><td>"+json1.Informations[key].BaseData.location.lon+"</td><td>"+json1.Informations[key].BaseData.dateTime+"</td></tr><tr class='hideme'><td colspan='5' style='padding:0px;'><div>json</div></td></tr>");  
+
+      var j = JSON.stringify(json.Informations[key]);
+       $("#heytable").append("<tr><td class = 'clickme'>" +json1.Informations[key].BaseQoI.DataSource.Sensor.classification.sensorType+" </td><td>"+json1.Informations[key].BaseData.metric.QuantitativeMetric+"</td><td>"+json1.Informations[key].BaseData.location.lat+"</td><td>"+json1.Informations[key].BaseData.location.lon+"</td><td>"+json1.Informations[key].BaseData.dateTime+"</td></tr><tr class='hideme'><td colspan='5' style='padding:0px;'><div>"+j+"</div></td></tr>");  
 
   } 
 
   $('.hideme').find('div').hide();
 $('.clickme').click(function() {
-  alert("cliuuuuck");
 
     $(this).parent().next('.hideme').find('div').slideToggle(400);     
     });
