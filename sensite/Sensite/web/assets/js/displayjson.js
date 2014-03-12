@@ -11,11 +11,15 @@ var jsonreturn;
 
 function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
      $.ajax( {type: "GET", url: 'https://api.mongolab.com/api/1/databases/sensite/collections/phenomena?q={%22phenomena%22:"'+phenomenon1+'"}&c=true&apiKey=WQ-p4-Hc9W3Zoc05iAxqbvY8uib5UW_o', dataType:'json'})
-             .done(function(data){ 
+             .success(function(data){ 
          allow = data;
+
      });
-        alert(allow);
-          if(allow == undefined)
+        
+        
+        setTimeout(function(){
+                
+          if(allow == "undefined")
                allow= 0;
     if(allow !=0){
             
@@ -71,7 +75,7 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
        {
           $("#heytable").append("<tr><td>" +json[key].sensor+" </td><td>"+json[key].data+"</td><td>"+json[key].latitude+"</td><td>"+json[key].longitude+"</td><td>"+json[key].datetime+"</td></tr>");  
        }
-  }
+  } },500);
 }
 
 function updateJSONTableTest() {
