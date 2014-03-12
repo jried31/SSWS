@@ -84,7 +84,13 @@
         }
       }
       google.maps.event.addDomListener(window, 'load', initialize);
-
+$(window).load(function(){
+$('.hideme').find('div').hide();
+$('.clickme').click(function() {
+    $(this).parent().next('.hideme').find('div').slideToggle(400);
+    return false;        
+    });
+});
     
     </script>
     
@@ -298,6 +304,7 @@
 </div>
 	<div id="errormsg" style="height:50px; width:100%">
 	</div>
+
 	<div id="mapcontainer" style="height:500px; width:1100px; padding-bottom:40px;" align="center">
 	</div>
 	
