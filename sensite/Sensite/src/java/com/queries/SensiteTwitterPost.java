@@ -91,6 +91,7 @@ public class SensiteTwitterPost {
     }
     
     private static String createTmpPage(int hash, String JSONcontents) {
+        System.out.println("JSONcontents: " + JSONcontents);
         PrintWriter tempPage = null;
         String path = "web/tmp/";
         String fileName = path+hash+".html";
@@ -112,7 +113,8 @@ public class SensiteTwitterPost {
 
         //tempPage.write("hello temp string here\n"); //PLACEHOLDER, PUT GOTTEN INFO HERE
         tempPage.write("Twitter user: " + dupCheck[hash][1] + "\n<br>Tweet Date: " + dupCheck[hash][2] + "\n<br>Tweet Contents: " + 
-                        dupCheck[hash][3] + "\n\n<br><br>Response:\n<br>" + JSONcontents);
+                        dupCheck[hash][3] + "\n\n<br><br>Response:\n<br>");
+        tempPage.println(JSONcontents);
         tempPage.close();
         return fileName;
     }
@@ -176,6 +178,7 @@ public class SensiteTwitterPost {
                 String[] tweetComponents = QueryController.DoParsing(tweetText);//checkTweet(tweetText);
                 if(tweetComponents != null){
                     int hash = hashFunc(tweet.getUser().getScreenName(), tweet.getCreatedAt().toString(), tweet.getText());
+                    //tweetComponents[3].
                     //if(dupCheck[hash][0].contains("false")){
                         if(tweet.getCreatedAt().compareTo(lastResponded)>0){
                             lastResponded = tweet.getCreatedAt();
@@ -185,16 +188,23 @@ public class SensiteTwitterPost {
                             dupCheck[hash][3] = tweet.getText();
                             //QueryController.ParseJson(QueryController.SendQuery(tweetComponents))
                             respondToTweet(twitter, tweetComponents, tweet.getUser().getScreenName(),
-                                    "", hash);
-                        }
-                    //}
+                                    hash);
+                            }
                 }
             }
         } while ((query = result.nextQuery()) != null);
     }
     
     private static void respondToTweet(Twitter twitter, String [] tweetComponents     
-                                        ,String respondtoUser, String JSONcontents, int hash) throws TwitterException{ 
+                                        ,String respondtoUser, int hash) throws TwitterException{ 
+        String JSONcontents = "If you see this message, then query failed.";
+        try {
+            JSONcontents = QueryController.ParseJson(QueryController.SendQuery(tweetComponents));
+        } catch (IOException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
+        }
         String internalURL = createTmpPage(hash, JSONcontents);
         Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data: " + internalURL + "... phenom: "+tweetComponents[0]+", long:"
                                                 +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
@@ -213,15 +223,27 @@ public class SensiteTwitterPost {
         return hash % HASH_SIZE;
     }
     
-    public static void startBot() { //mostly copied from twitter4j examples
+    public static void main(String[] args) { //mostly copied from twitter4j examples
         //int tmptest = 21347862;
         //System.out.println(createTmpPage(tmptest));
         //manageTmpPages();
-/*        for (String tmp : QueryController.DoParsing("#ssphen$11,12$time")){
-            System.out.println(tmp);
+        //for (String tmp : QueryController.DoParsing("#ssphen$11,12$time")){
+        //    System.out.println(tmp);
+        //}
+/*        String [] tmptxt = new String[4];
+        tmptxt[0] = "rain";
+        tmptxt[1] = "23";
+        tmptxt[2] = "-34";
+        tmptxt[3] = "2013-05-23_13%3A32%3A45";
+        try {
+            System.out.println(QueryController.ParseJson(QueryController.SendQuery(tmptxt)));
+        } catch (IOException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return;
-  */      
+        return;*/
+        
         String testStatus="Hello from twitter4j, post 3";
         try {
             br = new BufferedReader(new FileReader("SensiteTwitterQueries.txt"));
