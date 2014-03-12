@@ -20,10 +20,10 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
      });
         
          var time = date1+"_"+time1+":00";
-         $.ajax( {type: "GET", url: 'http://localhost:8083/sensite/getObservations', data: {phenomena: phenomenon1, longitude: latitude1, latitude: '-34', time: time}, dataType: 'json'})
+         $.ajax( {type: "GET", url: 'http://localhost:8082/sensite/getObservations', data: {phenomena: phenomenon1, longitude: latitude1, latitude: '-34', time: time}, dataType: 'json'})
          .done(function( data ) {
             json = data;
-            alert(json.Informations.length);
+           // alert(json.Informations.length);
         });  
     
   setTimeout(function(){  
@@ -66,7 +66,7 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
   {   
 
       var j = JSON.stringify(json.Informations[key]);
-      alert(j);
+      //alert(j);
        $("#heytable").append("<tr><td class = 'clickme'><center><h5><b>+</b></h5></center></td><td>" +json.Informations[key].BaseQoI.DataSource.Sensor.classification.sensorType+" </td><td>"+json.Informations[key].BaseData.metric.QuantitativeMetric+"</td><td>"+json.Informations[key].BaseData.location.lat+"</td><td>"+json.Informations[key].BaseData.location.lon+"</td><td>"+json.Informations[key].BaseData.dateTime+"</td></tr><tr class='hideme'><td colspan='6' style='padding:0px;'><div>"+j+"</div></td></tr>");  
 
   } 
