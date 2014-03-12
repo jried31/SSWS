@@ -10,11 +10,13 @@ var allow;
 var jsonreturn;
 
 function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
-     $.ajax( {type: "GET", url: 'https://api.mongolab.com/api/1/databases/sensite/collections/phenomena?q={%22phenomena%22:"'+phenomenon1+'"}&c=true&apiKey=WQ-p4-Hc9W3Zoc05iAxqbvY8uib5UW_o', dataType:'json'}).done(function(data)
-     { 
+     $.ajax( {type: "GET", url: 'https://api.mongolab.com/api/1/databases/sensite/collections/phenomena?q={%22phenomena%22:"'+phenomenon1+'"}&c=true&apiKey=WQ-p4-Hc9W3Zoc05iAxqbvY8uib5UW_o', dataType:'json'})
+             .done(function(data){ 
          allow = data;
      });
-          
+        alert(allow);
+          if(allow == undefined)
+               allow= 0;
     if(allow !=0){
             
      
@@ -25,18 +27,12 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
        //console.log(data);
         });  
     }
-}
-
-
-
-
-function updateJSONTable()
-{
+    
   $("#errormsg").html("");
   $("#mapcontainer").html("");
   $("#tabledisplay").html("");
   
-  if(allow == 0)
+  if(allow == 0)  
   {
       $("#errormsg").html("<h2><center><span style='color:red'>You have entered a phenomenon that does not exist. </span></center></h2>");
      return;
