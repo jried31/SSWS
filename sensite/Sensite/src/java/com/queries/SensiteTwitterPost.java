@@ -176,7 +176,7 @@ public class SensiteTwitterPost {
                 String[] tweetComponents = QueryController.DoParsing(tweetText);//checkTweet(tweetText);
                 if(tweetComponents != null){
                     int hash = hashFunc(tweet.getUser().getScreenName(), tweet.getCreatedAt().toString(), tweet.getText());
-                    if(dupCheck[hash][0].contains("false")){
+                    //if(dupCheck[hash][0].contains("false")){
                         if(tweet.getCreatedAt().compareTo(lastResponded)>0){
                             lastResponded = tweet.getCreatedAt();
                             dupCheck[hash][0] = "true";
@@ -187,7 +187,7 @@ public class SensiteTwitterPost {
                             respondToTweet(twitter, tweetComponents, tweet.getUser().getScreenName(),
                                     "", hash);
                         }
-                    }
+                    //}
                 }
             }
         } while ((query = result.nextQuery()) != null);
