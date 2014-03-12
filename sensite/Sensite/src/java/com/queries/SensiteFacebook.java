@@ -72,7 +72,6 @@ public class SensiteFacebook {
 
             //tempPage.write("hello temp string here\n"); //PLACEHOLDER, PUT GOTTEN INFO HERE
             tempPage.write(part1 + lat + part2 + lon + part3 + JSONcontents + part4);
-            tempPage.println(JSONcontents);
             tempPage.close();
             return fileName;
         }
@@ -385,9 +384,5 @@ public class SensiteFacebook {
 "</body>\n" +
 "</html>";
     
-        
-        
-        
-        
+    
 }
-
