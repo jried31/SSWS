@@ -79,7 +79,6 @@
         	  var marker = new google.maps.Marker({
     		  position: myLatlng,
     		  map: map,
-    		  title: 'Hello World!'
   });
         }
       }
@@ -105,7 +104,12 @@ $('.clickme').click(function() {
 	<!-- END CORE TEMPLATE JS --> 
 
 	<!-- END NEED TO WORK ON -->
-
+<style type='text/css'>
+    .tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}
+    .tftable th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;}
+    .tftable tr {background-color:#d4e3e5;}.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}
+    .tftable tr:hover {background-color:#ffffff;}
+</style>
 </head>
 <body class="">
 <!-- BEGIN HEADER -->
@@ -305,10 +309,10 @@ $('.clickme').click(function() {
 	<div id="errormsg" style="height:50px; width:100%">
 	</div>
 
-	<div id="mapcontainer" style="height:500px; width:1100px; padding-bottom:40px;" align="center">
+	<div id="mapcontainer" style="height:50%; width:80%; padding-bottom:40px;" align="center">
 	</div>
 	
-	<div id ="tabledisplay" style="padding-bottom:35px; padding-top:35px" align="center" >
+	<div id ="tabledisplay" style="padding-bottom:35px; width:80%; padding-top:35px" align="center" >
 	</div>
 			<!-- END PLACE PAGE CONTENT HERE -->
 		</div>
