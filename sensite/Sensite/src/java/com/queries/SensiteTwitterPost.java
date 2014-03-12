@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+package com.queries;
 
 import java.util.List;
 import twitter4j.Status;
@@ -212,7 +213,7 @@ public class SensiteTwitterPost {
         return hash % HASH_SIZE;
     }
     
-    public static void main(String[] args) { //mostly copied from twitter4j examples
+    public static void startBot() { //mostly copied from twitter4j examples
         //int tmptest = 21347862;
         //System.out.println(createTmpPage(tmptest));
         //manageTmpPages();
