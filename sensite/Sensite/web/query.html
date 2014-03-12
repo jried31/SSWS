@@ -81,21 +81,7 @@
       }
       google.maps.event.addDomListener(window, 'load', initialize);
 
-    Parse.initialize("jEciFYpTp2b1XxHuIkmAs3yaP70INpkBDg9WdTl9", "29RplVDT4O3USNpt530ZSVsR3P75Shf45a1fiCjr");
-
-    function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
-     var time = date1+"_"+time1+":00";
-     $.ajax( {type: "GET", url: 'http://localhost:8082/sensite/getObservations', data: {phenomena: 'rain', longitude: longitude1, latitude: latitude1, time: time}, dataType: 'json'})
-        .done(function( data ) {
-       alert( "Data Loaded: " + data );
-       //console.log(data);
-    });  
-
-     setTimeout(function(){
-        var dropdown = document.getElementById("DISPLAY").innerHTML = phenomenonArray1;
-
-	},400)
-    }
+    
     </script>
 	<!-- END CORE TEMPLATE JS --> 
 
@@ -294,7 +280,7 @@
 
 <div id="content" style="background-color:#e5e9ec;height:70px;width=300px;float:left;">
 	<br>
-		<button onclick="updateJSONTable(); sendToParse(phenomenon.value, lat.value, long.value, date.value, time.value)" class="btn btn-primary btn-cons" type="button">Submit</button>
+		<button onclick="sendToParse(phenomenon.value, lat.value, long.value, date.value, time.value); updateJSONTable()" class="btn btn-primary btn-cons" type="button">Submit</button>
 </div>
 </div>
 	<div id="errormsg" style="height:50px; width:100%">
