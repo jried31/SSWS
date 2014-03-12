@@ -72,9 +72,10 @@
         map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
 
-        for( var key in json)
+
+        for( var key =0; key < json.Informations.length; key++)
         {
-        	var myLatlng = new google.maps.LatLng(json[key].latitude,json[key].longitude);
+        	var myLatlng = new google.maps.LatLng(json.Informations[key].BaseData.location.lat,json.Informations[key].BaseData.location.lon);
         	  var marker = new google.maps.Marker({
     		  position: myLatlng,
     		  map: map,
