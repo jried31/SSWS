@@ -2,11 +2,14 @@
  *
  * @author Sixiang
  */
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Map;
 import java.util.HashMap;
 import java.io.File;
 import java.io.IOException;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -45,43 +48,55 @@ public class SensiteFacebook {
         lastest post to a cache file "FacebookTimeStamp.txt"
         */
         private static void WriteTimeStamp(String time_stamp){
+            FileWriter fileWriter = null;
             try{
               File file = new File("FacebookTimeStamp.txt");
               if(!file.exists()){
                   file.createNewFile();
               }
-              FileOutputStream f = new FileOutputStream(file);
-              ObjectOutputStream s = new ObjectOutputStream(f);
-              s.writeObject(time_stamp);
-              s.close();
+              fileWriter = new FileWriter(file);
+              fileWriter.write(time_stamp);
+              fileWriter.close();
             }catch(IOException e){
                 e.printStackTrace();
-            }        
+            }finally{
+                try{
+                    fileWriter.close();
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+                
+            }
         }
         
         /*
         ReadLastestTimeStamp will return the cached time stamp string
         */
         private static String ReadLastestTimeStamp(){
-            String time_stamp = null;
-            ObjectInputStream s = null;
+            String output = null;
+            BufferedReader br = null;
+            File f = new File("FacebookTimeStamp.txt");
+            if(!f.exists()){
+                return null;
+             }
             try{
-                File file = new File("SensiteFacebookPostId.txt");
-                FileInputStream f = new FileInputStream(file);
-                s = new ObjectInputStream(f);
-                time_stamp = (String)s.readObject();
-            }catch(IOException ex){
-                ex.printStackTrace();
-            }catch(ClassNotFoundException class_ex){
-                class_ex.printStackTrace();
+                String cur_line;
+                br = new BufferedReader(new FileReader("FacebookTimeStamp.txt"));
+                while((cur_line = br.readLine()) != null){
+                    if(cur_line != null){
+                        output = cur_line;
+                    }
+                }
+            }catch(IOException e){
+                e.printStackTrace();
             }finally{
-               try{
-                   s.close();
-               }catch(IOException ioe){
-                   ioe.printStackTrace();
-               }             
+                try{
+                    br.close();
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
             }
-            return time_stamp;
+            return output;
         }
         
         /*
@@ -89,13 +104,19 @@ public class SensiteFacebook {
         */
         private static Map<String, String> GetNewPosts(String prev_time_stamp, FacebookClient fb_client) throws ParseException{
             Map<String, String> posts_map = new HashMap<String, String>();
-            String format = "yyyy-MM-dd'T'HH:mm:ss+SSSS";
-            long timeMills = new SimpleDateFormat(format)
+            Connection<Post> new_feeds;
+            if(prev_time_stamp != null){
+                String format = "EEE MMM dd HH:mm:ss z yyyy";
+                long timeMills = new SimpleDateFormat(format)
                                  .parse(prev_time_stamp)
                                  .getTime();
-            long unixtime = timeMills/1000L;
-            Connection<Post> new_feeds = fb_client.fetchConnection("496505640454178/feed",
+                long unixtime = timeMills/1000L;
+                new_feeds = fb_client.fetchConnection("496505640454178/feed",
                                                                    Post.class, Parameter.with("since", String.valueOf(unixtime)));
+            }
+            else{
+                new_feeds = fb_client.fetchConnection("496505640454178/feed", Post.class);
+            }
             for(Post feed : new_feeds.getData()){
                 if(feed.getMessage() != null){
                     posts_map.put(feed.getId(), feed.getMessage());
@@ -107,59 +128,59 @@ public class SensiteFacebook {
         /*
         
         */
-        private static Date GetMostRecentUpdateTime(FacebookClient fb_client){
+        private static String GetMostRecentUpdateTime(FacebookClient fb_client){
             Date mrts = null;
             Connection<Post> posts = fb_client.fetchConnection("496505640454178/feed", Post.class);
             for(Post feed : posts.getData()){
-                if(feed.getMessage()!= null)
-                    mrts = feed.getUpdatedTime();
+                if(feed.getMessage()!= null){
+                    return feed.getUpdatedTime().toString();
+                }              
             }
-            return mrts;
+            return null;
         }
    
         public static void main(String[] args) throws ParseException{
-             //Load previous time stamp
-             String prev_time_stamp = ReadLastestTimeStamp();
-             //Generate Access Token
-             //AccessToken accessToken = GenerateAccessToken();
-             String long_term_access_token = "CAADXZC7MAQ98BAFyCiE9yE1GeFZCZB96eDQ2fGSivS3PMZCEeIrS88DOZC0CdllpynJAO2yf0aGJuxiFNnIUbq2O7v1iuNSxRI8zedxmGDNkl2GQROh5T3J1jgIegeFBwNcgBeN9mT45LhKrpZCKDcYQV8S4xzchXdHEEmtpkJl8SsMmMqhfOZC";
-             FacebookClient facebookClient = new DefaultFacebookClient(long_term_access_token);
-             //Load new posts from Facebook Wall
-             Map<String, String> posts_map = GetNewPosts(prev_time_stamp, facebookClient);
-             for(Map.Entry<String, String> entry : posts_map.entrySet()){
-                String cur_message = entry.getValue();
-                String cur_post_id = entry.getValue();
-                String send_back = null;
-                if(cur_message != null){
-                    String[] parse_result = QueryController.DoParsing(cur_message);                    
-                    //We catch a new query
-                    if(parse_result != null){
-                        try{
-                            JSONObject json_obj = QueryController.SendQuery(parse_result);
-                            send_back = QueryController.ParseJson(json_obj);
-                        }catch(IOException ioex){
-                            ioex.printStackTrace();
-                        }catch(JSONException jsonex){
-                            jsonex.printStackTrace();
-                        }
-                    }                       
-                    //otherwise, use cached query 
-                    else{
-                        send_back = "Please use the correct query format";
-                    }            
-                    FacebookType post_comment = facebookClient.publish(cur_post_id + "/comments", FacebookType.class, 
-                                                                            Parameter.with("message", send_back));
+            String long_term_access_token = "CAADXZC7MAQ98BAFyCiE9yE1GeFZCZB96eDQ2fGSivS3PMZCEeIrS88DOZC0CdllpynJAO2yf0aGJuxiFNnIUbq2O7v1iuNSxRI8zedxmGDNkl2GQROh5T3J1jgIegeFBwNcgBeN9mT45LhKrpZCKDcYQV8S4xzchXdHEEmtpkJl8SsMmMqhfOZC";
+            FacebookClient facebookClient = new DefaultFacebookClient(long_term_access_token);  
+            while(true){
+                //Load previous time stamp
+                String prev_time_stamp = ReadLastestTimeStamp();           
+                //Load new posts from Facebook Wall
+                Map<String, String> posts_map = GetNewPosts(prev_time_stamp, facebookClient);
+                for(Map.Entry<String, String> entry : posts_map.entrySet()){
+                   String cur_message = entry.getValue();
+                   String cur_post_id = entry.getKey();
+                   String send_back = "This is just a test";
+                   if(cur_message != null){
+                       String[] parse_result = QueryController.DoParsing(cur_message);                    
+                       //We catch a new query
+                       if(parse_result != null){
+                           try{
+                               JSONObject json_obj = QueryController.SendQuery(parse_result);
+                               send_back = QueryController.ParseJson(json_obj);
+                           }catch(IOException ioex){
+                               ioex.printStackTrace();
+                           }catch(JSONException jsonex){
+                               jsonex.printStackTrace();
+                           }
+                       }                       
+                       else{
+                           send_back = "Please use the correct query format";
+                       }
+                       FacebookType post_comment = facebookClient.publish(cur_post_id + "/comments", FacebookType.class, 
+                                                                               Parameter.with("message", send_back));
+                    }
                  }
-              }
-              Date mrut = GetMostRecentUpdateTime(facebookClient);
-              if(mrut != null){
-                 WriteTimeStamp(mrut.toString());   
-              }
-              try{
-                Thread.sleep(5000); 
-              }catch(InterruptedException iex){
-                iex.printStackTrace();
-              }
+                 String mrut = GetMostRecentUpdateTime(facebookClient);
+                 if(mrut != null){
+                    WriteTimeStamp(mrut);   
+                 }
+                 try{
+                   Thread.sleep(5000); 
+                 }catch(InterruptedException iex){
+                   iex.printStackTrace();
+                 }               
+            }
         }
 }
 
