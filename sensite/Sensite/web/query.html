@@ -227,48 +227,18 @@
 			</div>
 			<!-- END PAGE TITLE -->
 			<!-- BEGIN PlACE PAGE CONTENT HERE -->
-<div id="container" style="width:100%; height:100px;">
-<div id="content" style="background-color:#e5e9ec;height:100px;float:left;padding-right:25px">
-<div data-role="fieldcontain" data-controltype="selectmenu">
+<div id="container" style="width:100%; height:70px;">
+ <div id="content" style="background-color:#e5e9ec;height:70px;float:left;padding-right:25px">
+          <div data-role="fieldcontain" data-controltype="textinput" float:left;>
               <label for="phenomenon">
-                  Select Phenomenon
-              </label>
-              <select id="phenomenon" name="">
-                  <option value="p1">
-                      Phenomenon1
-                  </option>
-                  <option value="p2">
-                      Phenomenon 2
-                  </option>
-                  <option value="p3">
-                      Phenomenon 3
-                  </option>
-                  <option value="p4">
-                      Phenomenon 4
-                  </option>
-                  <option value="p5">
-                      Phenomenon 5
-                  </option>
-                  <option value="p6">
-                      Phenomenon 6
-                  </option>
-                  <option value="p7">
-                      Phenomenon 7
-                  </option>
-                  <option value="p8">
-                      Phenomenon 8
-                  </option>
-                  <option value="p9">
-                      Phenomenon 9
-                  </option>
-                  <option value="p10">
-                      Phenomenon 10
-                  </option>
-              </select>
-          </div>
- </div>
 
- <div id="content" style="background-color:#e5e9ec;height:100px;float:left;padding-right:25px">
+                  Enter Phenomenon:
+              </label>
+              <input name="" id="phenomenon" placeholder="" value="" type="text">
+          </div>
+</div>
+
+ <div id="content" style="background-color:#e5e9ec;height:70px;float:left;padding-right:25px">
           <div data-role="fieldcontain" data-controltype="textinput" float:left;>
               <label for="lat">
 
@@ -278,7 +248,7 @@
           </div>
 </div>
 
-<div id="content" style="background-color:#e5e9ec;height:100px;float:left;padding-right:25px">
+<div id="content" style="background-color:#e5e9ec;height:70px;float:left;padding-right:25px">
           <div data-role="fieldcontain" data-controltype="textinput" float:left;>
               <label for="long">
 
@@ -288,16 +258,16 @@
           </div>
 </div>
 
-<div id="content" style="background-color:#e5e9ec;height:100px;float:left;padding-right:25px">
-		  <div data-role="fieldcontain" data-controltype="textinput" float:left;>
+<div id="content" style="background-color:#e5e9ec;height:70px;float:left;padding-right:25px">
+		           <div data-role="fieldcontain" data-controltype="dateinput">
               <label for="date">
-                  Enter Date: (YYYY-MM-DD)
+                  Enter Date:
               </label>
-              <input name="" id="date" placeholder="" value="" type="text">
+              <input name="" id="date" value="" type="date">
           </div>
 </div>
 
-<div id="content" style="background-color:#e5e9ec;height:100px;float:left;padding-right:25px;">
+<div id="content" style="background-color:#e5e9ec;height:70px;float:left;padding-right:25px;">
           <div data-role="fieldcontain" data-controltype="dateinput" float:left;>
               <label for="time">
 
@@ -307,12 +277,13 @@
           </div>
  </div>
 
-<div id="content" style="background-color:#e5e9ec;height:100px;width=300px;float:left;">
+<div id="content" style="background-color:#e5e9ec;height:70px;width=300px;float:left;">
 	<br>
 		<button onclick="updateJSONTable(); sendToParse(phenomenon.value, lat.value, long.value, date.value, time.value)" class="btn btn-primary btn-cons" type="button">Submit</button>
 </div>
 </div>
-
+	<div id="errormsg" style="height:50px; width:100%">
+	</div>
 	<div id="mapcontainer" style="height:500px; width:1100px; padding-bottom:40px;" align="center">
 	</div>
 	
