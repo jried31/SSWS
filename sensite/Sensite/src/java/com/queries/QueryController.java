@@ -8,6 +8,8 @@
  *
  * @author Sixiang
  */
+package com.queries;
+
 import java.net.URL;
 import java.net.HttpURLConnection;
 import java.io.BufferedReader;

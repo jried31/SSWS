@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+package com.queries;
 
 import java.util.List;
 import twitter4j.Status;
@@ -175,7 +176,7 @@ public class SensiteTwitterPost {
                 String[] tweetComponents = QueryController.DoParsing(tweetText);//checkTweet(tweetText);
                 if(tweetComponents != null){
                     int hash = hashFunc(tweet.getUser().getScreenName(), tweet.getCreatedAt().toString(), tweet.getText());
-                    if(dupCheck[hash][0].contains("false")){
+                    //if(dupCheck[hash][0].contains("false")){
                         if(tweet.getCreatedAt().compareTo(lastResponded)>0){
                             lastResponded = tweet.getCreatedAt();
                             dupCheck[hash][0] = "true";
@@ -186,7 +187,7 @@ public class SensiteTwitterPost {
                             respondToTweet(twitter, tweetComponents, tweet.getUser().getScreenName(),
                                     "", hash);
                         }
-                    }
+                    //}
                 }
             }
         } while ((query = result.nextQuery()) != null);
@@ -212,7 +213,7 @@ public class SensiteTwitterPost {
         return hash % HASH_SIZE;
     }
     
-    public static void main(String[] args) { //mostly copied from twitter4j examples
+    public static void startBot() { //mostly copied from twitter4j examples
         //int tmptest = 21347862;
         //System.out.println(createTmpPage(tmptest));
         //manageTmpPages();
