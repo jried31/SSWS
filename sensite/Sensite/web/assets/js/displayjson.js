@@ -10,9 +10,34 @@ var json = [
 
 function updateJSONTable()
 {
+  $("#errormsg").html("");
+  $("#mapcontainer").html("");
+  $("#tabledisplay").html("");
+  
+  if($("#lat").val()== "")
+  {
+     $("#errormsg").html("<h2><center><span style='color:red'>You have entered an invalid latitude. </span></center></h2>");
+     return;
+  }
+  if($("#long").val()== "")
+  {
+     $("#errormsg").html("<h2><center><span style='color:red'>You have entered an invalid longitude. </span></center></h2>");
+     return;
+  }
+  if($("#date").val().length != 10)
+  {
+     $("#errormsg").html("<h2><center><span style='color:red'>You have entered an invalid date. </span></center></h2>");
+     return;
+  }
+  if($("#time").val() =="")
+  {
+     $("#errormsg").html("<h2><center><span style='color:red'>You have entered an invalid time. </span></center></h2>");
+     return;
+  }
+
   $("#mapcontainer").html("<div id='map-canvas' style='height:500px; width:1100px' align='center'></div>");
   initialize();
-  $("#tabledisplay").html("");
+
   $("#tabledisplay").append("<br><style type='text/css'>.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}.tftable th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;}.tftable tr {background-color:#d4e3e5;}.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}.tftable tr:hover {background-color:#ffffff;}</style><table id ='heytable' class='tftable' border='1'><tr><th>Sensor Type</th><th>Data Reading</th><th>Location</th><th>Datetime</th></tr></table>");
 
   for (var key in json) 
