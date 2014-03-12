@@ -71,6 +71,7 @@ public class SensiteTwitterPost {
         //hash map, indexed by hashFunc, that contains the following in the following order: if the tweet was answered (true or false), tweeter, tweet time (of query), tweet text
     private static BufferedReader br; //reader to read SensiteTwitterQueries.txt
     private static PrintWriter pw; //writer that writes to SensiteTwitterQueries.txt
+    private static Date lastResponded = new Date();
     
     private static void manageTmpPages(){
         File folder = new File("web/tmp/");
@@ -175,13 +176,16 @@ public class SensiteTwitterPost {
                 if(tweetComponents != null){
                     int hash = hashFunc(tweet.getUser().getScreenName(), tweet.getCreatedAt().toString(), tweet.getText());
                     if(dupCheck[hash][0].contains("false")){
-                        dupCheck[hash][0] = "true";
-                        dupCheck[hash][1] = tweet.getUser().getScreenName();
-                        dupCheck[hash][2] = tweet.getCreatedAt().toString();
-                        dupCheck[hash][3] = tweet.getText();
-                        //QueryController.ParseJson(QueryController.SendQuery(tweetComponents))
-                        respondToTweet(twitter, tweetComponents, tweet.getUser().getScreenName(),
-                                "", hash);
+                        if(tweet.getCreatedAt().compareTo(lastResponded)>0){
+                            lastResponded = tweet.getCreatedAt();
+                            dupCheck[hash][0] = "true";
+                            dupCheck[hash][1] = tweet.getUser().getScreenName();
+                            dupCheck[hash][2] = tweet.getCreatedAt().toString();
+                            dupCheck[hash][3] = tweet.getText();
+                            //QueryController.ParseJson(QueryController.SendQuery(tweetComponents))
+                            respondToTweet(twitter, tweetComponents, tweet.getUser().getScreenName(),
+                                    "", hash);
+                        }
                     }
                 }
             }
@@ -191,10 +195,10 @@ public class SensiteTwitterPost {
     private static void respondToTweet(Twitter twitter, String [] tweetComponents     
                                         ,String respondtoUser, String JSONcontents, int hash) throws TwitterException{ 
         String internalURL = createTmpPage(hash, JSONcontents);
-        //Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data...tmp not working... phenom: "+tweetComponents[0]+", long:"
-        //                                        +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
-        System.out.println("@"+respondtoUser+" Here is your link to data: " + internalURL + "... phenom: "+tweetComponents[0]+", long:"
+        Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data: " + internalURL + "... phenom: "+tweetComponents[0]+", long:"
                                                 +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
+        //System.out.println("@"+respondtoUser+" Here is your link to data: " + internalURL + "... phenom: "+tweetComponents[0]+", long:"
+        //                                        +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
         writeDupCheck(pw);
     }
 
@@ -209,11 +213,14 @@ public class SensiteTwitterPost {
     }
     
     public static void main(String[] args) { //mostly copied from twitter4j examples
-        /*int tmptest = 21347862;
-        System.out.println(createTmpPage(tmptest));
-        manageTmpPages();
-        return;*/
-        
+        //int tmptest = 21347862;
+        //System.out.println(createTmpPage(tmptest));
+        //manageTmpPages();
+/*        for (String tmp : QueryController.DoParsing("#ssphen$11,12$time")){
+            System.out.println(tmp);
+        }
+        return;
+  */      
         String testStatus="Hello from twitter4j, post 3";
         try {
             br = new BufferedReader(new FileReader("SensiteTwitterQueries.txt"));
@@ -307,7 +314,7 @@ public class SensiteTwitterPost {
                 while(true){
                     manageTmpPages();
                     handleMessage(twitter);
-                    Thread.sleep(30*1000);
+                    Thread.sleep(10*1000);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

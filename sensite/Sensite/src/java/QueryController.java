@@ -22,13 +22,15 @@ import org.json.JSONException;
 public class QueryController {
     public static String[] DoParsing(String query){
         String [] retVal = new String[4];
-        String text = query;    
+        String text = query + " "; // dumb workaround for crashing when trying to access tmptxt[0]
         text.toLowerCase();
+        if(text.contains("#ss")){
             String regexmatcher = "(.*)[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+(.*)";
             if(text.matches(regexmatcher)){ // may need to add 1 level of \
                 //messy code because java sucks at regex...
                 String [] tmptxt = text.split("[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+"); // regex doesn't match correctly for date
                 int tmplength = 0;
+                
                 
                 if(tmptxt.length == 1){
                     tmplength = 0;
@@ -46,6 +48,7 @@ public class QueryController {
                 retVal[3] = tmparray[2]; //time
                 return retVal;
             }
+        }
         return null;        
     }
     
