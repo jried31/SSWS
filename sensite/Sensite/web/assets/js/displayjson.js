@@ -48,16 +48,15 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
   }
 
   $("#mapcontainer").html("<div id='map-canvas' style='height:500px; width:1100px' align='center'></div>");
-  initialize();
-
+  alert("rose");
+ // initialize();
+alert("what up butthead");
   $("#tabledisplay").append("<br><style type='text/css'>.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}.tftable th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;}.tftable tr {background-color:#d4e3e5;}.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}.tftable tr:hover {background-color:#ffffff;}</style><table id ='heytable' class='tftable' border='1'><tr><th>Sensor Type</th><th>Data Reading</th><th>Latitude</th><th>Longitude</th><th>Datetime</th></tr></table>");
+alert("hello world");
+  for (var key = 0; key < json.Informations.length; key++) 
+  {   
+       $("#heytable").append("<tr><td>" +json.Informations[key].BaseQoI.DataSource.Sensor.classification.sensorType+" </td><td>"+json.Informations[key].BaseData.metric.QuantitativeMetric+"</td><td>"+json.Informations[key].BaseData.location.lat+"</td><td>"+json.Informations[key].BaseData.location.lon+"</td><td>"+json.Informations[key].BaseData.dateTime+"</td></tr>");  
 
-  for (var key in json) 
-  {
-       if (json.hasOwnProperty(key)) 
-       {
-          $("#heytable").append("<tr><td>" +json[key].sensor+" </td><td>"+json[key].data+"</td><td>"+json[key].latitude+"</td><td>"+json[key].longitude+"</td><td>"+json[key].datetime+"</td></tr>");  
-       }
   } },1000);
 }
 
