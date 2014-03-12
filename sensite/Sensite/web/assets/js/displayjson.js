@@ -28,7 +28,7 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
          $.ajax( {type: "GET", url: 'http://localhost:8082/sensite/getObservations', data: {phenomena: 'rain', longitude: longitude1, latitude: latitude1, time: time}, dataType: 'json'})
          .done(function( data ) {
             jsonreturn = data;
-       //console.log(data);
+            console.log(data);
         });  
     }
     

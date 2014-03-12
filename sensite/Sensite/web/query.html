@@ -90,7 +90,7 @@
     <script>
         if (!Modernizr.inputtypes.date) {
             $(function() {
-                $( "#date" ).datepicker();
+                $( "#date" ).datepicker({ dateFormat: 'yy-mm-dd' });
                 $("#time").attr('placeholder','HH:MM (Military time)');
             });
         }
