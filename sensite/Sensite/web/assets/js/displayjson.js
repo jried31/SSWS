@@ -2,6 +2,14 @@
 var allow;
 var json;
 
+$(window).load(function(){
+$('.hideme').find('div').hide();
+$('.clickme').click(function() {
+    $(this).parent().next('.hideme').find('div').slideToggle(400);
+    return false;        
+    });
+});
+
 function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
      $.ajax( {type: "GET", url: 'https://api.mongolab.com/api/1/databases/sensite/collections/phenomena?q={%22phenomena%22:"'+phenomenon1+'"}&c=true&apiKey=WQ-p4-Hc9W3Zoc05iAxqbvY8uib5UW_o', dataType:'json'})
              .success(function(data){ 
@@ -54,7 +62,7 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
   for (var key = 0; key < json.Informations.length; key++) 
   {   
       alert(json.Informations[0].BaseQoI.DataSource.Sensor.classification.sensorType);
-       $("#heytable").append("<tr><td>" +json.Informations[key].BaseQoI.DataSource.Sensor.classification.sensorType+" </td><td>"+json.Informations[key].BaseData.metric.QuantitativeMetric+"</td><td>"+json.Informations[key].BaseData.location.lat+"</td><td>"+json.Informations[key].BaseData.location.lon+"</td><td>"+json.Informations[key].BaseData.dateTime+"</td></tr>");  
+       $("#heytable").append("<tr><td class = 'clickme'>" +json.Informations[key].BaseQoI.DataSource.Sensor.classification.sensorType+" </td><td>"+json.Informations[key].BaseData.metric.QuantitativeMetric+"</td><td>"+json.Informations[key].BaseData.location.lat+"</td><td>"+json.Informations[key].BaseData.location.lon+"</td><td>"+json.Informations[key].BaseData.dateTime+"</td></tr><tr class="hideme"><td colspan="5" style="padding:0px; color:#000000;"><div>json</div></td></tr>");  
 
   } },1000);
 }
