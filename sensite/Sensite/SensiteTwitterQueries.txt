@@ -364,6 +364,7 @@ false,0,0,0
 false,0,0,0
 false,0,0,0
 false,0,0,0
+true,megazero93,Wed Mar 12 06:57:54 PDT 2014,@sensor4cities #ss rain$23,-34$2013-05-23_13:32:45
 false,0,0,0
 false,0,0,0
 false,0,0,0
@@ -748,6 +749,7 @@ false,0,0,0
 false,0,0,0
 false,0,0,0
 false,0,0,0
+true,megazero93,Wed Mar 12 07:17:16 PDT 2014,@sensor4cities #ss rain$23,-34$2013-05-23_13:32:45
 false,0,0,0
 false,0,0,0
 false,0,0,0
@@ -943,9 +945,7 @@ false,0,0,0
 false,0,0,0
 false,0,0,0
 false,0,0,0
-false,0,0,0
-false,0,0,0
-false,0,0,0
+true,megazero93,Wed Mar 12 07:26:43 PDT 2014,@sensor4cities #ss rain$23,-34$2013-05-23_13:32:45
 false,0,0,0
 false,0,0,0
 false,0,0,0
@@ -2241,6 +2241,7 @@ false,0,0,0
 false,0,0,0
 false,0,0,0
 false,0,0,0
+true,megazero93,Wed Mar 12 05:35:16 PDT 2014,@sensor4cities #ss rain$23,-34$2013-05-23_13:32:45
 false,0,0,0
 false,0,0,0
 false,0,0,0
@@ -2533,6 +2534,7 @@ false,0,0,0
 false,0,0,0
 false,0,0,0
 false,0,0,0
+true,megazero93,Wed Mar 12 05:31:20 PDT 2014,@sensor4cities #ss rain$23,-34$2013-05-23_13:32:45
 false,0,0,0
 false,0,0,0
 false,0,0,0
@@ -3323,6 +3325,7 @@ false,0,0,0
 false,0,0,0
 false,0,0,0
 false,0,0,0
+true,megazero93,Wed Mar 12 07:03:08 PDT 2014,@sensor4cities #ss rain$23,-34$2013-05-23_13:32:45
 false,0,0,0
 false,0,0,0
 false,0,0,0
@@ -3626,10 +3629,7 @@ false,0,0,0
 false,0,0,0
 false,0,0,0
 false,0,0,0
-false,0,0,0
-false,0,0,0
-false,0,0,0
-false,0,0,0
+true,megazero93,Wed Mar 12 06:12:01 PDT 2014,@sensor4cities #ss rain$23,-34$2013-05-23_13:32:45
 false,0,0,0
 false,0,0,0
 false,0,0,0

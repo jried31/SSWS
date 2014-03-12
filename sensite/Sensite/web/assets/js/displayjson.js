@@ -20,7 +20,7 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
      });
         
          var time = date1+"_"+time1+":00";
-         $.ajax( {type: "GET", url: 'http://localhost:8083/sensite/getObservations', data: {phenomena: 'rain', longitude: '23', latitude: '-34', time: '2013-05-23_13:32:45'}, dataType: 'json'})
+         $.ajax( {type: "GET", url: 'http://localhost:8083/sensite/getObservations', data: {phenomena: phenomenon1, longitude: latitude1, latitude: '-34', time: time}, dataType: 'json'})
          .done(function( data ) {
             json = data;
             alert(json.Informations.length);
@@ -61,11 +61,12 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
 
  $("#mapcontainer").html("<div id='map-canvas' style='height:500px; width:1100px' align='center'></div>");
  initialize();
- $("#tabledisplay").append("<br><style type='text/css'>.tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}.tftable th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;}.tftable tr {background-color:#d4e3e5;}.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}.tftable tr:hover {background-color:#ffffff;}</style><table id ='heytable' class='tftable' border='1'><tr><th>Expand</th><th>Sensor Type</th><th>Data Reading</th><th>Latitude</th><th>Longitude</th><th>Datetime</th></tr></table>");
+ $("#tabledisplay").append("<br><table id ='heytable' class='tftable' border='1'><tr><th>Expand</th><th>Sensor Type</th><th>Data Reading</th><th>Latitude</th><th>Longitude</th><th>Datetime</th></tr></table>");
   for (var key = 0; key < json.Informations.length; key++) 
   {   
 
       var j = JSON.stringify(json.Informations[key]);
+      alert(j);
        $("#heytable").append("<tr><td class = 'clickme'><center><h5><b>+</b></h5></center></td><td>" +json.Informations[key].BaseQoI.DataSource.Sensor.classification.sensorType+" </td><td>"+json.Informations[key].BaseData.metric.QuantitativeMetric+"</td><td>"+json.Informations[key].BaseData.location.lat+"</td><td>"+json.Informations[key].BaseData.location.lon+"</td><td>"+json.Informations[key].BaseData.dateTime+"</td></tr><tr class='hideme'><td colspan='6' style='padding:0px;'><div>"+j+"</div></td></tr>");  
 
   } 

@@ -16,6 +16,8 @@ and open the template in the editor.
 
   <!-- NEED TO WORK ON -->
 
+  <script src="assets/js/displayjson.js" type="text/javascript"></script>
+  
   <link href="assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen"/>
   <link href="assets/plugins/jquery-slider/css/jquery.sidr.light.css" rel="stylesheet" type="text/css" media="screen"/>
   <link href="assets/plugins/boostrapv3/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
@@ -45,6 +47,7 @@ and open the template in the editor.
   <script src="assets/js/core.js" type="text/javascript"></script> 
   <script src="assets/js/chat.js" type="text/javascript"></script> 
   <script src="assets/js/demo.js" type="text/javascript"></script> 
+  
  <script type="text/javascript">
  function isvalid()
  {
@@ -59,9 +62,21 @@ and open the template in the editor.
    {
     $("#errormsg").html("<h2><center><span style='color:red'>Please enter an XML file. </span></center></h2>");
      return;
-   }  
+ }
+ 
+ alert(document.getElementById("fileinput").value);
+ 
+      $.get(document.getElementById("fileinput").value, function(data) {
+        var fileDom = $(data);
+        fileDom.find('h2').each(function() {
+            alert($(this).text());
+        });
+    });
+    
+  // $.ajax( {type: "POST", url: 'https://api.mongolab.com/api/1/databases/sensite/collections/data?&apiKey=WQ-p4-Hc9W3Zoc05iAxqbvY8uib5UW_o', contentType:'application/json', data: JSON.stringify()});
 
 }
+
  </script>
   <!-- END CORE TEMPLATE JS --> 
 
@@ -228,7 +243,7 @@ and open the template in the editor.
     <button onclick="isvalid()" class="btn btn-primary btn-cons" type="button">Submit
     </button>
   </div>
-<br><br><br>
+      <br><br><br>
 <div id="errormsg" style="height:50px; width:100%">
   </div>
 

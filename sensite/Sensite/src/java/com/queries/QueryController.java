@@ -89,7 +89,7 @@ public class QueryController {
     public static JSONObject SendQuery(String[] query) throws IOException, JSONException{
         JSONObject result_json = null;
         String url_string;
-        url_string = "http://localhost:8084/sensite/getObservations?" + "phenomena=" + query[0] +
+        url_string = "http://localhost:8083/sensite/getObservations?" + "phenomena=" + query[0] +
                 "&longitude=" + query[1] + "&latitude=" + query[2] + "&time=" + query[3];
         URL url = new URL(url_string);
         InputStream is = url.openStream();
