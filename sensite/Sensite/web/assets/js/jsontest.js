@@ -1,4 +1,4 @@
-var json = [{
+var json1 = [{
     "_id": {
         "$oid": "531fb8b1e4b0c890ffc89607"
     },
@@ -118,10 +118,10 @@ function displayme()
     {
         if (json.hasOwnProperty(key)) 
        {
-        alert(json[key].Information.BaseQoI.DataSource.Sensor.classification.sensorType);
-        alert(json[key].Information.BaseData.location.lon);
-        alert(json[key].Information.BaseData.metric.QuantitativeMetric);
-        alert(json[key].Information.BaseData.dateTime.$date);
+        alert(json1[key].Information.BaseQoI.DataSource.Sensor.classification.sensorType);
+        alert(json1[key].Information.BaseData.location.lon);
+        alert(json1[key].Information.BaseData.metric.QuantitativeMetric);
+        alert(json1[key].Information.BaseData.dateTime.$date);
        }
     }
  //   alert(json[key].Information.BaseData.location.lon;
