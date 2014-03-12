@@ -1,7 +1,10 @@
 /**
  *
  * @author Sixiang
+ * 
  */
+package com.queries;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Map;
@@ -23,6 +26,11 @@ import com.restfb.FacebookClient.AccessToken;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.types.*;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONObject;
 import org.json.JSONException;
             
@@ -42,6 +50,41 @@ public class SensiteFacebook {
             return accessToken;
         }
         */
+        private static String createTmpPage(int hash, String JSONcontents, String[] PostMetaData) {
+            PrintWriter tempPage = null;
+            String path = "web/tmp/";
+            String fileName = path+hash+".html";
+            File f = new File(path);
+            File fi = new File(fileName);
+            f.mkdirs();
+            try {
+                fi.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(SensiteFacebook.class.getName()).log(Level.SEVERE, null, ex);
+            }//file path and file created
+            try {
+                tempPage = new PrintWriter(fileName, "UTF-8");
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(SensiteFacebook.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(SensiteFacebook.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //tempPage.write("hello temp string here\n"); //PLACEHOLDER, PUT GOTTEN INFO HERE
+            tempPage.write("Facebook user: " + PostMetaData[0] + "\n<br>Post Date: " + PostMetaData[1] + "\n<br>Post Contents: " + 
+                            PostMetaData[2] + "\n\n<br><br>Response:\n<br>" + JSONcontents);
+            tempPage.close();
+            return fileName;
+        }
+        
+        private static String[] getPostMetaData(FacebookClient fb_client, String post_id){
+            String[] metadata = new String[3];
+            Post cur_post = fb_client.fetchObject(post_id, Post.class);
+            metadata[0] = cur_post.getFrom().getName();
+            metadata[1] = cur_post.getCreatedTime().toString();
+            metadata[2] = cur_post.getMessage();
+            return metadata;
+        } 
         
         /*
         WriteLastTimeStamp will write time stamp of the
@@ -140,8 +183,9 @@ public class SensiteFacebook {
         }
    
         public static void main(String[] args) throws ParseException{
+            
             String long_term_access_token = "CAADXZC7MAQ98BAFyCiE9yE1GeFZCZB96eDQ2fGSivS3PMZCEeIrS88DOZC0CdllpynJAO2yf0aGJuxiFNnIUbq2O7v1iuNSxRI8zedxmGDNkl2GQROh5T3J1jgIegeFBwNcgBeN9mT45LhKrpZCKDcYQV8S4xzchXdHEEmtpkJl8SsMmMqhfOZC";
-            FacebookClient facebookClient = new DefaultFacebookClient(long_term_access_token);  
+            FacebookClient facebookClient = new DefaultFacebookClient(long_term_access_token); 
             while(true){
                 //Load previous time stamp
                 String prev_time_stamp = ReadLastestTimeStamp();           
@@ -152,12 +196,15 @@ public class SensiteFacebook {
                    String cur_post_id = entry.getKey();
                    String send_back = "This is just a test";
                    if(cur_message != null){
-                       String[] parse_result = QueryController.DoParsing(cur_message);                    
+                        System.out.println(cur_post_id);                        
+                        String[] parse_result = QueryController.DoParsing(cur_message);   
                        //We catch a new query
                        if(parse_result != null){
                            try{
+                               String[] metadata = getPostMetaData(facebookClient, cur_post_id);
                                JSONObject json_obj = QueryController.SendQuery(parse_result);
-                               send_back = QueryController.ParseJson(json_obj);
+                               String link = createTmpPage(cur_post_id.hashCode(),json_obj.toString(), metadata);
+                               send_back = "Here is the link to your query result: " + link;
                            }catch(IOException ioex){
                                ioex.printStackTrace();
                            }catch(JSONException jsonex){

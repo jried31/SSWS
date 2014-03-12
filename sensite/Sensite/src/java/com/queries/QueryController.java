@@ -63,15 +63,6 @@ public class QueryController {
         return sb.toString();
     }
     
-    /*
-    ParseJson will parse information from a json_obj and format a result string
-    to Facebook and Twitter handler
-    TODO: Figure out what the return string should look like.
-    */
-    public static String ParseJson(JSONObject json_obj){
-        String temp = null;
-        return temp;
-    }
     
     /*
     SendQuery will accept an array of query string which consists of
