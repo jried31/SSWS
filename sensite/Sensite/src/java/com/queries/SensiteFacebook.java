@@ -72,7 +72,8 @@ public class SensiteFacebook {
 
             //tempPage.write("hello temp string here\n"); //PLACEHOLDER, PUT GOTTEN INFO HERE
             tempPage.write("Facebook user: " + PostMetaData[0] + "\n<br>Post Date: " + PostMetaData[1] + "\n<br>Post Contents: " + 
-                            PostMetaData[2] + "\n\n<br><br>Response:\n<br>" + JSONcontents);
+                            PostMetaData[2] + "\n\n<br><br>Response:\n<br>");
+            tempPage.println(JSONcontents);
             tempPage.close();
             return fileName;
         }
