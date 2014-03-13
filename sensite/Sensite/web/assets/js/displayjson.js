@@ -59,7 +59,7 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
      return;
   }
 
- $("#mapcontainer").html("<div id='map-canvas' style='height:500px; width:1100px' align='center'></div>");
+ $("#mapcontainer").html("<div id='map-canvas' style='height:500px; width:100%' align='center'></div>");
  initialize();
  $("#tabledisplay").append("<br><table id ='heytable' class='tftable' border='1'><tr><th>Expand</th><th>Sensor Type</th><th>Data Reading</th><th>Latitude</th><th>Longitude</th><th>Datetime</th></tr></table>");
   for (var key = 0; key < json.Informations.length; key++) 
