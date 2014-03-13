@@ -196,8 +196,10 @@ public class SensiteFacebook {
                    String cur_post_id = entry.getKey();
                    String send_back = "This is just a test";
                    if(cur_message != null){
-                        System.out.println(cur_post_id);                        
-                        String[] parse_result = QueryController.DoParsing(cur_message);   
+                        System.out.println(cur_post_id);
+                        System.out.println(cur_message);
+;                        String[] parse_result = QueryController.DoParsing(cur_message);
+                        
                        //We catch a new query
                        if(parse_result != null){
                            try{
