@@ -27,10 +27,10 @@ public class QueryController {
         String text = query + " "; // dumb workaround for crashing when trying to access tmptxt[0]
         text.toLowerCase();
         if(text.contains("#ss")){
-            String regexmatcher = "(.*)[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+(.*)";
+            String regexmatcher = "(.*)[^\\s]+\\$[-0-9.]+,[-0-9]+\\$[^\\s]+(.*)";
             if(text.matches(regexmatcher)){ // may need to add 1 level of \
                 //messy code because java sucks at regex...
-                String [] tmptxt = text.split("[^\\s]+\\$[0-9.]+,[0-9]+\\$[^\\s]+"); // regex doesn't match correctly for date
+                String [] tmptxt = text.split("[^\\s]+\\$[-0-9.]+,[-0-9]+\\$[^\\s]+"); // regex doesn't match correctly for date
                 int tmplength = 0;
                 
                 
@@ -44,6 +44,12 @@ public class QueryController {
                 importantInfo = text.substring(tmptxt[0].length(), text.length()-tmplength); // should give substring of regex match
                 String [] tmparray = importantInfo.split("\\$");              
                 String [] latlong = tmparray[1].split("\\,");    
+                int tmp1 = Integer.parseInt(latlong[0]);
+                int tmp2 = Integer.parseInt(latlong[1]);
+                if(tmp1 < -180 || tmp1 > 180)
+                    latlong[0] = "0";
+                if(tmp2 < -180 || tmp2 > 180)
+                    latlong[1] = "0";
                 retVal[0] = tmparray[0]; //phenomenon
                 retVal[1] = latlong[0]; //latitude
                 retVal[2] = latlong[1]; //longitude
@@ -63,6 +69,17 @@ public class QueryController {
         return sb.toString();
     }
     
+
+    /*
+    ParseJson will parse information from a json_obj and format a result string
+    to Facebook and Twitter handler
+    TODO: Figure out what the return string should look like.
+    */
+    public static String ParseJson(JSONObject json_obj){
+        String temp = json_obj.toString();
+        return temp;
+    }
+
     
     /*
     SendQuery will accept an array of query string which consists of
@@ -72,8 +89,8 @@ public class QueryController {
     public static JSONObject SendQuery(String[] query) throws IOException, JSONException{
         JSONObject result_json = null;
         String url_string;
-        url_string = "http://localhost:8080/sensite/getObservations?" + "phenomena=" + query[0] +
-                "&longitude=" + query[2] + "&latitude=" + query[1] + "&time=" + query[3];
+        url_string = "http://localhost:8083/sensite/getObservations?" + "phenomena=" + query[0] +
+                "&longitude=" + query[1] + "&latitude=" + query[2] + "&time=" + query[3];
         URL url = new URL(url_string);
         InputStream is = url.openStream();
         try{        

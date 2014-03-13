@@ -50,7 +50,7 @@ public class SensiteFacebook {
             return accessToken;
         }
         */
-        private static String createTmpPage(int hash, String JSONcontents, String[] PostMetaData) {
+        private static String createTmpPage(int hash, String JSONcontents, String lat, String lon) {
             PrintWriter tempPage = null;
             String path = "web/tmp/";
             String fileName = path+hash+".html";
@@ -71,8 +71,7 @@ public class SensiteFacebook {
             }
 
             //tempPage.write("hello temp string here\n"); //PLACEHOLDER, PUT GOTTEN INFO HERE
-            tempPage.write("Facebook user: " + PostMetaData[0] + "\n<br>Post Date: " + PostMetaData[1] + "\n<br>Post Contents: " + 
-                            PostMetaData[2] + "\n\n<br><br>Response:\n<br>" + JSONcontents);
+            tempPage.write(part1 + lat + part2 + lon + part3 + JSONcontents + part4);
             tempPage.close();
             return fileName;
         }
@@ -205,8 +204,9 @@ public class SensiteFacebook {
                            try{
                                String[] metadata = getPostMetaData(facebookClient, cur_post_id);
                                JSONObject json_obj = QueryController.SendQuery(parse_result);
-                               String link = createTmpPage(cur_post_id.hashCode(),json_obj.toString(), metadata);
-                               send_back = "Here is the link to your query result: " + link;
+                               String link = createTmpPage(cur_post_id.hashCode(),json_obj.toString(), parse_result[2], parse_result[1]);
+                               String Str = link.substring(4);
+                               send_back = "Here is the link to your query result: http://108.168.239.92:8080/" + Str;
                            }catch(IOException ioex){
                                ioex.printStackTrace();
                            }catch(JSONException jsonex){
@@ -231,5 +231,160 @@ public class SensiteFacebook {
                  }               
             }
         }
+      private static String part1 = "<!DOCTYPE html>\n" +
+"<html>\n" +
+"<head>\n" +
+"	<title>Sensite</title>\n" +
+"	<meta http-equiv=\"content-type\" content=\"text/html;charset=UTF-8\" />\n" +
+"	<meta charset=\"utf-8\" />\n" +
+"	<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />\n" +
+"	<meta content=\"\" name=\"description\" />\n" +
+"	<meta content=\"\" name=\"author\" />\n" +
+"\n" +
+"	<!--GOOGLE MAP HEAD-->\n" +
+"	 <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\" />\n" +
+"    <style type=\"text/css\">\n" +
+"      html { height: 100% }\n" +
+"      body { height: 500px; margin: 0; padding: 0 }\n" +
+"      #map-canvas { height: 100% }\n" +
+"    </style>\n" +
+"\n" +
+"	<!-- NEED TO WORK ON -->\n" +
+"\n" +
+"	<link href=\"/Sensite2/assets/plugins/pace/pace-theme-flash.css\" rel=\"stylesheet\" type=\"text/css\" media=\"screen\"/>\n" +
+"	<link href=\"/Sensite2/assets/plugins/jquery-slider/css/jquery.sidr.light.css\" rel=\"stylesheet\" type=\"text/css\" media=\"screen\"/>\n" +
+"	<link href=\"/Sensite2/assets/plugins/boostrapv3/css/bootstrap.min.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"	<link href=\"/Sensite2/assets/plugins/boostrapv3/css/bootstrap-theme.min.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"	<link href=\"/Sensite2/assets/plugins/font-awesome/css/font-awesome.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"	<link href=\"/Sensite2/assets/css/animate.min.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"	\n" +
+"	<link href=\"/Sensite2/assets/css/responsive.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"	<link href=\"/Sensite2/assets/css/custom-icon-set.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"\n" +
+"	<!-- BEGIN CORE JS FRAMEWORK--> \n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-1.8.3.min.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/boostrapv3/js/bootstrap.min.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/breakpoints.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-unveil/jquery.unveil.min.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-block-ui/jqueryblockui.js\" type=\"text/javascript\"></script> \n" +
+"	<!-- END CORE JS FRAMEWORK --> \n" +
+"	<!-- BEGIN PAGE LEVEL JS --> 	\n" +
+"\n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-slider/jquery.sidr.min.js\" type=\"text/javascript\"></script> 	\n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/pace/pace.min.js\" type=\"text/javascript\"></script>  \n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-numberAnimate/jquery.animateNumbers.js\" type=\"text/javascript\"></script>\n" +
+"	<!-- END PAGE LEVEL PLUGINS --> 	\n" +
+"	\n" +
+"	<!-- BEGIN CORE TEMPLATE JS --> \n" +
+"	<script src=\"/Sensite2/assets/js/core.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/js/chat.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/js/demo.js\" type=\"text/javascript\"></script> \n" +
+"\n" +
+"	<script src=\"/Sensite2/assets/js/displayjson.js\" type=\"text/javascript\"></script>\n" +
+"	<script src=\"/Sensite2/assets/js/jsontest.js\" type=\"text/javascript\"></script>\n" +
+"    \n" +
+"        <script src=\"/Sensite2/assets/plugins/DataTables-1.9.4/media/js/jquery.js\" type =\"text/javascript\"></script>\n" +
+"        <script src=\"/Sensite2/assets/plugins/DataTables-1.9.4/media/js/jquery.dataTables.js\" type =\"text/javascript\"></script>\n" +
+"        <script src=\"/Sensite2/assets/js/modernizr.js\" type =\"text/javascript\"></script>\n" +
+"\n" +
+"	<!-- GOOGLE MAPS JS -->\n" +
+"	<script type=\"text/javascript\"\n" +
+"      src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyDio-wxQQCPRMjJmQGJV3IsUesvkc_Anfo&sensor=true\">\n" +
+"    </script>\n" +
+"    <script type=\"text/javascript\">\n" +
+"        \n" +
+"    var lat ='";
+    private static String part2 = "';\n" +
+"    var lon ='";
+    private static String part3 = "';\n" +
+"    var json =";
+    private static String part4 = ";    \n" +
+"        var j;\n" +
+"    var map;\n" +
+"      function initialize() {\n" +
+"	  $(\"#mapcontainer\").html(\"<div id='map-canvas' style='height:500px; width:1100px' align='center'></div>\");\n" +
+"        var mapOptions = {\n" +
+"          center: new google.maps.LatLng(lat, lon),\n" +
+"          zoom: 15\n" +
+"        };\n" +
+"        map = new google.maps.Map(document.getElementById(\"map-canvas\"),\n" +
+"            mapOptions);\n" +
+"	\n" +
+"        for( var key =0; key < json.Informations.length; key++)\n" +
+"        {\n" +
+"        	var myLatlng = new google.maps.LatLng(json.Informations[key].BaseData.location.lat,json.Informations[key].BaseData.location.lon);\n" +
+"        	  var marker = new google.maps.Marker({\n" +
+"    		  position: myLatlng,\n" +
+"    		  map: map,\n" +
+"  });\n" +
+"        }\n" +
+"        \n" +
+"      \n" +
+"    $(\"#tabledisplay\").append(\"<br><table id ='heytable' class='tftable' border='1'><tr><th>Expand</th><th>Sensor Type</th><th>Data Reading</th><th>Latitude</th><th>Longitude</th><th>Datetime</th></tr></table>\");\n" +
+"    for (var key = 0; key < json.Informations.length; key++) \n" +
+"    {   \n" +
+"\n" +
+"      j = JSON.stringify(json.Informations[key]);\n" +
+"       $(\"#heytable\").append(\"<tr><td class = 'clickme'><center><h5><b>+</b></h5></center></td><td>\" +json.Informations[key].BaseQoI.DataSource.Sensor.classification.sensorType+\" </td><td>\"+json.Informations[key].BaseData.metric.QuantitativeMetric+\"</td><td>\"+json.Informations[key].BaseData.location.lat+\"</td><td>\"+json.Informations[key].BaseData.location.lon+\"</td><td>\"+json.Informations[key].BaseData.dateTime+\"</td></tr><tr class='hideme'><td colspan='6' style='padding:0px;'><div>\"+j+\"</div></td></tr>\");  \n" +
+"  } \n" +
+"      \n" +
+"        \n" +
+"      }\n" +
+"      google.maps.event.addDomListener(window, 'load', initialize);\n" +
+"      \n" +
+"      \n" +
+"    \n" +
+"      \n" +
+"$(window).load(function(){\n" +
+"$('.hideme').find('div').hide();\n" +
+"$('.clickme').click(function() {\n" +
+"    $(this).parent().next('.hideme').find('div').slideToggle(400);\n" +
+"    return false;        \n" +
+"    });\n" +
+"});\n" +
+"    \n" +
+"    </script>\n" +
+"    \n" +
+"    <script>\n" +
+"        if (!Modernizr.inputtypes.date) {\n" +
+"            $(function() {\n" +
+"                $( \"#date\" ).datepicker({ dateFormat: 'yy-mm-dd' });\n" +
+"                $(\"#time\").attr('placeholder','HH:MM (Military time)');\n" +
+"            });\n" +
+"        }\n" +
+"    </script>\n" +
+"	<!-- END CORE TEMPLATE JS --> \n" +
+"\n" +
+"	<!-- END NEED TO WORK ON -->\n" +
+"<style type='text/css'>\n" +
+"    .tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}\n" +
+"    .tftable th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;}\n" +
+"    .tftable tr {background-color:#d4e3e5;}.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}\n" +
+"    .tftable tr:hover {background-color:#ffffff;}\n" +
+"</style>\n" +
+"</head>\n" +
+"<body class=\"\">\n" +
+"	<h1 align=\"center\" style=\"width:80%\"> Sensite</h1>\n" +
+"<!-- BEGIN CONTENT -->\n" +
+"\n" +
+"	<div id=\"mapcontainer\" style=\"height:50%;width:80%; padding-bottom:40px;\" align=\"center\">\n" +
+"	\n" +
+"	</div>\n" +
+"\n" +
+"	<div id =\"tabledisplay\" style=\"padding-bottom:35px; width:80%; padding-top:35px\" align=\"center\" >\n" +
+"	</div>\n" +
+"			<!-- END PLACE PAGE CONTENT HERE -->\n" +
+"		</div>\n" +
+"	</div>\n" +
+"	<!-- END PAGE CONTAINER -->\n" +
+"</div>\n" +
+"<!-- END CONTENT --> \n" +
+"\n" +
+"\n" +
+"</body>\n" +
+"</html>";
+    
+    
 }
-

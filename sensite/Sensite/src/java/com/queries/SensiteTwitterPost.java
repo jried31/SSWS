@@ -90,7 +90,8 @@ public class SensiteTwitterPost {
         }
     }
     
-    private static String createTmpPage(int hash, String JSONcontents) {
+    private static String createTmpPage(int hash, String JSONcontents, String lat, String lon) {
+        System.out.println("JSONcontents: " + JSONcontents);
         PrintWriter tempPage = null;
         String path = "web/tmp/";
         String fileName = path+hash+".html";
@@ -111,8 +112,10 @@ public class SensiteTwitterPost {
         }
 
         //tempPage.write("hello temp string here\n"); //PLACEHOLDER, PUT GOTTEN INFO HERE
-        tempPage.write("Twitter user: " + dupCheck[hash][1] + "\n<br>Tweet Date: " + dupCheck[hash][2] + "\n<br>Tweet Contents: " + 
-                        dupCheck[hash][3] + "\n\n<br><br>Response:\n<br>" + JSONcontents);
+        tempPage.write(part1 + lat + part2 + lon + part3 + JSONcontents + part4);
+       /* tempPage.write("Twitter user: " + dupCheck[hash][1] + "\n<br>Tweet Date: " + dupCheck[hash][2] + "\n<br>Tweet Contents: " + 
+                        dupCheck[hash][3] + "\n\n<br><br>Response:\n<br>");
+        tempPage.println(JSONcontents); */
         tempPage.close();
         return fileName;
     }
@@ -176,6 +179,7 @@ public class SensiteTwitterPost {
                 String[] tweetComponents = QueryController.DoParsing(tweetText);//checkTweet(tweetText);
                 if(tweetComponents != null){
                     int hash = hashFunc(tweet.getUser().getScreenName(), tweet.getCreatedAt().toString(), tweet.getText());
+                    //tweetComponents[3].
                     //if(dupCheck[hash][0].contains("false")){
                         if(tweet.getCreatedAt().compareTo(lastResponded)>0){
                             lastResponded = tweet.getCreatedAt();
@@ -185,18 +189,26 @@ public class SensiteTwitterPost {
                             dupCheck[hash][3] = tweet.getText();
                             //QueryController.ParseJson(QueryController.SendQuery(tweetComponents))
                             respondToTweet(twitter, tweetComponents, tweet.getUser().getScreenName(),
-                                    "", hash);
-                        }
-                    //}
+                                    hash);
+                            }
                 }
             }
         } while ((query = result.nextQuery()) != null);
     }
     
     private static void respondToTweet(Twitter twitter, String [] tweetComponents     
-                                        ,String respondtoUser, String JSONcontents, int hash) throws TwitterException{ 
-        String internalURL = createTmpPage(hash, JSONcontents);
-        Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data: " + internalURL + "... phenom: "+tweetComponents[0]+", long:"
+                                        ,String respondtoUser, int hash) throws TwitterException{ 
+        String JSONcontents = "If you see this message, then query failed.";
+        try {
+            JSONcontents = QueryController.ParseJson(QueryController.SendQuery(tweetComponents));
+        } catch (IOException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String internalURL = createTmpPage(hash, JSONcontents, tweetComponents[2], tweetComponents[1]);
+        String Str = internalURL.substring(4);
+        Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data: 108.168.239.92:8080/" + Str + "... phenom: "+tweetComponents[0]+", long:"
                                                 +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
         //System.out.println("@"+respondtoUser+" Here is your link to data: " + internalURL + "... phenom: "+tweetComponents[0]+", long:"
         //                                        +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
@@ -213,15 +225,27 @@ public class SensiteTwitterPost {
         return hash % HASH_SIZE;
     }
     
-    public static void startBot() { //mostly copied from twitter4j examples
+    public static void main(String[] args) { //mostly copied from twitter4j examples
         //int tmptest = 21347862;
         //System.out.println(createTmpPage(tmptest));
         //manageTmpPages();
-/*        for (String tmp : QueryController.DoParsing("#ssphen$11,12$time")){
-            System.out.println(tmp);
+        //for (String tmp : QueryController.DoParsing("#ssphen$11,12$time")){
+        //    System.out.println(tmp);
+        //}
+/*        String [] tmptxt = new String[4];
+        tmptxt[0] = "rain";
+        tmptxt[1] = "23";
+        tmptxt[2] = "-34";
+        tmptxt[3] = "2013-05-23_13%3A32%3A45";
+        try {
+            System.out.println(QueryController.ParseJson(QueryController.SendQuery(tmptxt)));
+        } catch (IOException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(SensiteTwitterPost.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return;
-  */      
+        return;*/
+        
         String testStatus="Hello from twitter4j, post 3";
         try {
             br = new BufferedReader(new FileReader("SensiteTwitterQueries.txt"));
@@ -332,4 +356,161 @@ public class SensiteTwitterPost {
             System.exit(-1);
         }
     }
+    
+    private static String part1 = "<!DOCTYPE html>\n" +
+"<html>\n" +
+"<head>\n" +
+"	<title>Sensite</title>\n" +
+"	<meta http-equiv=\"content-type\" content=\"text/html;charset=UTF-8\" />\n" +
+"	<meta charset=\"utf-8\" />\n" +
+"	<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />\n" +
+"	<meta content=\"\" name=\"description\" />\n" +
+"	<meta content=\"\" name=\"author\" />\n" +
+"\n" +
+"	<!--GOOGLE MAP HEAD-->\n" +
+"	 <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\" />\n" +
+"    <style type=\"text/css\">\n" +
+"      html { height: 100% }\n" +
+"      body { height: 500px; margin: 0; padding: 0 }\n" +
+"      #map-canvas { height: 100% }\n" +
+"    </style>\n" +
+"\n" +
+"	<!-- NEED TO WORK ON -->\n" +
+"\n" +
+"	<link href=\"/Sensite2/assets/plugins/pace/pace-theme-flash.css\" rel=\"stylesheet\" type=\"text/css\" media=\"screen\"/>\n" +
+"	<link href=\"/Sensite2/assets/plugins/jquery-slider/css/jquery.sidr.light.css\" rel=\"stylesheet\" type=\"text/css\" media=\"screen\"/>\n" +
+"	<link href=\"/Sensite2/assets/plugins/boostrapv3/css/bootstrap.min.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"	<link href=\"/Sensite2/assets/plugins/boostrapv3/css/bootstrap-theme.min.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"	<link href=\"/Sensite2/assets/plugins/font-awesome/css/font-awesome.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"	<link href=\"/Sensite2/assets/css/animate.min.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"	\n" +
+"	<link href=\"/Sensite2/assets/css/responsive.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"	<link href=\"/Sensite2/assets/css/custom-icon-set.css\" rel=\"stylesheet\" type=\"text/css\"/>\n" +
+"\n" +
+"	<!-- BEGIN CORE JS FRAMEWORK--> \n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-1.8.3.min.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/boostrapv3/js/bootstrap.min.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/breakpoints.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-unveil/jquery.unveil.min.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-block-ui/jqueryblockui.js\" type=\"text/javascript\"></script> \n" +
+"	<!-- END CORE JS FRAMEWORK --> \n" +
+"	<!-- BEGIN PAGE LEVEL JS --> 	\n" +
+"\n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-slider/jquery.sidr.min.js\" type=\"text/javascript\"></script> 	\n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/plugins/pace/pace.min.js\" type=\"text/javascript\"></script>  \n" +
+"	<script src=\"/Sensite2/assets/plugins/jquery-numberAnimate/jquery.animateNumbers.js\" type=\"text/javascript\"></script>\n" +
+"	<!-- END PAGE LEVEL PLUGINS --> 	\n" +
+"	\n" +
+"	<!-- BEGIN CORE TEMPLATE JS --> \n" +
+"	<script src=\"/Sensite2/assets/js/core.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/js/chat.js\" type=\"text/javascript\"></script> \n" +
+"	<script src=\"/Sensite2/assets/js/demo.js\" type=\"text/javascript\"></script> \n" +
+"\n" +
+"	<script src=\"/Sensite2/assets/js/displayjson.js\" type=\"text/javascript\"></script>\n" +
+"	<script src=\"/Sensite2/assets/js/jsontest.js\" type=\"text/javascript\"></script>\n" +
+"    \n" +
+"        <script src=\"/Sensite2/assets/plugins/DataTables-1.9.4/media/js/jquery.js\" type =\"text/javascript\"></script>\n" +
+"        <script src=\"/Sensite2/assets/plugins/DataTables-1.9.4/media/js/jquery.dataTables.js\" type =\"text/javascript\"></script>\n" +
+"        <script src=\"/Sensite2/assets/js/modernizr.js\" type =\"text/javascript\"></script>\n" +
+"\n" +
+"	<!-- GOOGLE MAPS JS -->\n" +
+"	<script type=\"text/javascript\"\n" +
+"      src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyDio-wxQQCPRMjJmQGJV3IsUesvkc_Anfo&sensor=true\">\n" +
+"    </script>\n" +
+"    <script type=\"text/javascript\">\n" +
+"        \n" +
+"    var lat ='";
+    private static String part2 = "';\n" +
+"    var lon ='";
+    private static String part3 = "';\n" +
+"    var json =";
+    private static String part4 = ";    \n" +
+"        var j;\n" +
+"    var map;\n" +
+"      function initialize() {\n" +
+"	  $(\"#mapcontainer\").html(\"<div id='map-canvas' style='height:500px; width:1100px' align='center'></div>\");\n" +
+"        var mapOptions = {\n" +
+"          center: new google.maps.LatLng(lat, lon),\n" +
+"          zoom: 15\n" +
+"        };\n" +
+"        map = new google.maps.Map(document.getElementById(\"map-canvas\"),\n" +
+"            mapOptions);\n" +
+"	\n" +
+"        for( var key =0; key < json.Informations.length; key++)\n" +
+"        {\n" +
+"        	var myLatlng = new google.maps.LatLng(json.Informations[key].BaseData.location.lat,json.Informations[key].BaseData.location.lon);\n" +
+"        	  var marker = new google.maps.Marker({\n" +
+"    		  position: myLatlng,\n" +
+"    		  map: map,\n" +
+"  });\n" +
+"        }\n" +
+"        \n" +
+"      \n" +
+"    $(\"#tabledisplay\").append(\"<br><table id ='heytable' class='tftable' border='1'><tr><th>Expand</th><th>Sensor Type</th><th>Data Reading</th><th>Latitude</th><th>Longitude</th><th>Datetime</th></tr></table>\");\n" +
+"    for (var key = 0; key < json.Informations.length; key++) \n" +
+"    {   \n" +
+"\n" +
+"      j = JSON.stringify(json.Informations[key]);\n" +
+"       $(\"#heytable\").append(\"<tr><td class = 'clickme'><center><h5><b>+</b></h5></center></td><td>\" +json.Informations[key].BaseQoI.DataSource.Sensor.classification.sensorType+\" </td><td>\"+json.Informations[key].BaseData.metric.QuantitativeMetric+\"</td><td>\"+json.Informations[key].BaseData.location.lat+\"</td><td>\"+json.Informations[key].BaseData.location.lon+\"</td><td>\"+json.Informations[key].BaseData.dateTime+\"</td></tr><tr class='hideme'><td colspan='6' style='padding:0px;'><div>\"+j+\"</div></td></tr>\");  \n" +
+"  } \n" +
+"      \n" +
+"        \n" +
+"      }\n" +
+"      google.maps.event.addDomListener(window, 'load', initialize);\n" +
+"      \n" +
+"      \n" +
+"    \n" +
+"      \n" +
+"$(window).load(function(){\n" +
+"$('.hideme').find('div').hide();\n" +
+"$('.clickme').click(function() {\n" +
+"    $(this).parent().next('.hideme').find('div').slideToggle(400);\n" +
+"    return false;        \n" +
+"    });\n" +
+"});\n" +
+"    \n" +
+"    </script>\n" +
+"    \n" +
+"    <script>\n" +
+"        if (!Modernizr.inputtypes.date) {\n" +
+"            $(function() {\n" +
+"                $( \"#date\" ).datepicker({ dateFormat: 'yy-mm-dd' });\n" +
+"                $(\"#time\").attr('placeholder','HH:MM (Military time)');\n" +
+"            });\n" +
+"        }\n" +
+"    </script>\n" +
+"	<!-- END CORE TEMPLATE JS --> \n" +
+"\n" +
+"	<!-- END NEED TO WORK ON -->\n" +
+"<style type='text/css'>\n" +
+"    .tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}\n" +
+"    .tftable th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;}\n" +
+"    .tftable tr {background-color:#d4e3e5;}.tftable td {font-size:12px;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;}\n" +
+"    .tftable tr:hover {background-color:#ffffff;}\n" +
+"</style>\n" +
+"</head>\n" +
+"<body class=\"\">\n" +
+"	<h1 align=\"center\" style=\"width:80%\"> Sensite</h1>\n" +
+"<!-- BEGIN CONTENT -->\n" +
+"\n" +
+"	<div id=\"mapcontainer\" style=\"height:50%;width:80%; padding-bottom:40px;\" align=\"center\">\n" +
+"	\n" +
+"	</div>\n" +
+"\n" +
+"	<div id =\"tabledisplay\" style=\"padding-bottom:35px; width:80%; padding-top:35px\" align=\"center\" >\n" +
+"	</div>\n" +
+"			<!-- END PLACE PAGE CONTENT HERE -->\n" +
+"		</div>\n" +
+"	</div>\n" +
+"	<!-- END PAGE CONTAINER -->\n" +
+"</div>\n" +
+"<!-- END CONTENT --> \n" +
+"\n" +
+"\n" +
+"</body>\n" +
+"</html>";
+    
+    
 }
