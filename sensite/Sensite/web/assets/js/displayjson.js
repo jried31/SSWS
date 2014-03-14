@@ -20,7 +20,7 @@ function sendToParse(phenomenon1, latitude1, longitude1, date1, time1){
      });
         
          var time = date1+"_"+time1+":00";
-         $.ajax( {type: "GET", url: 'http://localhost:8082/sensite/getObservations', data: {phenomena: phenomenon1, longitude: latitude1, latitude: '-34', time: time}, dataType: 'json'})
+         $.ajax( {type: "GET", url: 'http://108.168.239.92:8080/sensite/getObservations', data: {phenomena: phenomenon1, longitude: longitude1, latitude: latitude1, time: time}, dataType: 'json'})
          .done(function( data ) {
             json = data;
            // alert(json.Informations.length);

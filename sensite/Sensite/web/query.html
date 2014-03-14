@@ -92,7 +92,7 @@ $('.clickme').click(function() {
         if (!Modernizr.inputtypes.date) {
             $(function() {
                 $( "#date" ).datepicker({ dateFormat: 'yy-mm-dd' });
-                $("#time").attr('placeholder','HH:MM (Military time)');
+                $("#time").attr('placeholder','HH:MM (24H time)');
             });
         }
     </script>
@@ -289,7 +289,7 @@ $('.clickme').click(function() {
           <div data-role="fieldcontain" data-controltype="dateinput" float:left;>
               <label for="time">
 
-                  Enter Time:
+                  Enter Time (GMT-1):
               </label>
               <input name="" id="time" placeholder="" value="" type="time">
           </div>
