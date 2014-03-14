@@ -75,7 +75,7 @@ public class SensiteTwitterPost {
     private static Date lastResponded = new Date();
     
     private static void manageTmpPages(){
-        File folder = new File("web/tmp/");
+        File folder = new File("/root/appDev/apache-tomcat-7.0.52/webapps/tmp/");
         File[] fileList = folder.listFiles();
         if (fileList != null)
         for( File file : fileList){
@@ -93,7 +93,7 @@ public class SensiteTwitterPost {
     private static String createTmpPage(int hash, String JSONcontents, String lat, String lon) {
         System.out.println("JSONcontents: " + JSONcontents);
         PrintWriter tempPage = null;
-        String path = "web/tmp/";
+        String path = "/root/appDev/apache-tomcat-7.0.52/webapps/tmp/";
         String fileName = path+hash+".html";
         File f = new File(path);
         File fi = new File(fileName);
@@ -208,7 +208,7 @@ public class SensiteTwitterPost {
         }
         String internalURL = createTmpPage(hash, JSONcontents, tweetComponents[2], tweetComponents[1]);
         String Str = internalURL.substring(4);
-        Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data: 108.168.239.92:8080/" + Str + "... phenom: "+tweetComponents[0]+", long:"
+        Status status = twitter.updateStatus("@"+respondtoUser+" Here is your link to data: 108.168.239.92:8080/tmp" + hash + ".html ... phenom: "+tweetComponents[0]+", long:"
                                                 +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
         //System.out.println("@"+respondtoUser+" Here is your link to data: " + internalURL + "... phenom: "+tweetComponents[0]+", long:"
         //                                        +tweetComponents[1]+", lat:"+tweetComponents[2]+", time:"+tweetComponents[3]);
@@ -495,7 +495,7 @@ public class SensiteTwitterPost {
 "	<h1 align=\"center\" style=\"width:80%\"> Sensite</h1>\n" +
 "<!-- BEGIN CONTENT -->\n" +
 "\n" +
-"	<div id=\"mapcontainer\" style=\"height:50%;width:80%; padding-bottom:40px;\" align=\"center\">\n" +
+"	<div id=\"mapcontainer\" style=\"height:50%;width:80%; padding-bottom:500px;\" align=\"center\">\n" +
 "	\n" +
 "	</div>\n" +
 "\n" +

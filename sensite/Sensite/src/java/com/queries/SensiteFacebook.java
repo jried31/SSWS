@@ -52,7 +52,7 @@ public class SensiteFacebook {
         */
         private static String createTmpPage(int hash, String JSONcontents, String lat, String lon) {
             PrintWriter tempPage = null;
-            String path = "web/tmp/";
+            String path = "/root/appDev/apache-tomcat-7.0.52/webapps/tmp/";
             String fileName = path+hash+".html";
             File f = new File(path);
             File fi = new File(fileName);
@@ -195,10 +195,8 @@ public class SensiteFacebook {
                    String cur_post_id = entry.getKey();
                    String send_back = "This is just a test";
                    if(cur_message != null){
-                        System.out.println(cur_post_id);
-                        System.out.println(cur_message);
-;                        String[] parse_result = QueryController.DoParsing(cur_message);
-                        
+                        System.out.println(cur_post_id);                        
+                        String[] parse_result = QueryController.DoParsing(cur_message);   
                        //We catch a new query
                        if(parse_result != null){
                            try{
@@ -206,7 +204,7 @@ public class SensiteFacebook {
                                JSONObject json_obj = QueryController.SendQuery(parse_result);
                                String link = createTmpPage(cur_post_id.hashCode(),json_obj.toString(), parse_result[2], parse_result[1]);
                                String Str = link.substring(4);
-                               send_back = "Here is the link to your query result: http://108.168.239.92:8080/" + Str;
+                               send_back = "Here is the link to your query result: http://108.168.239.92:8080/tmp/" + cur_post_id.hashCode() + ".html";
                            }catch(IOException ioex){
                                ioex.printStackTrace();
                            }catch(JSONException jsonex){
@@ -369,7 +367,7 @@ public class SensiteFacebook {
 "	<h1 align=\"center\" style=\"width:80%\"> Sensite</h1>\n" +
 "<!-- BEGIN CONTENT -->\n" +
 "\n" +
-"	<div id=\"mapcontainer\" style=\"height:50%;width:80%; padding-bottom:40px;\" align=\"center\">\n" +
+"	<div id=\"mapcontainer\" style=\"height:50%;width:80%; padding-bottom:500px;\" align=\"center\">\n" +
 "	\n" +
 "	</div>\n" +
 "\n" +

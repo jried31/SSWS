@@ -1,0 +1,16 @@
+Twitter account:
+SensiteSSWS
+cs130sensite
+
+To run facebook and twitter bots:
+
+copy the "classes" folder in home to SSWS/sensite/Sensite/build/web/WEB-INF if it is not already there
+
+run netbeans to update the builds of sensitetwitterpost and sensitefacebook, if needed
+
+run from SSWS/sensite/Sensite:
+
+java -cp build/web/WEB-INF/classes com.queries.SensiteFacebook
+
+(in a different shell)
+java -cp build/web/WEB-INF/classes com.queries.SensiteTwitterPost
