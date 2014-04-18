@@ -7,17 +7,15 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html>
 <head>
-
-  <!-- NEED TO WORK ON -->
-
-<html>
-<head>
   <title>Sensite</title>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta content="" name="description" />
   <meta content="" name="author" />
+
+  <!-- NEED TO WORK ON -->
+
   <script src="assets/js/displayjson.js" type="text/javascript"></script>
   
   <link href="assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen"/>
@@ -49,44 +47,24 @@ and open the template in the editor.
   <script src="assets/js/core.js" type="text/javascript"></script> 
   <script src="assets/js/chat.js" type="text/javascript"></script> 
   <script src="assets/js/demo.js" type="text/javascript"></script> 
+
   
  <script type="text/javascript">
- $( document ).ready(function() {
-    /* var a = "{\"Informations\": [                                                                                                                                                                                                                                                                                                                                                                                                         {                                                                                                                                                                                                                                                                                                                                                                                                        \"BaseQoI\": {\"DataSource\": {\"Sensor\": {\"classification\": {\"sensorType\": \"transducer\"}}}},                                                                                                                                                                                                                                                                                                                                                                                                                \"BaseData\": {                                                                                                                                                                                                                                                                                                                                                                                                                    \"location\": {                                                                                                                                                                                                                                                                                                                                                                                                                        \"lon\": -34,                                                                                                                                                                                                                                                                                                                                                                                                                        \"lat\": 23                                                                                                                                                                                                                                                                                                                                                                                                                    },                                                                                                                                                                                                                                                                                                                                                                                                                    \"dateTime\": \"2013-05-23T13:32:45Z\",                                                                                                                                                                                                                                                                                                                                                                                                                    \"metric\": {\"QuantitativeMetric\": 12.32}                                                                                                                                                                                                                                                                                                                                                                                                                },                                                                                                                                                                                                                                                                                                                                                                                                                \"relevancy\": 192                                                                                                                                                                                                                                                                                                                                                                                                            },                                                                                                                                                                                                                                                                                                                                                                                                            {                                                                                                                                                                                                                                                                                                                                                                                                                \"BaseQoI\": {\"DataSource\": {\"Sensor\": {\"classification\": {\"sensorType\": \"rain gauge\"}}}},                                                                                                                                                                                                                                                                                                                                                                                                                \"BaseData\": {                                                                                                                                                                                                                                                                                                                                                                                                                    \"location\": {                                                                                                                                                                                                                                                                                                                                                                                                                        \"lon\": -34,                                                                                                                                                                                                                                                                                                                                                                                                                        \"lat\": 23                                                                                                                                                                                                                                                                                                                                                                                                                    },                                                                                                                                                                                                                                                                                                                                                                                                                    \"dateTime\": \"2013-05-23T13:32:45Z\",                                                                                                                                                                                                                                                                                                                                                                                                                    \"metric\": {\"QuantitativeMetric\": 1.33}                                                                                                                                                                                                                                                                                                                                                                                                                },                                                                                                                                                                                                                                                                                                                                                                                                                \"relevancy\": 208                                                                                                                                                                                                                                                                                                                                                                                                            },                                                                                                                                                                                                                                                                                                                                                                                                            ]}";
-var b = document.getElementById('thiswaslong');
-b.setAttribute('placeholder', a);
-*/
-});
 
- 
  function isvalid()
  {
-     var b = document.getElementById('thiswaslong'); 
-     /*
-  $("#errormsg").html("");
-  if($("#fileinput").val() == "")
-  {
-    $("#errormsg").html("<h2><center><span style='color:red'>You have not selected a file </span></center></h2>");
-     return;
-  }
-  
-  if($("#fileinput").val()[$("#fileinput").val().length-1]!= "l" || $("#fileinput").val()[$("#fileinput").val().length-2]!="m" || $("#fileinput").val()[$("#fileinput").val().length-3]!="x")
-   {
-    $("#errormsg").html("<h2><center><span style='color:red'>Please enter an XML file. </span></center></h2>");
-     return;
- }
- */
- 
-  if(b.value == ""){
+      var b = document.getElementById('thiswaslong'); 
+
+     if(b.value == ""){
       alert("Please Enter Data")
       return;
   }
   var obj = "'" + b.value + "'";
+  obj = obj.replace(/(\r\n|\n|\r)/gm,"");
   var json = eval("(" + obj + ")");
- 
-  $.ajax( {type: "POST", url: 'https://api.mongolab.com/api/1/databases/sensite/collections/data?&apiKey=WQ-p4-Hc9W3Zoc05iAxqbvY8uib5UW_o', contentType:'application/json', data: json });
-  alert("sent!");
 
+   $.ajax( {type: "POST", url: 'https://api.mongolab.com/api/1/databases/sensite/collections/data?&apiKey=WQ-p4-Hc9W3Zoc05iAxqbvY8uib5UW_o', contentType:'application/json', data: json});
+  alert("Upload successful!");
 }
 
  </script>
@@ -175,6 +153,7 @@ b.setAttribute('placeholder', a);
   <div class="page-sidebar" id="main-menu"> 
       <div class="page-sidebar-wrapper" id="main-menu-wrapper">
     <!-- BEGIN SIDEBAR MENU --> 
+    <p class="menu-title">BROWSE<span class="pull-right"><a href="javascript:;"><i class="fa fa-refresh"></i></a></span></p>
     <ul>  
       <!-- BEGIN SELECTED LINK -->
       <li class="">
@@ -237,29 +216,24 @@ b.setAttribute('placeholder', a);
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
     </head>
-    <body>
       <body>
-          <div data-role="content">
+  <div data-role="page" data-control-title="Home" id="page1">
+      <div data-role="content">
           <div data-role="fieldcontain" data-controltype="fileinput">
-      <!--         <label> Example Data</label>
-              <h5 id ="ex1">a</div>
-              <br>
-              <br>-->
+
               <label for="upload">
                   <b> Enter Data:</b>
-              </label>
-              
-            <TEXTAREA name='thiswaslong' id='thiswaslong' style="width:80%" ROWS=33 COLS=150></TEXTAREA>
+				  </label>
+ <TEXTAREA name='thiswaslong' id='thiswaslong' style="width:80%" ROWS=33 COLS=150></TEXTAREA>
           </div>
-              
       </div>
-<!-- placeholder="sensortype$latitude$longitude$MM-DD-YYYY_HH:MM$sensordata;" -->
+
   <div id="content" style="background-color:#e5e9ec;height:70px;width=300px;float:left;padding-bottom:50px">
    <br>
     <button onclick="isvalid()" class="btn btn-primary btn-cons" type="button">Submit
     </button>
   </div>
-      <br><br><br>
+<br><br><br>
 <div id="errormsg" style="height:50px; width:100%">
   </div>
 
