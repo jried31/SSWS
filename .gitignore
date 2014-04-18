@@ -1,3 +1,9 @@
+*.class
 /sensite/Sensite/nbproject/private/
 /sensite/Sensite/build/
 /sensite/Sensite/dist/
+/SensiteKB/nbproject/private/
+/SensiteKB/build/
+/SensiteWS/nbproject/private/
+/SensiteWS/build/
+/SensiteWS/dist/
