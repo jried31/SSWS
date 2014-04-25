@@ -12,6 +12,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import edu.ucla.cs218.sensite.MongoConnector;
 import java.util.HashMap;
 import java.util.HashSet;
+import wordnet.wordnet;
 
 public class Crawler extends WebCrawler {
 
@@ -49,26 +50,47 @@ public class Crawler extends WebCrawler {
      */
     @Override
     public void visit(Page page) {
-//            String url = page.getWebURL().getURL();
-//            System.out.println("URL: " + url);
+            String url = page.getWebURL().getURL();
+            System.out.println("URL: " + url);
 
         Matcher matcher = new Matcher(page.getWebURL());
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String text = htmlParseData.getText();
-
+            
             // Clean and format the text
             String textClean = text.trim().replaceAll("\\s+", " ");
-            textClean = textClean.replaceAll("[^0-9a-zA-Z!.?'\\-]", " ");
-            textClean = textClean.replaceAll("\\s+", " ");
    
+                wordnet wordNet = new wordnet();
             //Match phenomenons and sensors based in text from the website crawled
             if (SPLIT_ON_PUNCTIONATION_MARKS) {
-                String[] lines = textClean.split("[.?!;:\\r?\\n]+");
+                String[] lines = textClean.split("[.?!]+");
                 HashMap <String, HashSet<String>>relations=new HashMap <String, HashSet<String>>();
                 for (String line : lines) {
                     
-                    matcher.matchPhenomenonToSensor(line,relations);
+                    line = line.replaceAll("[^0-9a-zA-Z!.?'\\-]", " ");
+                    line = line.replaceAll("\\s+", " ");
+                    System.out.println("Line: "+ line);
+                    for(String word:line.split(" ")){
+                        try {
+                            word = word.toLowerCase();
+                                if(wordNet.isNoun(word)){
+                                    System.out.print("NOUN: " + word +" | ");
+                                }
+                                if(wordNet.isVerb(word))
+                                {
+                                    System.out.print("VERB: " + word +" | ");
+                                }
+                                if(wordNet.isAdjective(word))
+                                {
+                                    System.out.print("ADJECTIVE: " + word +" | ");
+                                }
+                            }catch(Exception e) {
+                                e.printStackTrace();
+                            }
+                        //matcher.matchPhenomenonToSensor(line,relations);
+                    }
+                    System.out.println("\n\n");
                 }
                 matcher.saveStatisticsToDB(relations);
             }

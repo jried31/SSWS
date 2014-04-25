@@ -109,7 +109,7 @@ public class Controller {
             controller.start(Crawler.class, numberOfCrawlers); 
 	}
 	
-    static String []searchTerms = {"? measurement instrument", "how to measure ?"};
+    static String []searchTerms = {"\"?\" measurement instrument", "how to measure \"?\""};
     public static void main(String [ ] args) throws Exception {
     	
         DB db = MongoConnector.getDatabase();

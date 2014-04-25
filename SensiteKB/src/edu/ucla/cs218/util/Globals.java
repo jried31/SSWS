@@ -16,4 +16,5 @@ public class Globals {
     public final static int SEARCH_PAGE_DEPTH=10;
     public static int WEBPAGE_LINK_DEPTH=1;
     public static int MAX_NUMBER_CRAWLERS=100;
+    public static String WORDNET_DIR="/Users/jried31/dev_tools/wordnet/dict";
 }

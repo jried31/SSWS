@@ -31,7 +31,7 @@ public class Analyzer {
         DBCursor cursor;
         
         HashMap <String, HashMap<String,Integer>> data = new HashMap<String, HashMap<String,Integer>>();
-          File file = new File("/Users/jried31/relations.txt");
+          File file = new File("/Users/jried31/relations.csv");
 
         // if file doesnt exists, then create it
         if (!file.exists()) {
@@ -39,7 +39,7 @@ public class Analyzer {
         }
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("Phenomena"+"\t"+"Sensor"+"\n");
+        bw.write("Phenomena,Sensor,Count\n");
         
         //Fill phenomenon list
         cursor = phenomenaList.find();
@@ -47,7 +47,7 @@ public class Analyzer {
             while(cursor.hasNext()) {
                 DBObject phenomenaObj = cursor.next();
                 String phenomena = (String) phenomenaObj.get("phenomena");
-                System.out.println("The Phenomena: "+phenomena);
+                //System.out.println("The Phenomena: "+phenomena);
                 HashMap<String,Integer>sensors=new HashMap<String,Integer>();
                 
 		// Setup the query
@@ -65,14 +65,15 @@ public class Analyzer {
                     while(it.hasNext()){
                        DBObject obj=(DBObject) it.next();
                        String sensor = (String) obj.get("sensor");
-                        System.out.println("The Sensor: "+sensor);
+                       //System.out.println("The Sensor: "+sensor);
                        Integer i = sensors.get(sensor);
                        if(i==null) 
                            sensors.put(sensor,new Integer(1));
                        else
                            sensors.put(sensor,++i);
-                       
-                        System.out.println(phenomena+"\t"+sensor+"\t"+sensors.get(sensor)+"\n");
+                       String output = phenomena+","+sensor+","+sensors.get(sensor)+"\n";
+                       //bw.write(output);
+                       //System.out.println(output);
                        noObservations++;
                     }
                 }
@@ -81,8 +82,11 @@ public class Analyzer {
                 BasicDBList countList = new BasicDBList();
                 for(String sensor:sensors.keySet()){
                     countList.add(new BasicDBObject("sensor",sensor).append("count", sensors.get(sensor)));
-                    System.out.println(phenomena+"\t"+sensor+"\t"+sensors.get(sensor)+"\n");
+                    String output = phenomena+","+sensor+","+sensors.get(sensor)+"\n";
+                    //System.out.println(output);
+                    bw.write(output);
                 }
+                
                 BasicDBObject association = new BasicDBObject("phenomenon",phenomena)
                         .append("observations", noObservations)
                         .append("association", countList);
@@ -91,6 +95,7 @@ public class Analyzer {
             }
         } finally {
             cursor.close();
+            bw.close();
         }
         
         /*Check the Database to see if it's already been crawled
