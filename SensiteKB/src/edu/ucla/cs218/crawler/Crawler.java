@@ -1,8 +1,8 @@
 package edu.ucla.cs218.crawler;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
-import com.mongodb.DBObject;
 import java.util.regex.Pattern;
 
 import edu.uci.ics.crawler4j.crawler.Page;
@@ -12,6 +12,13 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import edu.ucla.cs218.sensite.MongoConnector;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import weka.core.Stopwords;
+import weka.core.stemmers.SnowballStemmer;
 import wordnet.wordnet;
 
 public class Crawler extends WebCrawler {
@@ -34,7 +41,7 @@ public class Crawler extends WebCrawler {
         if (FILTERS.matcher(href).matches()) {
             return false;
         }
-
+/*
         //Check the Database to see if it's already been crawled
         DB db = MongoConnector.getDatabase();
 
@@ -42,6 +49,8 @@ public class Crawler extends WebCrawler {
         BasicDBObject query = new BasicDBObject("webpage", href);
         DBObject obj = db.getCollection("webpages").findOne(query);
         return obj == null;
+        */
+        return true;
     }
 
     /**
@@ -54,16 +63,150 @@ public class Crawler extends WebCrawler {
             System.out.println("URL: " + url);
 
         Matcher matcher = new Matcher(page.getWebURL());
-        if (page.getParseData() instanceof HtmlParseData) {
+        if (page.getParseData() instanceof HtmlParseData) 
+        {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-            String text = htmlParseData.getText();
+            String text = htmlParseData.getHtml();
             
+            //Use JSoup to grab the P elements ONLY
+            Document doc = Jsoup.parse(text);
+            Elements ptag = doc.getElementsByTag("p");
+            StringBuffer dataBuffer = new StringBuffer();
+            for (Element data : ptag) {
+                dataBuffer.append(data.text().toLowerCase()+" ");
+            }
+            String content = dataBuffer.toString();
+            System.out.println(content);
+            System.out.println("done");
+            
+            wordnet wordNet = new wordnet();
+            if (SPLIT_ON_PUNCTIONATION_MARKS) 
+            {
+                String[] lines = content.split("[.?!]+");
+                SnowballStemmer stemmer = new SnowballStemmer();  // initialize stopwords
+                Stopwords stopwords = new Stopwords();
+                stemmer.setStemmer("english");
+                for(int k = 2;k < 6;k++)
+                {
+                    for (String line : lines) 
+                    {
+                        line = line.replaceAll("[^0-9a-zA-Z!.?'\\-]", " ");
+                        line = line.replaceAll("\\s+", " ");
+                        //Remove stop words
+                        for (String phenomena : Controller.phenomenaNames.values()) 
+                        {
+                            HashMap<String,Integer> freqCountWithoutStopwords = new HashMap<String,Integer>(),
+                                    freqCountStopwords = new HashMap<String,Integer>();
+                            if (line.matches(".*\\b"+phenomena+"\\b.*"))
+                            {
+                                System.out.println("Phenomena: "+phenomena);
+                                String words[]=line.split(" ");
+                                //Remove stopwords
+                                LinkedList<String> sentenceStopWords = new LinkedList<String> (),
+                                        sentencewithoutStopWords = new LinkedList<String> ();
+                                for(String word:words){
+                                    if(word.length() > 0){
+                                        word=stemmer.stem(word);
+                                        //anding one with and one w/o stopwords
+                                        if(!stopwords.is(word))
+                                            sentencewithoutStopWords.add(word);
+
+                                        sentenceStopWords.add(word);
+                                    }
+                                }
+                                System.out.println("List w/o stops: "+sentencewithoutStopWords);
+                                
+                                 //Create the Shingle list without the stop words
+                                int size = sentencewithoutStopWords.size();
+                                if(size >= k)
+                                {
+                                    for(int i = 0;i < sentencewithoutStopWords.size()-(k);i++)
+                                    {
+                                        String set=sentencewithoutStopWords.get(i)+"-";
+                                        for(int j = i+1;j < i+(k);j++){
+                                            set+=sentencewithoutStopWords.get(j)+"-";
+                                        }
+                                        
+                                        //Add the set to the Hashmap & count freq
+                                        Integer count=freqCountWithoutStopwords.get(set);
+                                        if(count == null)
+                                            count=1;
+                                        else count++;
+                                        freqCountWithoutStopwords.put(set, count);
+                                        System.out.println("Set: "+ set);
+                                    }
+                                    
+                                    //Add to DB                   
+                                    DB db3 = MongoConnector.getDatabase();
+                                    // Setup the query
+                                    BasicDBList shingle = new BasicDBList();
+                                    BasicDBObject row =new BasicDBObject("phenomena",phenomena)
+                                            .append("k",k)
+                                            .append("stopwords",0);
+                                    BasicDBList relationship = new BasicDBList();
+                                    for(String key: freqCountWithoutStopwords.keySet()){
+                                        relationship.add(new BasicDBObject("set",key).append("count",freqCountWithoutStopwords.get(key)));
+                                        //System.out.println("Key: "+key + " - Value: "+ freqCountWithoutStopwords.get(key));
+                                    }
+                                    row.append("sets",relationship);
+                                    shingle.add(row);
+                                    db3.getCollection("shingle").insert(row);
+                                }
+                                
+                                
+                                System.out.println("List w stops: "+sentenceStopWords);
+                                if(sentenceStopWords.size() >= k)
+                                {
+                                    for(int i = 0;i < sentenceStopWords.size()-(k);i++)
+                                    {
+                                        String set=sentenceStopWords.get(i)+"-";
+                                        for(int j = i+1;j < i+(k);j++){
+                                            set+=sentenceStopWords.get(j)+"-";
+                                        }
+
+                                        //Add the set to the Hashmap & count freq
+                                        Integer count=freqCountStopwords.get(set);
+                                        if(count == null)
+                                            count=1;
+                                        else count++;
+                                        freqCountStopwords.put(set, count);
+
+                                        //System.out.println("Set: "+ set);
+                                    
+                                    //matcher.matchPhenomenonToSensor(line,relations);
+                                    }
+                                    
+                                    // Setup the query
+                                    DB db3 = MongoConnector.getDatabase();
+                                    BasicDBList shingle = new BasicDBList();
+ BasicDBObject row =new BasicDBObject("phenomena",phenomena)
+                                            .append("k",k)
+                                            .append("stopwords",0);
+                                                                      
+
+// shingle.add(new BasicDBObject("phenomena",phenomena)
+                                     //       .append("k",k)
+                                       //     .append("stopwords",1));
+                                    BasicDBList relationship = new BasicDBList();
+                                    for(String key: freqCountStopwords.keySet()){
+                                        relationship.add(new BasicDBObject("set",key).append("count",freqCountStopwords.get(key)));
+                                        //System.out.println("Key: "+key + " - Value: "+ freqCountStopwords.get(key));
+                                    }
+                                    row.append("sets",relationship);
+                                    db3.getCollection("shingle").insert(row);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            /*
             // Clean and format the text
             String textClean = text.trim().replaceAll("\\s+", " ");
    
-                wordnet wordNet = new wordnet();
             //Match phenomenons and sensors based in text from the website crawled
-            if (SPLIT_ON_PUNCTIONATION_MARKS) {
+            if (SPLIT_ON_PUNCTIONATION_MARKS) 
+            {
                 String[] lines = textClean.split("[.?!]+");
                 HashMap <String, HashSet<String>>relations=new HashMap <String, HashSet<String>>();
                 for (String line : lines) {
@@ -94,6 +237,7 @@ public class Crawler extends WebCrawler {
                 }
                 matcher.saveStatisticsToDB(relations);
             }
+            */
         }
     }
 }

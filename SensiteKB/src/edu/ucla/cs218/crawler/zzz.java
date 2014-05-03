@@ -29,7 +29,7 @@ public class zzz {
         
         HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
         if(htmlParseData != null){
-            String text = htmlParseData.getText();
+            String text = htmlParseData.getHtml();
 
             // Clean and format the text
             String textClean = text.trim().replaceAll("\\s+", " ");

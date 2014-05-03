@@ -70,9 +70,7 @@ public class Matcher {
         if (!relations.isEmpty()) {
             // Convert the sensorsList to a MongoDB recognizable array
             
-            BasicDBList phenomList = new BasicDBList(),
-                    sensorList=new BasicDBList(),
-                    relationsList=new BasicDBList();
+            BasicDBList relationsList=new BasicDBList();
             
             for(String k:relations.keySet()){
                 HashSet<String>sensors=relations.get(k);
