@@ -21,7 +21,7 @@ public class Matcher {
         ArrayList<String>sensors=new ArrayList<String>();
         ArrayList<String>phenomenas=new ArrayList<String>();
         
-        for (String p : Controller.phenomenaNames.values()) {
+        for (String p : Controller.phenomenaNames.keySet()) {
             if (text.matches(".*\\b"+p+"\\b.*")){
                 phenomenas.add(p);
                 /*Integer s=phenomenons.get(phenomenon);
@@ -32,7 +32,7 @@ public class Matcher {
             }
         }
         
-        for (String s : Controller.sensorNames.values()) {
+        for (String s : Controller.sensorNames.keySet()) {
             if (text.matches(".*\\b"+s+"\\b.*")) {
                 sensors.add(s);
                 /*Integer s = sensors.get(sensor);

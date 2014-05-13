@@ -32,12 +32,12 @@ public class MatchFinder {
     public List<PhenomenaSensorRelation> FindMatches(String text) {
         List<PhenomenaSensorRelation> matches = new ArrayList<PhenomenaSensorRelation>();
         PhenomenaSensorRelation relation = new PhenomenaSensorRelation();
-        for(String phenomenon : Controller.phenomenaNames.values())
+        for(String phenomenon : Controller.phenomenaNames.keySet())
         {
             if(text.contains(phenomenon))
                 relation.setPhenomena(phenomenon);
         }
-        for(String sensor : Controller.sensorNames.values())
+        for(String sensor : Controller.sensorNames.keySet())
         {
             if(text.contains(sensor))
                 relation.setSensor(sensor);
