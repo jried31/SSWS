@@ -205,7 +205,7 @@ public class AssociationJaccardCrawler extends WebCrawler {
                             }
                 
                             //Find out Similarity between sentance and stop wordsf one
-                           JaccardIndex jaccard = new JaccardIndex(freqCountStopwords,shinglesStopWords);
+                 //          JaccardIndex jaccard = new JaccardIndex(freqCountStopwords,shinglesStopWords);
                            
                                     
                             //Compare sentence shingle set to known Shingles from DB
