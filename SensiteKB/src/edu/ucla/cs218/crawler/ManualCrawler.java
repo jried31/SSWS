@@ -5,9 +5,11 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
+import static edu.ucla.cs218.crawler.Jaccard.jaccardSimilarity;
 import java.util.regex.Pattern;
 
 import edu.ucla.cs218.sensite.MongoConnector;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
@@ -28,7 +30,7 @@ public class ManualCrawler extends WebCrawler {
      * should be crawled or not (based on your crawling logic).
      * @return 
      */
-    public static void crawl(String s , String phenomenon) 
+    public static void crawl(String s , String phenomenon) throws IOException 
     {
             String content = s;
             System.out.println(content);
@@ -61,7 +63,6 @@ public class ManualCrawler extends WebCrawler {
                             
                     //       if (line.matches(".*\\b"+phenomena+"\\b.*"))
                      //       {
-                                System.out.println("Visit() Phenomena Match: "+phenomenon);
                                 String words[]=line.split(" ");
                                 //Remove stopwords
                                 LinkedList<String> sentenceStopWords = new LinkedList<String> (),
@@ -76,7 +77,7 @@ public class ManualCrawler extends WebCrawler {
                                         sentenceStopWords.add(word);
                                     }
                                 }
-                                System.out.println("List w/o stops: "+sentencewithoutStopWords);
+                             //   System.out.println("List w/o stops: "+sentencewithoutStopWords);
                                 
                                 
                                  //Create the Shingle list without the stop words
@@ -95,7 +96,7 @@ public class ManualCrawler extends WebCrawler {
                                             count=1;
                                         else count++;
                                         freqCountWithoutStopwords.put(set, count);
-                                        System.out.println("Set w/o stop: "+ set);
+                                 //       System.out.println("Set w/o stop: "+ set);
                                     }
                                 }
                                 
@@ -117,7 +118,7 @@ public class ManualCrawler extends WebCrawler {
                                         else count++;
                                         freqCountStopwords.put(set, count);
 
-                                        System.out.println("Set w/Stop: "+ set);
+                               //         System.out.println("Set w/Stop: "+ set);
                                     
                                     //matcher.matchPhenomenonToSensor(line,relations);
                                     }
@@ -135,7 +136,7 @@ public class ManualCrawler extends WebCrawler {
                    //Grab the Stopwords for each K
                    HashMap<String,HashMap<String,Integer>> shingleKStopWords=shinglesStopWords.get(i-2);
                    HashMap<String,HashMap<String,Integer>> shingleKWOStopWords=shinglesWOStopWords.get(i-2);
-                   Set<String>phenomenasStop = shingleKStopWords.keySet();
+                    Set<String>phenomenasStop = shingleKStopWords.keySet();
                    Set<String>phenomenasWOStop = shingleKWOStopWords.keySet();
                     
                    //Iterate through the Sets ~ Phenomena
@@ -157,6 +158,8 @@ public class ManualCrawler extends WebCrawler {
                         
                         BasicDBList relationship = new BasicDBList();
                         for(String set:shingleStop){
+                            
+                            //jaccardSimilarity(set,i,0,phenomena);
                             relationship.add(new BasicDBObject("set",set).append("count",freqCountStopwords.get(set)));
                             //System.out.println("Key: "+key + " - Value: "+ freqCountStopwords.get(key));
                         }
@@ -186,6 +189,8 @@ public class ManualCrawler extends WebCrawler {
                         
                         BasicDBList relationshipWOStop = new BasicDBList();
                         for(String set:shingleWOStop){
+                           //  jaccardSimilarity(set,i,1,phenomena);
+                           
                             relationshipWOStop.add(new BasicDBObject("set",set).append("count",freqCountWithoutStopwords.get(set)));
                             //System.out.println("Key: "+key + " - Value: "+ freqCountStopwords.get(key));
                         }
@@ -197,8 +202,7 @@ public class ManualCrawler extends WebCrawler {
                }  
             }
         
-    public static void main(String args[]){
-	crawl("A thermometer is a device that measures temperature or a temperature gradient using a variety of different principles.[1] A thermometer has two important elements: the temperature sensor (e.g. the bulb on a mercury-in-glass thermometer) in which some physical change occurs with temperature, plus some means of converting this physical change into a numerical value (e.g. the visible scale that is marked on a mercury-in-glass thermometer).", "velocity");
-		
+    public static void main(String args[]) throws IOException{
+	crawl("A thermometer is a device that measures temperature or a temperature gradient using a variety of different principles", "velocity");	
 	}
     }

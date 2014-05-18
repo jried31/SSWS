@@ -15,6 +15,10 @@ import edu.ucla.cs218.sensite.MongoConnector;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
@@ -22,8 +26,18 @@ import java.util.List;
  */
 public class Jaccard {
     
-	public static double[] jaccardSimilarity(String similar2, int k, int stopwords){
+	public static double[] jaccardSimilarity(String similar2, int k, int stopwords, String phenomenon) throws IOException{
 		    
+            
+            File file = new File("Jaccard.txt");
+ 
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			FileWriter fw = new FileWriter(file,true);
+                   //    BufferedWriter bw = new BufferedWriter(fw);
+	
                 //db.collection
                 DB ret = MongoConnector.getDatabase();
              
@@ -31,9 +45,10 @@ public class Jaccard {
                 List<BasicDBObject> obj = new ArrayList<BasicDBObject>();
                 obj.add(new BasicDBObject("k", k));
                 obj.add(new BasicDBObject("stopwords", stopwords));
+                obj.add(new BasicDBObject("phenomena", phenomenon));
                 row.put("$and", obj);
                 
-                DBCursor cursor = ret.getCollection("shingleClean").find(row);
+                DBCursor cursor = ret.getCollection("ManualShingle").find(row);
                 System.out.println(cursor.size());
                 double[] output = new double[cursor.size()];
                 int count = 0;
@@ -61,22 +76,23 @@ public class Jaccard {
 //  }
              
 		}
-                
+                System.out.println("h1 "+ h1);
+	
                   int sizeh1 = h1.size();
 		//Retains all elements in h3 that are contained in h2 ie intersection
 		h1.retainAll(h2);
 		//h1 now contains the intersection of h1 and h2
-		System.out.println("Intersection "+ h1 + sizeh1);
+		//System.out.println("Intersection "+ h1 );
 		
 			
 		h2.removeAll(h1);
 		//h2 now contains unique elements
-		System.out.println("Unique in h2 "+ h2);
+	//	System.out.println("Unique in h2 "+ h2);
 		
 		//Union 
 		int union = sizeh1 + h2.size();
 		int intersection = h1.size();
-                System.out.println(union + "   " + h1.size());
+                System.out.println("TOTAL UNION SIZE "+  union + " INTERSECTION  " + h1.size());
                  double jac = (double)intersection/union;
 	//	System.out.println(jac);
 		output[count] = jac;
@@ -85,11 +101,21 @@ public class Jaccard {
                 count++;
                  
         }
+        
+			for (int i=0;i<output.length;i++){
+                        
+                             String out = String.valueOf(output[i]);
+                             
+                            fw.write("Jaccard index for "+ similar2+ " "+ "shingle length " +k+ " stopwords as " +stopwords + " is " + out +"\n");
+                        }
+			fw.close();
+ 
+		//	System.out.println("Done");
         return output;
         	
 		}
-public static void main(String args[]){
-		System.out.println(jaccardSimilarity("density@and@sound@",3,1));
+public static void main(String args[]) throws IOException{
+		jaccardSimilarity("temperature@gradient@variety@",3,1,"velocity");
 		
 	}
 } 

@@ -212,7 +212,7 @@ public class ShingleBuilderCrawler extends WebCrawler {
                         
                         rowStop.append("sets",relationship);
                         //System.out.println("Set With Stopwords:\n"+rowStop);
-                        db3.getCollection("ManualShingle").insert(rowStop);  
+                        db3.getCollection("shingle").insert(rowStop);  
                    }
                    
                    
@@ -242,7 +242,7 @@ public class ShingleBuilderCrawler extends WebCrawler {
                         
                         rowWOStop.append("sets",relationshipWOStop);
                         //System.out.println("Set Without Stopwords:\n"+relationshipWOStop);
-                        db3.getCollection("ManualShingle").insert(rowWOStop);  
+                        db3.getCollection("shingle").insert(rowWOStop);  
                    }
                }  
             }
