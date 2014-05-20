@@ -175,6 +175,9 @@ public class ShingleBuilderCrawler extends WebCrawler {
                     }
                 }
                 
+                
+                
+                
                //Ready to insert values into the DB
                DB db3 = MongoConnector.getDatabase();
                //Iterate through the Shingle LinkList

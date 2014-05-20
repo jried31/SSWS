@@ -15,7 +15,6 @@ import edu.ucla.cs218.sensite.MongoConnector;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -203,10 +202,10 @@ public class AssociationJaccardCrawler extends WebCrawler {
                                     }
                                 }
                             }
-                
+
                             //Find out Similarity between sentance and stop words one (Argument 1 is shingleswostopwords from the shingles database, argument 2 is the sentence parsed into shingles)
                            //JaccardIndex jaccard = new JaccardIndex(shinglesWOStopWords,freqCountStopwords);
-                           
+
                                     
                             //Compare sentence shingle set to known Shingles from DB
                             db = MongoConnector.getDatabase();
