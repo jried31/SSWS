@@ -17,7 +17,7 @@ public class JaccardIndex {
 	public static double jaccardSimilarity(HashMap<String,Integer> referenceShingle, HashMap<String,Integer> sentenceShingle){
 
             Set<String> refSet = referenceShingle.keySet();
-            Set<String> refSet = sentenceShingle.keySet();
+            //Set<String> refSet = sentenceShingle.keySet();
             
             
                     /*
@@ -41,7 +41,7 @@ public class JaccardIndex {
             return 0;
 	}
 	public static void main(String args[]){
-		System.out.println(jaccardSimilarity("153 West Squire Dr","147 West Squire Dr"));
+		//System.out.println(jaccardSimilarity("153 West Squire Dr","147 West Squire Dr"));
 		
 	}
 }

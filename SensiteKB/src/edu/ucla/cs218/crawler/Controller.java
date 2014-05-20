@@ -112,7 +112,7 @@ public class Controller {
         crawlerIndex++;
     }
 
-    static String[] searchTerms = {"\"?\" measurement device", "how to measure \"?\""};
+    static String[] searchTerms = {"\"?\" measurement instrument", "how to measure \"?\""};
 
 
     public static void main(String[] args) throws Exception {
