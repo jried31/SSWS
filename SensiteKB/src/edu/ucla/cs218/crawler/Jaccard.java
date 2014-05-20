@@ -28,8 +28,7 @@ public class Jaccard {
     
 	public static double[] jaccardSimilarity(String similar2, int k, int stopwords, String phenomenon) throws IOException{
 		    
-            
-            File file = new File("Jaccard.txt");
+             File file = new File("Jaccard.txt");
  
 			// if file doesnt exists, then create it
 			if (!file.exists()) {
@@ -58,9 +57,9 @@ public class Jaccard {
              BasicDBList dobj2 =    (BasicDBList) dobj.get("sets");
              HashSet<String> h1 = new HashSet<>();
 		HashSet<String> h2 = new HashSet<>();
-                //for(String s: similar2.split("@")){
-		h2.add(similar2);		
-		//}
+                for(String s: similar2.split("@")){
+		h2.add(s+"@");		
+		}
 		System.out.println("h2 "+ h2);
 	
             
@@ -115,7 +114,7 @@ public class Jaccard {
         	
 		}
 public static void main(String args[]) throws IOException{
-		jaccardSimilarity("temperature@gradient@variety@",3,1,"velocity");
+		jaccardSimilarity("a rain gauge is a type of instrument used by meteorologists and hydrologists to gather and measure the amount of liquid precipitation over a set period of time",1,1,"rain");
 		
 	}
 } 
