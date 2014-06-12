@@ -28,10 +28,10 @@ import java.util.Iterator;
 public class Controller {
 
     //These global variables store the lists of phenomenon and sensor names
+    static final boolean FILTERED_ON = true;
     public static HashMap<String, Boolean> phenomenaNames = new HashMap<String, Boolean>();
     public static HashMap<String, Boolean> sensorNames = new HashMap<String, Boolean>();
-    private static boolean BUILD_SHINGLE = true,
-            BUILD_ASSOCIATION = false;
+    private static boolean BUILD_SHINGLE = false, BUILD_ASSOCIATION = false, BUILD_FILTEREDASSOCIATION = true;
 
     //Checks if a given string is in the sensor list
     public static boolean isSensor(String s) {
@@ -67,8 +67,9 @@ public class Controller {
         return results;
     }
 
-    static CrawlController []controllers=null;
+    static CrawlController[] controllers = null;
     static int crawlerIndex = 0;
+
     private static void setCrawlerConfig(List<String> urlsToSearch) throws Exception {
         String crawlStorageFolder = "data/crawl/root";
         int numberOfCrawlers = Globals.MAX_NUMBER_CRAWLERS;//Crawling 10 pages at a time cause thats how many search results return
@@ -101,7 +102,7 @@ public class Controller {
          * Start the crawl. This is a blocking operation, meaning that your code
          * will reach the line after this only when crawling is finished.
          */
-        
+
         if (BUILD_SHINGLE) {
             controllers[crawlerIndex].startNonBlocking(ShingleBuilderCrawler.class, numberOfCrawlers);
         }
@@ -109,11 +110,14 @@ public class Controller {
         if (BUILD_ASSOCIATION) {
             controllers[crawlerIndex].startNonBlocking(AssociationCrawler.class, numberOfCrawlers);
         }
+
+        if (BUILD_FILTEREDASSOCIATION) {
+            controllers[crawlerIndex].startNonBlocking(AssociationCrawlerWithThreshold.class, numberOfCrawlers);
+        }
         crawlerIndex++;
     }
 
     static String[] searchTerms = {"\"?\" measurement instrument", "how to measure \"?\""};
-
 
     public static void main(String[] args) throws Exception {
 
@@ -124,15 +128,21 @@ public class Controller {
 
         //Fill phenomenon list
         cursor = phenomena.find();
-        try {
-            while (cursor.hasNext()) {
-                DBObject phenomenon = cursor.next();
-                String name = (String) phenomenon.get("phenomena");
-                phenomenaNames.put(name, true);
-            }
-        } finally {
-            cursor.close();
+        /*
+         try {
+         while (cursor.hasNext()) {
+         DBObject phenomenon = cursor.next();
+         String name = (String) phenomenon.get("phenomena");
+         phenomenaNames.put(name, true);
+         }
+         } finally {
+         cursor.close();
+         }
+         */
+        for (String phenomenon : new String[]{"rain"}) {//, "time", "location"}) {
+            phenomenaNames.put(phenomenon, true);
         }
+        cursor.close();
 
         //Fill sensor list
         cursor = sensors.find();
@@ -148,42 +158,47 @@ public class Controller {
 
         //Initialize the controller objects
         controllers = new CrawlController[phenomenaNames.size()];
-        
+
         //Grab all the URL's to search
-        for (String phenomenon : phenomenaNames.keySet()) 
-        {
+        for (String phenomenon : phenomenaNames.keySet()) {
             //System.out.println("Phenomena: " + phenomenon);
 
             List<String> urlsToSearch = new ArrayList<String>();
             //Query for each search term
+
             for (String searchterm : searchTerms) {
                 System.out.println("Search Term: " + searchterm.replace("?", phenomenon));
                 for (int i = 1; i <= Globals.SEARCH_PAGE_DEPTH; i++) {
                     GoogleResults results = getGoogleResults(searchterm.replace("?", phenomenon), i);
-                    
-                    if(results == null)continue;
-                   ResponseData responseData = results.getResponseData();
-                   if(responseData == null)continue;
+
+                    if (results == null) {
+                        continue;
+                    }
+                    ResponseData responseData = results.getResponseData();
+                    if (responseData == null) {
+                        continue;
+                    }
                     List<Result> resultList = results.getResponseData().getResults();
-                    if(resultList == null)continue;
+                    if (resultList == null) {
+                        continue;
+                    }
+
                     for (Result result : resultList) {
                         String urlToSearch = result.getUrl();
                         //System.out.println("Searching URL: " + urlToSearch);
                         urlsToSearch.add(urlToSearch);
                     }
+
                 }
             }
 
             //Start the crawlers
             setCrawlerConfig(urlsToSearch);
-            
-            
+
             //Wait for the crawler ot finish crawling all sites for phenomena
             //controllers[crawlerIndex-1].waitUntilFinish();
-            
             //Query all phenomena of size K
-            for(int k = 2;k < 6;k++)
-            {
+            for (int k = 2; k < 6; k++) {
                 db = MongoConnector.getDatabase();
 
                 // Setup the query
@@ -191,36 +206,34 @@ public class Controller {
                         .append("stopwords", 0)
                         .append("k", k);
                 cursor = db.getCollection("shingle").find(query);
-                
-                HashMap<String,Integer> shingle = new HashMap<String,Integer>();
-                while(cursor.hasNext())
-                {
+
+                HashMap<String, Integer> shingle = new HashMap<String, Integer>();
+                while (cursor.hasNext()) {
                     DBObject data = cursor.next();
                     BasicDBList associations = (BasicDBList) data.get("sets");
                     Iterator it = associations.iterator();
-                    while(it.hasNext())
-                    {
-                        DBObject obj = (DBObject)it.next();
+                    while (it.hasNext()) {
+                        DBObject obj = (DBObject) it.next();
                         String set = (String) obj.get("set");
                         int count = Integer.parseInt((String) obj.get("count"));
-                        System.out.println("The Shingle: "+set+ " Count: "+count);
-                        
+                        System.out.println("The Shingle: " + set + " Count: " + count);
+
                         Integer cnt = shingle.get(set);
-                        if(cnt == null){
+                        if (cnt == null) {
                             shingle.put(set, count);
-                        }else{
+                        } else {
                             shingle.put(set, cnt + count);
                         }
                     }
                 }
             }
         }
-        
+
         //Wait for he crawlers to finish
-        for(int i = 0;i <= crawlerIndex;i++){
+        for (int i = 0; i <= crawlerIndex; i++) {
             controllers[crawlerIndex].waitUntilFinish();
-            System.out.println("Controller "+ crawlerIndex + " is finished.");
+            System.out.println("Controller " + crawlerIndex + " is finished.");
         }
-        
+
     }
 }
