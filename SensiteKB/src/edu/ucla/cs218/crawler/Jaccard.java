@@ -23,7 +23,7 @@ import weka.core.stemmers.SnowballStemmer;
 
 public class Jaccard {
 
-    public static double[] jaccardSimilarity(String similar2, int k, int stopwords, String phenomenon) throws IOException {
+    public static double[] jaccardSimilarity(String similar2, int k, int stopwords, String phenomenon, HashSet<String> Shingle) throws IOException {
 
         File file = new File("Jaccard.txt");
 
@@ -80,7 +80,7 @@ public class Jaccard {
                 h2.add(s + "@");
             }
             System.out.println("h2 " + h2);
-
+                 Shingle.addAll(h2);
             //System.out.println(dobj2.toString()) ;
             BasicDBObject[] dobj2Arr = dobj2.toArray(new BasicDBObject[0]);
 
@@ -131,7 +131,7 @@ public class Jaccard {
 
     public static void main(String args[]) throws IOException {
         //jaccardSimilarity("a rain gauge is used to measure rain", 1, 1, "rain");
-        jaccardSimilarity("A rain sensor determines whether or not enough rainfall has occurred in order to skip an irrigation cycle.", 1, 0, "rain");
+     //   jaccardSimilarity("A rain sensor determines whether or not enough rainfall has occurred in order to skip an irrigation cycle.", 1, 0, "rain");
 
     }
 }
