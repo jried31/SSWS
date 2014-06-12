@@ -57,6 +57,8 @@ public class AssociationCrawlerWithThreshold extends WebCrawler {
 
         // Setup the query
         BasicDBObject query = new BasicDBObject("webpage", href);
+        
+        //filteredWebsites is using Jaccard Similarity Index; websites1 is without (as before)
         DBObject obj = db.getCollection(Controller.FILTERED_ON ? "filteredWebsites" : "websites1").findOne(query);
         return obj == null;
     }

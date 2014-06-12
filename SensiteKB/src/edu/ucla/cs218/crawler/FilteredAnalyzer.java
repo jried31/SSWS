@@ -91,6 +91,8 @@ public class FilteredAnalyzer {
                         .append("observations", noObservations)
                         .append("association", countList);
                 
+                
+                //filteredAssociations is using Jaccard Similarity Index; associations1 is without (as before)
                 db3.getCollection(Controller.FILTERED_ON ? "filteredAssociations" : "associations1").insert(association);
             }
         } finally {

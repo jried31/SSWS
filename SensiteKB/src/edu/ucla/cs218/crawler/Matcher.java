@@ -97,6 +97,7 @@ public class Matcher {
     public void saveStatisticsToDB_Filtered(HashMap<String, HashSet<String>> relations, HashMap<String, Double> similarityMap) {
         // Get Database Handle
         DB db = MongoConnector.getDatabase();
+        //filteredWebsites is using Jaccard Similarity Index; websites1 is without (as before)
         String colName = Controller.FILTERED_ON == true ? "filteredWebsites" : "websites1";
         DBCollection associations = db.getCollection(colName);
 
