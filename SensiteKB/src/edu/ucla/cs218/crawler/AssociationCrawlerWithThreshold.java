@@ -57,6 +57,8 @@ public class AssociationCrawlerWithThreshold extends WebCrawler {
 
         // Setup the query
         BasicDBObject query = new BasicDBObject("webpage", href);
+        
+        //filteredWebsites is using Jaccard Similarity Index; websites1 is without (as before)
         DBObject obj = db.getCollection(Controller.FILTERED_ON ? "filteredWebsites" : "websites1").findOne(query);
         return obj == null;
     }
@@ -147,7 +149,8 @@ public class AssociationCrawlerWithThreshold extends WebCrawler {
                             lineWOPhenSens = lineWOPhenSens.replace(sensor, "");
                         }
                         try {
-                            double similarity[] = Jaccard.jaccardSimilarity(lineWOPhenSens, 1, 1, phenomenon);
+                            HashSet<String> Shingle = new HashSet<>();
+                            double similarity[] = Jaccard.jaccardSimilarity(lineWOPhenSens, 1, 1, phenomenon,Shingle);
                             //fw.write("Url: " + url + "; Line: " + line + "; Similarity: " + Double.toString(similarity_sum / similarity.length));
                             
                             if ((!Controller.FILTERED_ON || Collections.max(Arrays.asList(ArrayUtils.toObject(similarity))) > 0.05) && !lineRelations.get(phenomenon).isEmpty()) {
